@@ -1,0 +1,18 @@
+Proyecto Backgammon
+por alumna Guadalupe Yañez 
+
+Tengo que hacer un juego de Backgammon que se juega de a dos jugadores, por lo que ya se
+que habra un jugador1 y un jugador2.
+Tambien tiene que haber un tablero, con las fichas correspondientes a sus jugadores.
+Vamos a tener un apartado Backgammon, que va a manejar la logica del juego (como el tateti)
+Tambien voy a definir reglas (las cuales tengo que ver atraves de la referencia 
+xq no conozco el juego)
+por ejemplo como se mueven las fichas, como se capturan, y como se gana.
+
+#importante comentario profesores
+El juego va a tener:
+Una interfaz por consola (para jugar en la terminal)
+Una interfaz gráfica (para jugar con ventanas)
+
+Mi idea es primero aprender el juego para desarrollar la logica y poder definir carpetas, 
+clases, variables, funciones, los test, etc. 
