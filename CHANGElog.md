@@ -8,3 +8,5 @@ juego backgammon. Tmb hice un archivo de codigo y un archivo de test para luego 
 25/08: habiendo estudiado el juego cree los archivos q entiendo necesarios y los 
 solicitados en el docuemnto, acompañados de una justificacion. 
 
+#commit 3
+26/08: agrego codigo en tablero.py , en dados.py y en cli.py ,es inicial, mañana sigo.

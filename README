@@ -3,24 +3,31 @@ Por alumna Guadalupe Yañez
 Computacion
 Año 2025
 
-Luego de haber estudiado el juego, empiezo a planificar la estructura de mi proyecto, pensando en lo que voy a necesitar y tambien lo sugerido en el documento.
+Leyendo el documento, cambio la estructura del proyecto, creando una carpeta de CLI,
+separado del de codigo. 
 
-Por el momento tengo: 
-5. Diseño Básico Propuesto
-5.1. Clases
-BackgammonGame → Coordina flujo general
-Board → Representa el tablero y puntos
-Player → Representa a un jugador
-Dice → Lógica de tiradas
-Checker → Representa cada ficha
-CLI → Interfaz de texto
-PygameUI → Interfaz gráfica  #(todavia no agrego, debo ver como funciona)
+3.4. Estructura del Proyecto
+/backgammon/
+├── core/           → lógica del juego
+├── cli/            → CLI                  #esto modifique
+├── pygame_ui/      → interfaz gráfica     #(todavia no agrego, debo ver como funciona)
+├── assets/         → imágenes, sonidos    #(todavia no agrego, debo ver como funciona)
+├── tests/         → tests
+└── README.md
+└── changelog.md
+└── justificacion.md
 
 Justificacion de mi estructura creada 
 Separe el proyecto en modulos para facilitar cualq modificacion y lectura del codigo.
-Tambien para seguir la practica del diseño orientado a objetos (cada clase tiene una única responsabilidad). La justificacion de cada clase se encuentra en la misma.         A cada clase le agregamos su respectivo test ya que:
+Tambien para seguir la practica del diseño orientado a objetos (cada clase tiene una 
+única responsabilidad). La justificacion de cada clase se encuentra en la misma.  
+A cada clase le agregamos su respectivo test ya que:
 4.1. Cobertura del Código
 Se deberá alcanzar al menos 90% de cobertura con pruebas unitarias para la lógica central del juego.
 
 Tambien ademas de agregar estos archivos, agregamos justificacion.md y chancelog.md
 para ir documentando los cambios en el proyecto. 
+
+CAMBIOS EN EL CODIGO
+Ahora he emepezado con el codigo de algunos archivos, por el momento tablero.py, 
+dados.py y cli.py. 
