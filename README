@@ -1,33 +1,30 @@
 Proyecto Backgammon
-Por alumna Guadalupe Yañez 
-Computacion
+Por alumna Guadalupe Yañez
+Computación
 Año 2025
 
-Leyendo el documento, cambio la estructura del proyecto, creando una carpeta de CLI,
-separado del de codigo. 
+Este proyecto consiste en implementar el juego de Backgammon siguiendo las reglas 
+clasicas (fuente wifipedia). Va a tener dos interfaces: una de consola (CLI) y otra grafica 
+utilizando Pygame. Ambas usaran la misma lógica central.
 
-3.4. Estructura del Proyecto
+Estructura del Proyecto
 /backgammon/
-├── core/           → lógica del juego
-├── cli/            → CLI                  #esto modifique
-├── pygame_ui/      → interfaz gráfica     #(todavia no agrego, debo ver como funciona)
-├── assets/         → imágenes, sonidos    #(todavia no agrego, debo ver como funciona)
-├── tests/         → tests
-└── README.md
-└── changelog.md
-└── justificacion.md
+├── core/            → logica del juego (tablero, dados, jugadores, backgammon, excepciones, fichas)
+├── cli/             → interfaz por consola
+├── pygame_ui/       → interfaz grafica      #todavia no
+├── assets/          → imagenes y sonidos    #todavia no
+├── tests/           → pruebas unitarias
+├── README.md        → informacion general del proyecto
+├── changelog.md     → registro de cambios
+└── justificacion.md → explicación de decisiones del diseño
 
-Justificacion de mi estructura creada 
-Separe el proyecto en modulos para facilitar cualq modificacion y lectura del codigo.
+
+Separe el proyecto en modulos para facilitar cualquier modificacion y lectura del codigo.
 Tambien para seguir la practica del diseño orientado a objetos (cada clase tiene una 
-única responsabilidad). La justificacion de cada clase se encuentra en la misma.  
-A cada clase le agregamos su respectivo test ya que:
-4.1. Cobertura del Código
-Se deberá alcanzar al menos 90% de cobertura con pruebas unitarias para la lógica central del juego.
+única responsabilidad). Utilice pruebas unitarias con unittest, y el objetivo es alcanzar
+90% de cobertura para la lógica central. Los tests se encuentran en la carpeta 
+tests/ y se ejecutan con el siguiente comando:
+    
+python3 -m unittest discover tests
 
-Tambien ademas de agregar estos archivos, agregamos justificacion.md y chancelog.md
-para ir documentando los cambios en el proyecto. 
 
-CAMBIOS EN EL CODIGO
-Ahora he emepezado con el codigo de algunos archivos, por el momento tablero.py, 
-dados.py y cli.py. 

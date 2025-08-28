@@ -9,4 +9,8 @@ juego backgammon. Tmb hice un archivo de codigo y un archivo de test para luego 
 solicitados en el docuemnto, acompañados de una justificacion. 
 
 #commit 3
-26/08: agrego codigo en tablero.py , en dados.py y en cli.py ,es inicial, mañana sigo.
+26/08: agrego codigo en tablero.py , en dados.py y en cli.py ,es inicial, mañana sigo. Tmb agrege carpeta git.
+
+#commit 4
+27/08: agrego y modifico codigo en tablero.py, en dados.py y en cli.py. Tmb cambio el README ya que lo estaba usando mal. Agrego archivo test_cli.py. Plantee los primeros test 
+para cli, tablero y dados.
