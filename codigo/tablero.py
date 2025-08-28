@@ -7,7 +7,7 @@ class Tablero:
 
     def __init__(self) -> None:
         # lista de 24 puntos, inicialmente vacios
-        self.__points__: List[List[str]] = [[] for _ in range(24)]
+        self._points: List[List[str]] = [[] for _ in range(24)]
 
     def colocar_ficha(self, punto: int, ficha: str) -> None:
         
@@ -21,7 +21,9 @@ class Tablero:
 
     def obtener_tablero(self) -> List[List[str]]:
         
-        #devuelve situacion actual del tablero.
+        return self._points    #devuelve situacion actual del tablero.
         
-        return self.__points__
+        
 
+
+  

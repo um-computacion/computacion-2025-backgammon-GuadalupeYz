@@ -14,3 +14,6 @@ solicitados en el docuemnto, acompañados de una justificacion.
 #commit 4
 27/08: agrego y modifico codigo en tablero.py, en dados.py y en cli.py. Tmb cambio el README ya que lo estaba usando mal. Agrego archivo test_cli.py. Plantee los primeros test 
 para cli, tablero y dados.
+
+#commit 5
+28/08: hice codigo inicial de la clase jugador, y su test inicial tmb. 
