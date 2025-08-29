@@ -17,3 +17,6 @@ para cli, tablero y dados.
 
 #commit 5
 28/08: hice codigo inicial de la clase jugador, y su test inicial tmb. 
+
+#commit 6
+29/08: agrego un test mas a jugador que me falto probar la funcion obtener_fichas. Tmb la base de la clase ficha, mañana sigo con eso. 

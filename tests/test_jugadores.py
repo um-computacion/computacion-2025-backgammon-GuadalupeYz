@@ -20,5 +20,11 @@ class TestPlayer(unittest.TestCase):
         jugador = Jugador("Guada", "blanco")
         self.assertEqual(jugador.cantidad_fichas(), 0)
 
+    def test_obtener_fichas(self):
+        jugador = Jugador("Guada", "blanco")
+        jugador.agregar_ficha("O")
+        jugador.agregar_ficha("O")
+        self.assertEqual(jugador.obtener_fichas(), ["O", "O"])
+
 if __name__ == "__main__":
     unittest.main()
