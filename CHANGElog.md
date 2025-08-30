@@ -20,3 +20,6 @@ para cli, tablero y dados.
 
 #commit 6
 29/08: agrego un test mas a jugador que me falto probar la funcion obtener_fichas. Tmb la base de la clase ficha, mañana sigo con eso. 
+
+#commit 7
+30/08: integre la clase ficha en jugadores, por lo que tmb cambie esto en test jugadores y cree unos test iniciales de ficha. Tmb cambie los test de tablero que tenian un error ya que me olvide de cambiar los atributos. 

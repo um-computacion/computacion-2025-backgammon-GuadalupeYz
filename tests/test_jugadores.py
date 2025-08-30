@@ -1,8 +1,8 @@
-
 import unittest
 from codigo.jugadores import Jugador
+from codigo.fichas import Ficha
 
-class TestPlayer(unittest.TestCase):
+class TestJugador(unittest.TestCase):
 
     def test_crear_jugador(self):
         jugador = Jugador("Guada", "blanco")
@@ -11,9 +11,11 @@ class TestPlayer(unittest.TestCase):
 
     def test_agregar_ficha(self):
         jugador = Jugador("Lupita", "negro")
-        jugador.agregar_ficha("O")
+        ficha1 = Ficha("negro")
+        ficha2 = Ficha("negro")
+        jugador.agregar_ficha(ficha1)
         self.assertEqual(jugador.cantidad_fichas(), 1)
-        jugador.agregar_ficha("O")
+        jugador.agregar_ficha(ficha2)
         self.assertEqual(jugador.cantidad_fichas(), 2)
 
     def test_lista_fichas_inicia_vacia(self):
@@ -22,9 +24,11 @@ class TestPlayer(unittest.TestCase):
 
     def test_obtener_fichas(self):
         jugador = Jugador("Guada", "blanco")
-        jugador.agregar_ficha("O")
-        jugador.agregar_ficha("O")
-        self.assertEqual(jugador.obtener_fichas(), ["O", "O"])
+        ficha1 = Ficha("blanco")
+        ficha2 = Ficha("blanco")
+        jugador.agregar_ficha(ficha1)
+        jugador.agregar_ficha(ficha2)
+        self.assertEqual(jugador.obtener_fichas(), [ficha1, ficha2])
 
 if __name__ == "__main__":
     unittest.main()

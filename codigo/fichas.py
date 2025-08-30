@@ -5,5 +5,4 @@ class Ficha:
     def obtener_color(self) -> str:
         return self._color
 
-
     

@@ -1,4 +1,3 @@
- 
 import unittest
 from codigo.tablero import Tablero
 
@@ -6,11 +5,11 @@ class TestTablero(unittest.TestCase):
 
     def test_tablero_tiene_24_puntos(self):
         tablero = Tablero()
-        self.assertEqual(len(tablero._Tablero__points__), 24)
+        self.assertEqual(len(tablero._points), 24)
 
     def test_puntos_inician_vacios(self):
         tablero = Tablero()
-        for punto in tablero._Tablero__points__:
+        for punto in tablero._points:
             self.assertEqual(punto, [])
 
 if __name__ == "__main__":
