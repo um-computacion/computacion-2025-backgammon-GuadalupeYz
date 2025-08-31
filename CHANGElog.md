@@ -23,3 +23,6 @@ para cli, tablero y dados.
 
 #commit 7
 30/08: integre la clase ficha en jugadores, por lo que tmb cambie esto en test jugadores y cree unos test iniciales de ficha. Tmb cambie los test de tablero que tenian un error ya que me olvide de cambiar los atributos. 
+
+#commit 8
+31/08: ahora empiezo con clase backgammon y probando ese codigo en sus test iniciales.
