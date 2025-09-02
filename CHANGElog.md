@@ -29,3 +29,6 @@ para cli, tablero y dados.
 
 #commit 9 
 01/09: cmabie en jugadores y dados la implementacion que mencionaron los profesores "Atributos con el prefijo __ delante y la implementación de setter y getter" , por lo que cambie sus test tmb.
+
+#commit 10
+02/09: segui con los cambios de getters y setters en fichas, tablero y backgammon. En sus codigo y sus tests.

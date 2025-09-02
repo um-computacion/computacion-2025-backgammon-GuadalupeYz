@@ -1,29 +1,30 @@
 from typing import List
+from codigo.fichas import Ficha
 
 class Tablero:
-    
-    #Representa el tablero de Backgammon con 24 puntos.
-    #cada punto vendria siendo una lista donde se colocan las fichas.
+    #cada punto es una lista donde se colocan las fichas.
 
     def __init__(self) -> None:
-        # lista de 24 puntos, inicialmente vacios
-        self._points: List[List[str]] = [[] for _ in range(24)]
+        #lista de 24 puntos, inicialmente vacios
+        self.__points: List[List[Ficha]] = [[] for _ in range(24)]
 
-    def colocar_ficha(self, punto: int, ficha: str) -> None:
-        
+    def get_points(self) -> List[List[Ficha]]:
+        return self.__points
+
+    def set_points(self, nuevo_tablero: List[List[Ficha]]) -> None:
+        if len(nuevo_tablero) != 24:
+            raise ValueError("El tablero debe tener exactamente 24 puntos.")
+        self.__points = nuevo_tablero
+
+    def colocar_ficha(self, punto: int, ficha: Ficha) -> None:
         #coloca una ficha en un punto del tablero.
-        #punto: indice entre 0 y 23
-        #ficha: simbolo de la ficha, por ejemplo "X" o "O"
-        
         if not 0 <= punto < 24:
             raise ValueError("El punto debe estar entre 0 y 23.")
-        self.__points__[punto].append(ficha)
+        self.__points[punto].append(ficha)
 
-    def obtener_tablero(self) -> List[List[str]]:
-        
-        return self._points    #devuelve situacion actual del tablero.
-        
-        
+    def obtener_tablero(self) -> List[List[Ficha]]:
+        #Devuelve la situaciOn actual del tablero.
+        return self.__points
 
 
   

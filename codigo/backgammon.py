@@ -4,21 +4,34 @@ from codigo.tablero import Tablero
 from codigo.dados import Dados
 
 class BackgammonGame:
-
     def __init__(self) -> None:
-        self._jugadores: List[Jugador] = []  
-        self._tablero: Tablero = Tablero()  #cada partida tiene su tablero y dados
-        self._dados: Dados = Dados()
+        self.__jugadores: List[Jugador] = []
+        self.__tablero: Tablero = Tablero()
+        self.__dados: Dados = Dados()
+
+    def get_jugadores(self) -> List[Jugador]:
+        return self.__jugadores
+
+    def get_tablero(self) -> Tablero:
+        return self.__tablero
+
+    def get_dados(self) -> Dados:
+        return self.__dados
+
+    def set_tablero(self, tablero: Tablero) -> None:
+        self.__tablero = tablero
+
+    def set_dados(self, dados: Dados) -> None:
+        self.__dados = dados
 
     def agregar_jugador(self, jugador: Jugador) -> None:
-        if len(self._jugadores) < 2:
-            self._jugadores.append(jugador)   # max.2 (xq backgammon es de 2 jugadores)
+        if len(self.__jugadores) < 2:
+            self.__jugadores.append(jugador)
         else:
             raise ValueError("Ya hay 2 jugadores en la partida") 
 
     def iniciar_juego(self) -> None:
-        if len(self._jugadores) != 2:  #entonces si hay mas debe lanzar error
+        if len(self.__jugadores) != 2:
             raise ValueError("Se necesitan 2 jugadores para iniciar el juego")
         print("¡¡Comienza la partida de Backgammon!!")
-  
 
