@@ -26,3 +26,6 @@ para cli, tablero y dados.
 
 #commit 8
 31/08: ahora empiezo con clase backgammon y probando ese codigo en sus test iniciales.
+
+#commit 9 
+01/09: cmabie en jugadores y dados la implementacion que mencionaron los profesores "Atributos con el prefijo __ delante y la implementación de setter y getter" , por lo que cambie sus test tmb.

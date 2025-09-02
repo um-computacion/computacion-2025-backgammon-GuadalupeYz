@@ -16,5 +16,15 @@ class TestDados(unittest.TestCase):
             self.assertGreaterEqual(valor, 1)
             self.assertLessEqual(valor, 6)
 
+    def test_get_ultimo_devuelve_ultima_tirada(self):
+        dados = Dados()
+        tirada = dados.roll()
+        self.assertEqual(dados.get_ultimo(), tirada)
+
+    def test_set_ultimo_modifica_tirada(self):
+        dados = Dados()
+        dados.set_ultimo((3, 5))
+        self.assertEqual(dados.get_ultimo(), (3, 5))
+
 if __name__ == "__main__":
     unittest.main()

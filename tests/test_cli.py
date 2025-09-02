@@ -2,7 +2,7 @@
 import unittest
 from unittest.mock import patch
 import io
-from CLI import cli
+from cli import cli
 
 class TestCLI(unittest.TestCase):
 
