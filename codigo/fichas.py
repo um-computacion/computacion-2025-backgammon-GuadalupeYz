@@ -1,9 +1,9 @@
-class Fichas:
-    
-    pass
+class Ficha:
+    def __init__(self, color: str) -> None:
+        self.__color: str = color  # blanco o negro
 
-#representa las fichas del backgammon.
-#justificacion: esta clase es para que cada ficha tenga su color, posicion, jugador 
-#al que pertenece, etc.
+    def get_color(self) -> str:
+        return self.__color
 
-    
+    def set_color(self, nuevo_color: str) -> None:
+        self.__color = nuevo_color
