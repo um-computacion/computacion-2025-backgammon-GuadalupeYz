@@ -32,3 +32,8 @@ para cli, tablero y dados.
 
 #commit 10
 02/09: segui con los cambios de getters y setters en fichas, tablero y backgammon. En sus codigo y sus tests.
+
+cambios sprint 2 
+
+#commit 1
+04/09: Plantie la primer excepcion de la logica del juego. Y cambie cli agregando set and get y su test. 
