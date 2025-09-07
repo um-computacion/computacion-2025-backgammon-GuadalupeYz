@@ -37,3 +37,6 @@ cambios sprint 2
 
 #commit 1
 04/09: Plantie la primer excepcion de la logica del juego. Y cambie cli agregando set and get y su test. 
+
+#commit 2
+07/09: Cambie el codigo tablero para agregar validacion al poner fichas (maximo 15 fichas por punto y rango entre 0 y 23), con getters/setters y cambie los tests 
