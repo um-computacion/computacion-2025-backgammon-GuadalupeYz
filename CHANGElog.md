@@ -40,3 +40,6 @@ cambios sprint 2
 
 #commit 2
 07/09: Cambie el codigo tablero para agregar validacion al poner fichas (maximo 15 fichas por punto y rango entre 0 y 23), con getters/setters y cambie los tests 
+
+#commit 3
+08/09: Mejore la clase Jugador agregando eliminar_ficha con su validacion. Tamb los tests de Jugador.

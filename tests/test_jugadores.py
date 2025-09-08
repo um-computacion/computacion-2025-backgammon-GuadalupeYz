@@ -34,5 +34,20 @@ class TestJugador(unittest.TestCase):
         self.assertEqual(jugador.get_fichas(), [ficha1, ficha2])
         self.assertEqual(jugador.cantidad_fichas(), 2)
 
+    def test_eliminar_ficha(self):
+        jugador = Jugador("Lupita", "negro")
+        ficha1 = Ficha("negro")
+        ficha2 = Ficha("negro")
+        jugador.set_fichas([ficha1, ficha2])
+        jugador.eliminar_ficha(ficha1)
+        self.assertEqual(jugador.get_fichas(), [ficha2])
+        self.assertEqual(jugador.cantidad_fichas(), 1)
+
+    def test_eliminar_ficha_inexistente(self):
+        jugador = Jugador("Guada", "blanco")
+        ficha = Ficha("blanco")
+        with self.assertRaises(ValueError):
+            jugador.eliminar_ficha(ficha)
+
 if __name__ == "__main__":
     unittest.main()
