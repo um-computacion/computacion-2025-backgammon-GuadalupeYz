@@ -43,3 +43,6 @@ cambios sprint 2
 
 #commit 3
 08/09: Mejore la clase Jugador agregando eliminar_ficha con su validacion. Tamb los tests de Jugador.
+
+#commit 4
+09/09: Actualice BackgammonGame para que al iniciar el juego se coloquen las fichas de jugadores en el tablero. Tamb cambie los tests para verificarlo.
