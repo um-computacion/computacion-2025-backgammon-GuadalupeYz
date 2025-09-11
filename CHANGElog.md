@@ -46,3 +46,6 @@ cambios sprint 2
 
 #commit 4
 09/09: Actualice BackgammonGame para que al iniciar el juego se coloquen las fichas de jugadores en el tablero. Tamb cambie los tests para verificarlo.
+
+#commit 5
+10/09: Defini MovimientoInvalidoException en excepciones.py para aplicarlo en jugadores.py y probarlo en sus test. 

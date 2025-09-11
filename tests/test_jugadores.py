@@ -1,6 +1,7 @@
 import unittest
 from codigo.jugadores import Jugador
 from codigo.fichas import Ficha
+from codigo.excepciones import FichaInvalidaException
 
 class TestJugador(unittest.TestCase):
 
@@ -17,14 +18,18 @@ class TestJugador(unittest.TestCase):
         self.assertEqual(jugador.get_nombre(), "Ana")
         self.assertEqual(jugador.get_color(), "blanco")
 
-    def test_agregar_ficha(self):
+    def test_agregar_ficha_valida(self):
         jugador = Jugador("Lupita", "negro")
-        ficha1 = Ficha("negro")
-        ficha2 = Ficha("negro")
-        jugador.agregar_ficha(ficha1)
-        jugador.agregar_ficha(ficha2)
-        self.assertEqual(jugador.cantidad_fichas(), 2)
-        self.assertEqual(jugador.get_fichas(), [ficha1, ficha2])
+        ficha = Ficha("negro")
+        jugador.agregar_ficha(ficha)
+        self.assertEqual(jugador.cantidad_fichas(), 1)
+        self.assertEqual(jugador.get_fichas(), [ficha])
+
+    def test_agregar_ficha_invalida(self):
+        jugador = Jugador("Guada", "blanco")
+        ficha = Ficha("negro")
+        with self.assertRaises(FichaInvalidaException):
+            jugador.agregar_ficha(ficha)
 
     def test_set_fichas(self):
         jugador = Jugador("Guada", "blanco")

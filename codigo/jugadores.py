@@ -1,13 +1,15 @@
 from typing import List
 from codigo.fichas import Ficha
+from codigo.excepciones import FichaInvalidaException
 
-class Jugador:  #representa a un jugador de Backgammon
+
+class Jugador:  # representa a un jugador de Backgammon
     def __init__(self, nombre: str, color: str) -> None:
         self.__nombre: str = nombre
-        self.__color: str = color   #blanco o negro
+        self.__color: str = color  # blanco o negro
         self.__fichas: List[Ficha] = []
 
-    #get y set
+    # getters y setters
     def get_nombre(self) -> str:
         return self.__nombre
 
@@ -26,8 +28,10 @@ class Jugador:  #representa a un jugador de Backgammon
     def set_fichas(self, fichas: List[Ficha]) -> None:
         self.__fichas = fichas
 
-    #aca esta la logica de fichas
+    #logica de fichas
     def agregar_ficha(self, ficha: Ficha) -> None:
+        if ficha.get_color() != self.__color:
+            raise FichaInvalidaException("La ficha no coincide con el color del jugador")
         self.__fichas.append(ficha)
 
     def eliminar_ficha(self, ficha: Ficha) -> None:
