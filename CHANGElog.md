@@ -49,3 +49,6 @@ cambios sprint 2
 
 #commit 5
 10/09: Defini MovimientoInvalidoException en excepciones.py para aplicarlo en jugadores.py y probarlo en sus test. 
+
+#commit 6 
+11/09: Hice los test de excepciones para vereficarlas en test_excepciones.py. 
