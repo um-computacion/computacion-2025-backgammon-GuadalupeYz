@@ -12,6 +12,11 @@ class Tablero:
     def get_points(self) -> List[List[Ficha]]:
         return self.__points
 
+    def set_points(self, points: List[List[Ficha]]) -> None:
+        if len(points) != 24:
+            raise ValueError("El tablero debe tener exactamente 24 puntos.")
+        self.__points = points
+
     def colocar_ficha(self, punto: int, ficha: Ficha) -> None:
         # validamos que el punto este en el rango
         if not 0 <= punto < 24:

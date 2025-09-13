@@ -34,6 +34,17 @@ class TestTablero(unittest.TestCase):
         with self.assertRaises(ValueError):
             tablero.colocar_ficha(0, Ficha("blanco"))
 
+    def test_set_points_valido(self):
+        tablero = Tablero()
+        nuevo_estado = [[] for _ in range(24)]
+        tablero.set_points(nuevo_estado)
+        self.assertEqual(tablero.get_points(), nuevo_estado)
+
+    def test_set_points_invalido(self):
+        tablero = Tablero()
+        with self.assertRaises(ValueError):
+            tablero.set_points([[] for _ in range(10)])  # menos de 24
+
 
 if __name__ == "__main__":
     unittest.main()

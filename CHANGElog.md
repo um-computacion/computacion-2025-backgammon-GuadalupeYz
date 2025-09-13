@@ -52,3 +52,6 @@ cambios sprint 2
 
 #commit 6 
 11/09: Hice los test de excepciones para vereficarlas en test_excepciones.py. 
+
+#commit 7
+13/09: Agrege en el codigo tablero el set para los get and set, y agrege los test del set. 
