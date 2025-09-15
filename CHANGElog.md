@@ -58,3 +58,6 @@ cambios sprint 2
 
 #commit 8
 14/09: Agregue nuevos metodos en Backgammon para mover la ficha e integre las excepciones MovimientoInvalidoException y FichaInvalidaException dentro del juego
+
+#commit 9
+14/09: Ahora añadi sus tests para validar tira dados, movimiento valido de fichas y error al mover fichas 

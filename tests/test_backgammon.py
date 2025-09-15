@@ -1,6 +1,7 @@
 import unittest
 from codigo.backgammon import BackgammonGame
 from codigo.jugadores import Jugador
+from codigo.excepciones import MovimientoInvalidoException, FichaInvalidaException
 
 class TestBackgammonGame(unittest.TestCase):
 
@@ -32,23 +33,66 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(ValueError):
             juego.agregar_jugador(Jugador("Extra", "rojo"))
 
-    def test_setup_inicial_asigna_fichas_a_jugadores_y_tablero(self):
+    def test_setup_inicial_asigna_fichas(self):
         juego = BackgammonGame()
         jugador1 = Jugador("Guada", "blanco")
         jugador2 = Jugador("Lupita", "negro")
         juego.agregar_jugador(jugador1)
         juego.agregar_jugador(jugador2)
-
         juego.setup_inicial()
 
-        #cada jugador debe tener 15 fichas
         self.assertEqual(jugador1.cantidad_fichas(), 15)
         self.assertEqual(jugador2.cantidad_fichas(), 15)
-
-        #el tablero debe tener fichas en posiciones 0 y 23
         tablero = juego.get_tablero().get_points()
         self.assertEqual(len(tablero[0]), 15)
         self.assertEqual(len(tablero[23]), 15)
+
+    def test_tirar_dados(self):
+        juego = BackgammonGame()
+        resultado = juego.tirar_dados()
+        self.assertIsInstance(resultado, tuple)
+        self.assertEqual(len(resultado), 2)
+        for valor in resultado:
+            self.assertGreaterEqual(valor, 1)
+            self.assertLessEqual(valor, 6)
+
+    def test_mover_ficha_valido(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        tablero = juego.get_tablero().get_points()
+        ficha = tablero[0][-1]
+
+        juego.mover_ficha(jugador1, 0, 5)
+
+        self.assertEqual(len(tablero[0]), 14)  # una ficha menos en origen
+        self.assertEqual(len(tablero[5]), 1)   # una ficha en destino
+
+    def test_mover_ficha_origen_vacio_lanza_excepcion(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        with self.assertRaises(MovimientoInvalidoException):
+            juego.mover_ficha(jugador1, 10, 15)
+
+    def test_mover_ficha_de_otro_jugador_lanza_excepcion(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        with self.assertRaises(FichaInvalidaException):
+            juego.mover_ficha(jugador1, 23, 5)
 
 if __name__ == "__main__":
     unittest.main()
