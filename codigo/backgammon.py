@@ -3,6 +3,8 @@ from codigo.jugadores import Jugador
 from codigo.tablero import Tablero
 from codigo.dados import Dados
 from codigo.fichas import Ficha
+from codigo.excepciones import MovimientoInvalidoException, FichaInvalidaException
+from typing import Tuple
 
 class BackgammonGame:
     def __init__(self) -> None:
@@ -56,3 +58,24 @@ class BackgammonGame:
             ficha = Ficha(jugador2.get_color())
             jugador2.agregar_ficha(ficha)
             self.__tablero.colocar_ficha(23, ficha)
+
+    def tirar_dados(self) -> Tuple[int, int]:
+        self.__ultima_tirada = self.__dados.roll()
+        return self.__ultima_tirada
+
+    def mover_ficha(self, jugador: Jugador, origen: int, destino: int) -> None:
+        puntos = self.__tablero.get_points()
+
+        #me fijo que el origen sea valido para el juego
+        if not puntos[origen]:
+            raise MovimientoInvalidoException("No hay fichas en el punto de origen")
+
+        ficha = puntos[origen][-1]
+
+        #aca valido que la ficha sea del jugador
+        if ficha.get_color() != jugador.get_color():
+            raise FichaInvalidaException("La ficha no pertenece al jugador")
+
+        #sacamos la ficha del origen y la ponemos en el destino
+        puntos[origen].pop()
+        self.__tablero.colocar_ficha(destino, ficha)

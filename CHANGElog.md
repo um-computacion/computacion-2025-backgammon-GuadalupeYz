@@ -55,3 +55,6 @@ cambios sprint 2
 
 #commit 7
 13/09: Agrege en el codigo tablero el set para los get and set, y agrege los test del set. 
+
+#commit 8
+14/09: Agregue nuevos metodos en Backgammon para mover la ficha e integre las excepciones MovimientoInvalidoException y FichaInvalidaException dentro del juego
