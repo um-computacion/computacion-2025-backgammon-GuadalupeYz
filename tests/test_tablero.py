@@ -1,7 +1,7 @@
 import unittest
-
 from codigo.tablero import Tablero
 from codigo.fichas import Ficha
+from codigo.excepciones import MovimientoInvalidoException
 
 class TestTablero(unittest.TestCase):
 
@@ -44,6 +44,36 @@ class TestTablero(unittest.TestCase):
         tablero = Tablero()
         with self.assertRaises(ValueError):
             tablero.set_points([[] for _ in range(10)])  # menos de 24
+
+    def test_mover_ficha_valida(self):
+        tablero = Tablero()
+        ficha = Ficha("blanco")
+        tablero.colocar_ficha(0, ficha)
+        tablero.mover_ficha(0, 1)
+        self.assertEqual(len(tablero.get_points()[0]), 0)
+        self.assertEqual(len(tablero.get_points()[1]), 1)
+
+    def test_mover_ficha_origen_vacio(self):
+        tablero = Tablero()
+        with self.assertRaises(MovimientoInvalidoException):
+            tablero.mover_ficha(0, 1)
+
+    def test_mover_ficha_fuera_de_rango(self):
+        tablero = Tablero()
+        ficha = Ficha("negro")
+        tablero.colocar_ficha(0, ficha)
+        with self.assertRaises(MovimientoInvalidoException):
+            tablero.mover_ficha(0, 25)
+
+    def test_mover_ficha_destino_lleno(self):
+        tablero = Tablero()
+        ficha = Ficha("blanco")
+        tablero.colocar_ficha(0, ficha)
+        for _ in range(15):
+            tablero.colocar_ficha(1, Ficha("negro"))
+
+        with self.assertRaises(MovimientoInvalidoException):
+            tablero.mover_ficha(0, 1)
 
 
 if __name__ == "__main__":

@@ -61,3 +61,7 @@ cambios sprint 2
 
 #commit 9
 14/09: Ahora añadi sus tests para validar tira dados, movimiento valido de fichas y error al mover fichas 
+
+#commit 10 
+15/09: Agrege metodo mover_ficha en Tablero con validaciones usando MovimientoInvalidoException. 
+Tamb sus tests para cubrir estos nuevos casos.
