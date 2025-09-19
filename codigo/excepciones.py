@@ -1,8 +1,14 @@
-class Excepcion1:   #despues va un nombre mas especifico
 
-    pass    
+class BackgammonException(Exception):
+    #excepcion base para el juego
+    pass
 
-#representa las excepciones personalizadas del backgammon.
-#justificacion: esta clase es para manejar errores del juego, como pueden ser
-#movimientos no validos(por ej cuando se llega a una casilla ocupada por 2 o mas 
-#fichas del oponente), mover la ficha encapsulada y no otra, etc. 
+
+class MovimientoInvalidoException(BackgammonException):      
+    #se lanza cuando un movimiento que no es valido en el tablero
+    pass
+
+
+class FichaInvalidaException(BackgammonException):
+    #se lanza cuando se intenta usar una ficha que no corresponde al jugador
+    pass

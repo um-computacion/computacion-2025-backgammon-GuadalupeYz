@@ -32,3 +32,36 @@ para cli, tablero y dados.
 
 #commit 10
 02/09: segui con los cambios de getters y setters en fichas, tablero y backgammon. En sus codigo y sus tests.
+
+cambios sprint 2 
+
+#commit 1
+04/09: Plantie la primer excepcion de la logica del juego. Y cambie cli agregando set and get y su test. 
+
+#commit 2
+07/09: Cambie el codigo tablero para agregar validacion al poner fichas (maximo 15 fichas por punto y rango entre 0 y 23), con getters/setters y cambie los tests 
+
+#commit 3
+08/09: Mejore la clase Jugador agregando eliminar_ficha con su validacion. Tamb los tests de Jugador.
+
+#commit 4
+09/09: Actualice BackgammonGame para que al iniciar el juego se coloquen las fichas de jugadores en el tablero. Tamb cambie los tests para verificarlo.
+
+#commit 5
+10/09: Defini MovimientoInvalidoException en excepciones.py para aplicarlo en jugadores.py y probarlo en sus test. 
+
+#commit 6 
+11/09: Hice los test de excepciones para vereficarlas en test_excepciones.py. 
+
+#commit 7
+13/09: Agrege en el codigo tablero el set para los get and set, y agrege los test del set. 
+
+#commit 8
+14/09: Agregue nuevos metodos en Backgammon para mover la ficha e integre las excepciones MovimientoInvalidoException y FichaInvalidaException dentro del juego
+
+#commit 9
+14/09: Ahora añadi sus tests para validar tira dados, movimiento valido de fichas y error al mover fichas 
+
+#commit 10 
+15/09: Agrege metodo mover_ficha en Tablero con validaciones usando MovimientoInvalidoException. 
+Tamb sus tests para cubrir estos nuevos casos.
