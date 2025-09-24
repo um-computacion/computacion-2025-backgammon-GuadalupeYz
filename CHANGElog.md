@@ -65,3 +65,8 @@ cambios sprint 2
 #commit 10 
 15/09: Agrege metodo mover_ficha en Tablero con validaciones usando MovimientoInvalidoException. 
 Tamb sus tests para cubrir estos nuevos casos.
+
+cambios sprint 3
+
+#commit 1
+23/09: Agregue turnos inciales en BackgammonGame. (turno_actual,get_turno y cambiar_turno). Y los tests para verificar que el turno esta en el jugador 1, cambia al jugador 2 y vuelve al jugador 1

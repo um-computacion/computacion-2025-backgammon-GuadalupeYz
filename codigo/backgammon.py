@@ -79,3 +79,14 @@ class BackgammonGame:
         #sacamos la ficha del origen y la ponemos en el destino
         puntos[origen].pop()
         self.__tablero.colocar_ficha(destino, ficha)
+
+    def get_turno(self) -> Jugador:
+        if not self.__jugadores:
+            raise ValueError("No hay jugadores en la partida")
+        return self.__jugadores[self.__turno_actual]
+
+    def cambiar_turno(self) -> None:
+        if len(self.__jugadores) != 2:
+            raise ValueError("Se necesitan 2 jugadores para cambiar turno")
+        self.__turno_actual = 1 - self.__turno_actual
+

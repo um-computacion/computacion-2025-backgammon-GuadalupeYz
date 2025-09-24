@@ -94,6 +94,34 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(FichaInvalidaException):
             juego.mover_ficha(jugador1, 23, 5)
 
+    def test_turno_inicia_en_jugador1(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        self.assertEqual(juego.get_turno(), jugador1)
+
+    def test_cambiar_turno_pasa_a_jugador2(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.cambiar_turno()
+        self.assertEqual(juego.get_turno(), jugador2)
+
+    def test_cambiar_turno_varias_veces(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.cambiar_turno()
+        self.assertEqual(juego.get_turno(), jugador2)
+        juego.cambiar_turno()
+        self.assertEqual(juego.get_turno(), jugador1)
+
 if __name__ == "__main__":
     unittest.main()
 
