@@ -70,3 +70,6 @@ cambios sprint 3
 
 #commit 1
 23/09: Agregue turnos inciales en BackgammonGame. (turno_actual,get_turno y cambiar_turno). Y los tests para verificar que el turno esta en el jugador 1, cambia al jugador 2 y vuelve al jugador 1
+
+#commit 2 
+25/09: Agregue gestion de turnos en Backgammon, para controlar que jugador juega y nuevos metodos de turnos, para que solo el jugador en turno pueda mover. Tamb nuevos tests de esto

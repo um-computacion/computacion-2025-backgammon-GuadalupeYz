@@ -64,6 +64,10 @@ class BackgammonGame:
         return self.__ultima_tirada
 
     def mover_ficha(self, jugador: Jugador, origen: int, destino: int) -> None:
+        # jugador del turno actual
+        if jugador != self.get_turno():
+            raise MovimientoInvalidoException("No es el turno de este jugador")
+
         puntos = self.__tablero.get_points()
 
         #me fijo que el origen sea valido para el juego
@@ -79,6 +83,9 @@ class BackgammonGame:
         #sacamos la ficha del origen y la ponemos en el destino
         puntos[origen].pop()
         self.__tablero.colocar_ficha(destino, ficha)
+
+        #despues de mover, cambiar turno
+        self.cambiar_turno()
 
     def get_turno(self) -> Jugador:
         if not self.__jugadores:
