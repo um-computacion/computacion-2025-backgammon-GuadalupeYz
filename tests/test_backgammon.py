@@ -2,6 +2,7 @@ import unittest
 from codigo.backgammon import BackgammonGame
 from codigo.jugadores import Jugador
 from codigo.excepciones import MovimientoInvalidoException, FichaInvalidaException
+from codigo.fichas import Ficha
 
 class TestBackgammonGame(unittest.TestCase):
 
@@ -149,6 +150,22 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(juego.get_turno(), jugador2)
         juego.cambiar_turno()
         self.assertEqual(juego.get_turno(), jugador1)
+
+    def test_mover_ficha_destino_fuera_de_rango(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        #pruebo destino invalido (-1 y 24)
+        with self.assertRaises(MovimientoInvalidoException):
+            juego.mover_ficha(jugador1, 0, -1)
+
+        with self.assertRaises(MovimientoInvalidoException):
+            juego.mover_ficha(jugador1, 0, 24)
+
 
 if __name__ == "__main__":
     unittest.main()

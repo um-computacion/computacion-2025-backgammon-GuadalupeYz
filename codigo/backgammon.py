@@ -11,6 +11,7 @@ class BackgammonGame:
         self.__jugadores: List[Jugador] = []
         self.__tablero: Tablero = Tablero()
         self.__dados: Dados = Dados()
+        self.__turno_actual: int = 0 
 
     def get_jugadores(self) -> List[Jugador]:
         return self.__jugadores
@@ -79,6 +80,9 @@ class BackgammonGame:
         #aca valido que la ficha sea del jugador
         if ficha.get_color() != jugador.get_color():
             raise FichaInvalidaException("La ficha no pertenece al jugador")
+        
+        if not 0 <= destino < 24:
+            raise MovimientoInvalidoException("El destino debe estar entre 0 y 23")
 
         #sacamos la ficha del origen y la ponemos en el destino
         puntos[origen].pop()

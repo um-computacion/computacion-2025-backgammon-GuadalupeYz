@@ -73,3 +73,6 @@ cambios sprint 3
 
 #commit 2 
 25/09: Agregue gestion de turnos en Backgammon, para controlar que jugador juega y nuevos metodos de turnos, para que solo el jugador en turno pueda mover. Tamb nuevos tests de esto
+
+#commit 3
+25/09: Ahora en BackgammonGame valida que el destino este en el rango 0 a 23. Y los test para comprobar que en un destino invalido use MovimientoInvalidoException. 
