@@ -12,6 +12,7 @@ class BackgammonGame:
         self.__tablero: Tablero = Tablero()
         self.__dados: Dados = Dados()
         self.__turno_actual: int = 0 
+        self.__historial: List[str] = []
 
     def get_jugadores(self) -> List[Jugador]:
         return self.__jugadores
@@ -21,6 +22,9 @@ class BackgammonGame:
 
     def get_dados(self) -> Dados:
         return self.__dados
+    
+    def get_historial(self) -> List[str]:   
+        return self.__historial
 
     def set_tablero(self, tablero: Tablero) -> None:
         self.__tablero = tablero
@@ -87,6 +91,9 @@ class BackgammonGame:
         #sacamos la ficha del origen y la ponemos en el destino
         puntos[origen].pop()
         self.__tablero.colocar_ficha(destino, ficha)
+
+        movimiento = f"{jugador.get_nombre()} movió una ficha de {origen} a {destino}"
+        self.__historial.append(movimiento)
 
         #despues de mover, cambiar turno
         self.cambiar_turno()

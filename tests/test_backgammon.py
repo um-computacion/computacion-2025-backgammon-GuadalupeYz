@@ -166,6 +166,19 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(MovimientoInvalidoException):
             juego.mover_ficha(jugador1, 0, 24)
 
+    def test_historial_registra_movimientos(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        juego.mover_ficha(jugador1, 0, 5)
+        historial = juego.get_historial()
+
+        self.assertEqual(len(historial), 1)
+        self.assertIn("Guada movió una ficha de 0 a 5", historial[0])
 
 if __name__ == "__main__":
     unittest.main()
