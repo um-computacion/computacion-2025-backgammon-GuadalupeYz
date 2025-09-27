@@ -79,3 +79,6 @@ cambios sprint 3
 
 #commit 4
 25/09: Puse un historial de movimientos en BackgammonGame. Y nuevo test para verificar que los movimientos se registren correctamente
+
+#commit 5
+27/09: Agregue verificacion de victoria en BackgammonGame con metodo chequear_victoria y sus nuevos tests

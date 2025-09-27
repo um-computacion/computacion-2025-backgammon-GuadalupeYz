@@ -108,3 +108,9 @@ class BackgammonGame:
             raise ValueError("Se necesitan 2 jugadores para cambiar turno")
         self.__turno_actual = 1 - self.__turno_actual
 
+    def chequear_victoria(self) -> Jugador | None:
+        #devuelve el jugador ganador o none si nadie ganó aún.
+        for jugador in self.__jugadores:
+            if jugador.cantidad_fichas() == 0:
+                return jugador
+        return None

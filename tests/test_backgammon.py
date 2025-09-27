@@ -180,6 +180,43 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(len(historial), 1)
         self.assertIn("Guada movió una ficha de 0 a 5", historial[0])
 
+    def test_chequear_victoria_sin_ganador(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        #aca ningun jugador deberia haber ganado aun
+        self.assertIsNone(juego.chequear_victoria())
+
+    def test_chequear_victoria_jugador1_gana(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        #fichas vacias del jugador1 para hacer como una victoria
+        jugador1.set_fichas([])
+
+        self.assertEqual(juego.chequear_victoria(), jugador1)
+
+    def test_chequear_victoria_jugador2_gana(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        #fichas vacias del jugador2 para hacer como una victoria
+        jugador2.set_fichas([])
+
+        self.assertEqual(juego.chequear_victoria(), jugador2)
+
 if __name__ == "__main__":
     unittest.main()
 
