@@ -85,3 +85,6 @@ cambios sprint 3
 
 #commit 6
 29/09: Hice la validacion de movimientos con dados en BackgammonGame, agregando dados_disponibles y midiendo la distancia. Y sus test correspondientes
+
+#commit 7 
+29/09: Agrege un atributo __bar en BackgammonGame para registrar las fichas capturadas y un nuevo metodo get_bar para acceder al bar. Ademas de nuevos tests

@@ -14,7 +14,7 @@ class BackgammonGame:
         self.__turno_actual: int = 0 
         self.__historial: List[str] = []
         self.__dados_disponibles: List[int] = []
-
+        self.__bar: dict[str, List[Ficha]] = {"blanco": [], "negro": []} 
 
     def get_jugadores(self) -> List[Jugador]:
         return self.__jugadores
@@ -96,7 +96,15 @@ class BackgammonGame:
             raise MovimientoInvalidoException("El movimiento no coincide con los dados disponibles")
         
         self.__dados_disponibles.remove(distancia)
-        
+
+        if puntos[destino] and puntos[destino][-1].get_color() != jugador.get_color():
+            if len(puntos[destino]) == 1:  # solo una ficha enemiga
+                ficha_capturada = puntos[destino].pop()
+                self.__bar[ficha_capturada.get_color()].append(ficha_capturada)
+                self.__historial.append(
+                    f"{jugador.get_nombre()} capturó una ficha de color {ficha_capturada.get_color()} en {destino}"
+                )
+
         #sacamos la ficha del origen y la ponemos en el destino
         puntos[origen].pop()
         self.__tablero.colocar_ficha(destino, ficha)

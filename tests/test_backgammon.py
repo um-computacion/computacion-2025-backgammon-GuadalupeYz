@@ -254,6 +254,55 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(MovimientoInvalidoException):
             juego.mover_ficha(jugador1, 0, 5)
 
+    def test_captura_ficha_envia_al_bar(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        # forzamos dados y disponibles
+        juego._BackgammonGame__dados_disponibles = [1]
+
+        # colocamos una ficha negra sola en el punto 1
+        ficha_negra = Ficha("negro")
+        juego.get_tablero().get_points()[1] = [ficha_negra]
+
+        # jugador blanco mueve de 0 a 1 (distancia = 1)
+        juego.mover_ficha(jugador1, 0, 1)
+
+        # la ficha negra debe estar en el bar
+        bar = juego.get_bar()
+        self.assertIn(ficha_negra, bar["negro"])
+        # en el punto 1 ahora debe estar la ficha blanca
+        self.assertEqual(juego.get_tablero().get_points()[1][-1].get_color(), "blanco")
+
+    def test_no_captura_si_mas_de_una_ficha_en_destino(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        # forzamos dados y disponibles
+        juego._BackgammonGame__dados_disponibles = [1]
+
+        # colocamos dos fichas negras en el punto 1
+        ficha_negra1 = Ficha("negro")
+        ficha_negra2 = Ficha("negro")
+        juego.get_tablero().get_points()[1] = [ficha_negra1, ficha_negra2]
+
+        # jugador blanco mueve de 0 a 1 (distancia = 1)
+        juego.mover_ficha(jugador1, 0, 1)
+
+        # las fichas negras siguen en el tablero (no se capturan)
+        self.assertIn(ficha_negra1, juego.get_tablero().get_points()[1])
+        self.assertIn(ficha_negra2, juego.get_tablero().get_points()[1])
+        # bar negro debe estar vacío
+        self.assertEqual(len(juego.get_bar()["negro"]), 0)
+
 if __name__ == "__main__":
     unittest.main()
 
