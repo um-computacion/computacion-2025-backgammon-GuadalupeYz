@@ -88,3 +88,6 @@ cambios sprint 3
 
 #commit 7 
 29/09: Agrege un atributo __bar en BackgammonGame para registrar las fichas capturadas y un nuevo metodo get_bar para acceder al bar. Ademas de nuevos tests
+
+#commit 8
+29/09: Nuevo metodo reingresar_ficha para permitir el reingreso de fichas capturadas (cumpliendo con las condiciones de por ejemplo q el lugar no este ocupado) y los test de reingreso desde el bar

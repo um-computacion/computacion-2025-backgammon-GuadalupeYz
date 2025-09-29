@@ -294,14 +294,56 @@ class TestBackgammonGame(unittest.TestCase):
         ficha_negra2 = Ficha("negro")
         juego.get_tablero().get_points()[1] = [ficha_negra1, ficha_negra2]
 
-        # jugador blanco mueve de 0 a 1 (distancia = 1)
+        # jugador blanco mueve de 0 a 1 (distancia=1)
         juego.mover_ficha(jugador1, 0, 1)
 
         # las fichas negras siguen en el tablero (no se capturan)
         self.assertIn(ficha_negra1, juego.get_tablero().get_points()[1])
         self.assertIn(ficha_negra2, juego.get_tablero().get_points()[1])
-        # bar negro debe estar vacío
+        
+       # bar negro debe estar vacío
         self.assertEqual(len(juego.get_bar()["negro"]), 0)
+
+    def test_reingresar_ficha_valido(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        #forzamos una ficha capturada al bar blanco
+        ficha_blanca = juego.get_tablero().get_points()[0].pop()
+        juego.get_bar()["blanco"].append(ficha_blanca)
+
+        #seteamos dados disponibles
+        juego._BackgammonGame__dados_disponibles = [1]
+
+        # reingreso en punto 0
+        juego.reingresar_ficha(jugador1, 0)
+
+        self.assertEqual(len(juego.get_bar()["blanco"]), 0)  # ya no esta en el bar
+        self.assertIn(ficha_blanca, juego.get_tablero().get_points()[0])
+
+    def test_reingreso_en_punto_ocupado_por_mas_de_una_ficha_rival(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        # agregamos ficha blanca al bar
+        ficha_blanca = juego.get_tablero().get_points()[0].pop()
+        juego.get_bar()["blanco"].append(ficha_blanca)
+
+        # en punto 0 ponemos dos fichas negras
+        juego.get_tablero().get_points()[0] = [Ficha("negro"), Ficha("negro")]
+
+        juego._BackgammonGame__dados_disponibles = [1]
+
+        with self.assertRaises(MovimientoInvalidoException):
+            juego.reingresar_ficha(jugador1, 0)
 
 if __name__ == "__main__":
     unittest.main()

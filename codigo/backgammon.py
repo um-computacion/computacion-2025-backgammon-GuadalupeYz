@@ -28,6 +28,9 @@ class BackgammonGame:
     def get_historial(self) -> List[str]:   
         return self.__historial
 
+    def get_bar(self) -> dict[str, List[Ficha]]:   # NUEVO
+        return self.__bar
+
     def set_tablero(self, tablero: Tablero) -> None:
         self.__tablero = tablero
 
@@ -113,6 +116,38 @@ class BackgammonGame:
         self.__historial.append(movimiento)
 
         #despues de mover, cambiar turno solo si ya no quedan dados
+        if not self.__dados_disponibles:
+            self.cambiar_turno()
+
+    def reingresar_ficha(self, jugador: Jugador, punto: int) -> None:   # NUEVO
+        if not self.__bar[jugador.get_color()]:
+            raise MovimientoInvalidoException("El jugador no tiene fichas en el bar")
+
+        if not 0 <= punto < 24:
+            raise MovimientoInvalidoException("El punto de reingreso debe estar entre 0 y 23")
+
+        ficha = self.__bar[jugador.get_color()][-1]
+        destino_fichas = self.__tablero.get_points()[punto]
+
+        if destino_fichas and destino_fichas[0].get_color() != jugador.get_color() and len(destino_fichas) > 1:
+            raise MovimientoInvalidoException("No se puede reingresar en un punto ocupado por más de una ficha rival")
+
+        # reingreso exitoso
+        self.__bar[jugador.get_color()].pop()
+        self.__tablero.colocar_ficha(punto, ficha)
+        self.__historial.append(f"{jugador.get_nombre()} reingresó una ficha en {punto}")
+
+        # calculo distancia según el color
+        if jugador.get_color() == "blanco":
+            distancia = punto + 1
+        else:
+            distancia = 24 - punto
+
+        if distancia not in self.__dados_disponibles:
+            raise MovimientoInvalidoException("El reingreso no coincide con los dados disponibles")
+        
+        self.__dados_disponibles.remove(distancia)
+
         if not self.__dados_disponibles:
             self.cambiar_turno()
 
