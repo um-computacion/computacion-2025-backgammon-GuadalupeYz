@@ -13,6 +13,8 @@ class BackgammonGame:
         self.__dados: Dados = Dados()
         self.__turno_actual: int = 0 
         self.__historial: List[str] = []
+        self.__dados_disponibles: List[int] = []
+
 
     def get_jugadores(self) -> List[Jugador]:
         return self.__jugadores
@@ -66,6 +68,7 @@ class BackgammonGame:
 
     def tirar_dados(self) -> Tuple[int, int]:
         self.__ultima_tirada = self.__dados.roll()
+        self.__dados_disponibles = list(self.__ultima_tirada) 
         return self.__ultima_tirada
 
     def mover_ficha(self, jugador: Jugador, origen: int, destino: int) -> None:
@@ -88,6 +91,12 @@ class BackgammonGame:
         if not 0 <= destino < 24:
             raise MovimientoInvalidoException("El destino debe estar entre 0 y 23")
 
+        distancia = abs(destino - origen)
+        if distancia not in self.__dados_disponibles:
+            raise MovimientoInvalidoException("El movimiento no coincide con los dados disponibles")
+        
+        self.__dados_disponibles.remove(distancia)
+        
         #sacamos la ficha del origen y la ponemos en el destino
         puntos[origen].pop()
         self.__tablero.colocar_ficha(destino, ficha)
@@ -95,8 +104,9 @@ class BackgammonGame:
         movimiento = f"{jugador.get_nombre()} movió una ficha de {origen} a {destino}"
         self.__historial.append(movimiento)
 
-        #despues de mover, cambiar turno
-        self.cambiar_turno()
+        #despues de mover, cambiar turno solo si ya no quedan dados
+        if not self.__dados_disponibles:
+            self.cambiar_turno()
 
     def get_turno(self) -> Jugador:
         if not self.__jugadores:

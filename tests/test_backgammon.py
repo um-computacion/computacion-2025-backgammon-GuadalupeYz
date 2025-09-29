@@ -214,8 +214,45 @@ class TestBackgammonGame(unittest.TestCase):
 
         #fichas vacias del jugador2 para hacer como una victoria
         jugador2.set_fichas([])
-
         self.assertEqual(juego.chequear_victoria(), jugador2)
+
+    def test_mover_ficha_con_dado_valido(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        # pongo los dados a [5, 3]
+        juego._BackgammonGame__ultima_tirada = (5, 3)
+        juego._BackgammonGame__dados_disponibles = [5, 3]
+
+        tablero = juego.get_tablero().get_points()
+        self.assertEqual(len(tablero[0]), 15)
+
+        # movimiento valido de 0 a 5 (uso el dado 5)
+        juego.mover_ficha(jugador1, 0, 5)
+
+        self.assertEqual(len(tablero[0]), 14)
+        self.assertEqual(len(tablero[5]), 1)
+        self.assertEqual(juego._BackgammonGame__dados_disponibles, [3])
+
+    def test_mover_ficha_con_dado_invalido_lanza_excepcion(self):
+        juego = BackgammonGame()
+        jugador1 = Jugador("Guada", "blanco")
+        jugador2 = Jugador("Lupita", "negro")
+        juego.agregar_jugador(jugador1)
+        juego.agregar_jugador(jugador2)
+        juego.setup_inicial()
+
+        #pongo los dados a [2, 4]
+        juego._BackgammonGame__ultima_tirada = (2, 4)
+        juego._BackgammonGame__dados_disponibles = [2, 4]
+
+        # entonces intento mover por ej 5 posiciones (no es valido)
+        with self.assertRaises(MovimientoInvalidoException):
+            juego.mover_ficha(jugador1, 0, 5)
 
 if __name__ == "__main__":
     unittest.main()

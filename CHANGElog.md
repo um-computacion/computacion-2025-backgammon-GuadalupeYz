@@ -78,7 +78,10 @@ cambios sprint 3
 25/09: Ahora en BackgammonGame valida que el destino este en el rango 0 a 23. Y los test para comprobar que en un destino invalido use MovimientoInvalidoException. 
 
 #commit 4
-25/09: Puse un historial de movimientos en BackgammonGame. Y nuevo test para verificar que los movimientos se registren correctamente
+25/09: Puse un historial de movimientos en BackgammonGame. Y nuevo test para verificar que los movimientos se registren correctamente 
 
 #commit 5
 27/09: Agregue verificacion de victoria en BackgammonGame con metodo chequear_victoria y sus nuevos tests
+
+#commit 6
+29/09: Hice la validacion de movimientos con dados en BackgammonGame, agregando dados_disponibles y midiendo la distancia. Y sus test correspondientes
