@@ -94,3 +94,6 @@ cambios sprint 3
 
 #commit 9
 30/09: Cree un nuevo metodo mostrar_estado() para saber informacion o estado de la partida, y sus test
+
+#commit 10
+30/09: Agrege reinicio de partida en BackgammonGame y sus tests correspondientes

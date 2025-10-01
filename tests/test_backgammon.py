@@ -390,6 +390,24 @@ def test_mostrar_estado_con_bar_y_historial(self):
     self.assertIn("Historial (ultimos 5):", estado)
     self.assertIn("Zoe movio una ficha", estado)
 
+def test_reiniciar_partida_vacia_todo(self):
+    juego = BackgammonGame()
+    jugador1 = Jugador("Carli", "blanco")
+    jugador2 = Jugador("Eva", "negro")
+    juego.agregar_jugador(jugador1)
+    juego.agregar_jugador(jugador2)
+    juego.iniciar_juego()
+    juego.tirar_dados()
+    juego.get_historial().append("Movimiento ficticio")
+    juego.get_bar()["blanco"].append(Ficha("blanco"))
+
+    juego.reiniciar_partida()
+
+    self.assertEqual(juego.get_historial(), [])
+    self.assertEqual(juego.get_bar(), {"blanco": [], "negro": []})
+    self.assertEqual(juego.get_turno().get_nombre(), "Carli")  # turno vuelve al jugador1
+    self.assertEqual(juego.get_dados_disponibles(), [])  # deberia estar vacio
+
 if __name__ == "__main__":
     unittest.main()
 

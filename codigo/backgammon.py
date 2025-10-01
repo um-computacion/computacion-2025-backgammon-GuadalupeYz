@@ -168,11 +168,18 @@ class BackgammonGame:
                 return jugador
         return None
     
-    def mostrar_estado(self) -> str:   
-        # estado actual de la partida
+    def mostrar_estado(self) -> str:   # estado actual de la partida
         turno = self.get_turno().get_nombre() if self.__jugadores else "Ninguno"
         estado = f"Turno actual: {turno}\n"
         estado += f"Dados disponibles: {self.__dados_disponibles}\n"
         estado += f"Bar: {{blanco: {len(self.__bar['blanco'])}, negro: {len(self.__bar['negro'])}}}\n"
         estado += f"Historial (últimos 5): {self.__historial[-5:]}\n"
         return estado
+
+    def reiniciar_partida(self) -> None:  #reinicia para volver a jugar
+        self.__tablero = Tablero()
+        self.__dados = Dados()
+        self.__turno_actual = 0
+        self.__historial = []
+        self.__dados_disponibles = []
+        self.__bar = {"blanco": [], "negro": []}
