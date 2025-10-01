@@ -28,7 +28,7 @@ class BackgammonGame:
     def get_historial(self) -> List[str]:   
         return self.__historial
 
-    def get_bar(self) -> dict[str, List[Ficha]]:   # NUEVO
+    def get_bar(self) -> dict[str, List[Ficha]]:   
         return self.__bar
 
     def set_tablero(self, tablero: Tablero) -> None:
@@ -119,7 +119,7 @@ class BackgammonGame:
         if not self.__dados_disponibles:
             self.cambiar_turno()
 
-    def reingresar_ficha(self, jugador: Jugador, punto: int) -> None:   # NUEVO
+    def reingresar_ficha(self, jugador: Jugador, punto: int) -> None:   
         if not self.__bar[jugador.get_color()]:
             raise MovimientoInvalidoException("El jugador no tiene fichas en el bar")
 
@@ -167,3 +167,12 @@ class BackgammonGame:
             if jugador.cantidad_fichas() == 0:
                 return jugador
         return None
+    
+    def mostrar_estado(self) -> str:   
+        # estado actual de la partida
+        turno = self.get_turno().get_nombre() if self.__jugadores else "Ninguno"
+        estado = f"Turno actual: {turno}\n"
+        estado += f"Dados disponibles: {self.__dados_disponibles}\n"
+        estado += f"Bar: {{blanco: {len(self.__bar['blanco'])}, negro: {len(self.__bar['negro'])}}}\n"
+        estado += f"Historial (últimos 5): {self.__historial[-5:]}\n"
+        return estado

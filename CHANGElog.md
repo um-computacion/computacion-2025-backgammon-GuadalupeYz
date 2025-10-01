@@ -91,3 +91,6 @@ cambios sprint 3
 
 #commit 8
 29/09: Nuevo metodo reingresar_ficha para permitir el reingreso de fichas capturadas (cumpliendo con las condiciones de por ejemplo q el lugar no este ocupado) y los test de reingreso desde el bar
+
+#commit 9
+30/09: Cree un nuevo metodo mostrar_estado() para saber informacion o estado de la partida, y sus test

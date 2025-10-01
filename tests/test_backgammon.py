@@ -345,6 +345,51 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(MovimientoInvalidoException):
             juego.reingresar_ficha(jugador1, 0)
 
+def test_mostrar_estado_inicial(self):
+    juego = BackgammonGame()
+    jugador1 = Jugador("Zoe", "blanco")
+    jugador2 = Jugador("Pili", "negro")
+    juego.agregar_jugador(jugador1)
+    juego.agregar_jugador(jugador2)
+    juego.iniciar_juego()
+
+    estado = juego.mostrar_estado()
+    self.assertIn("Turno actual: Zoe", estado)  # arranca jugador1
+    self.assertIn("Dados disponibles: []", estado)
+    self.assertIn("Bar: {blanco: 0, negro: 0}", estado)
+    self.assertIn("Historial (ultimos 5): []", estado)
+
+def test_mostrar_estado_despues_de_tirar_dados(self):
+    juego = BackgammonGame()
+    jugador1 = Jugador("Zoe", "blanco")
+    jugador2 = Jugador("Pili", "negro")
+    juego.agregar_jugador(jugador1)
+    juego.agregar_jugador(jugador2)
+    juego.iniciar_juego()
+    juego.tirar_dados()
+
+    estado = juego.mostrar_estado()
+    self.assertIn("Turno actual: Zoe", estado)
+    self.assertIn("Dados disponibles:", estado)
+
+def test_mostrar_estado_con_bar_y_historial(self):
+    juego = BackgammonGame()
+    jugador1 = Jugador("Zoe", "blanco")
+    jugador2 = Jugador("Pili", "negro")
+    juego.agregar_jugador(jugador1)
+    juego.agregar_jugador(jugador2)
+    juego.iniciar_juego()
+
+    # captura
+    ficha = Ficha("blanco")
+    juego.get_bar()["blanco"].append(ficha)
+    juego.get_historial().append("Zoe movio una ficha")
+
+    estado = juego.mostrar_estado()
+    self.assertIn("Bar: {blanco: 1, negro: 0}", estado)
+    self.assertIn("Historial (ultimos 5):", estado)
+    self.assertIn("Zoe movio una ficha", estado)
+
 if __name__ == "__main__":
     unittest.main()
 
