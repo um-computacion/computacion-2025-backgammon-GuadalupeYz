@@ -11,6 +11,10 @@ class BackgammonGame:
         self.__jugadores: List[Jugador] = []
         self.__tablero: Tablero = Tablero()
         self.__dados: Dados = Dados()
+        self.__turno_actual: int = 0 
+        self.__historial: List[str] = []
+        self.__dados_disponibles: List[int] = []
+        self.__bar: dict[str, List[Ficha]] = {"blanco": [], "negro": []} 
 
     def get_jugadores(self) -> List[Jugador]:
         return self.__jugadores
@@ -20,6 +24,12 @@ class BackgammonGame:
 
     def get_dados(self) -> Dados:
         return self.__dados
+    
+    def get_historial(self) -> List[str]:   
+        return self.__historial
+
+    def get_bar(self) -> dict[str, List[Ficha]]:   
+        return self.__bar
 
     def set_tablero(self, tablero: Tablero) -> None:
         self.__tablero = tablero
@@ -61,9 +71,14 @@ class BackgammonGame:
 
     def tirar_dados(self) -> Tuple[int, int]:
         self.__ultima_tirada = self.__dados.roll()
+        self.__dados_disponibles = list(self.__ultima_tirada) 
         return self.__ultima_tirada
 
     def mover_ficha(self, jugador: Jugador, origen: int, destino: int) -> None:
+        # jugador del turno actual
+        if jugador != self.get_turno():
+            raise MovimientoInvalidoException("No es el turno de este jugador")
+
         puntos = self.__tablero.get_points()
 
         #me fijo que el origen sea valido para el juego
@@ -75,7 +90,96 @@ class BackgammonGame:
         #aca valido que la ficha sea del jugador
         if ficha.get_color() != jugador.get_color():
             raise FichaInvalidaException("La ficha no pertenece al jugador")
+        
+        if not 0 <= destino < 24:
+            raise MovimientoInvalidoException("El destino debe estar entre 0 y 23")
+
+        distancia = abs(destino - origen)
+        if distancia not in self.__dados_disponibles:
+            raise MovimientoInvalidoException("El movimiento no coincide con los dados disponibles")
+        
+        self.__dados_disponibles.remove(distancia)
+
+        if puntos[destino] and puntos[destino][-1].get_color() != jugador.get_color():
+            if len(puntos[destino]) == 1:  # solo una ficha enemiga
+                ficha_capturada = puntos[destino].pop()
+                self.__bar[ficha_capturada.get_color()].append(ficha_capturada)
+                self.__historial.append(
+                    f"{jugador.get_nombre()} capturó una ficha de color {ficha_capturada.get_color()} en {destino}"
+                )
 
         #sacamos la ficha del origen y la ponemos en el destino
         puntos[origen].pop()
         self.__tablero.colocar_ficha(destino, ficha)
+
+        movimiento = f"{jugador.get_nombre()} movió una ficha de {origen} a {destino}"
+        self.__historial.append(movimiento)
+
+        #despues de mover, cambiar turno solo si ya no quedan dados
+        if not self.__dados_disponibles:
+            self.cambiar_turno()
+
+    def reingresar_ficha(self, jugador: Jugador, punto: int) -> None:   
+        if not self.__bar[jugador.get_color()]:
+            raise MovimientoInvalidoException("El jugador no tiene fichas en el bar")
+
+        if not 0 <= punto < 24:
+            raise MovimientoInvalidoException("El punto de reingreso debe estar entre 0 y 23")
+
+        ficha = self.__bar[jugador.get_color()][-1]
+        destino_fichas = self.__tablero.get_points()[punto]
+
+        if destino_fichas and destino_fichas[0].get_color() != jugador.get_color() and len(destino_fichas) > 1:
+            raise MovimientoInvalidoException("No se puede reingresar en un punto ocupado por más de una ficha rival")
+
+        # reingreso exitoso
+        self.__bar[jugador.get_color()].pop()
+        self.__tablero.colocar_ficha(punto, ficha)
+        self.__historial.append(f"{jugador.get_nombre()} reingresó una ficha en {punto}")
+
+        # calculo distancia según el color
+        if jugador.get_color() == "blanco":
+            distancia = punto + 1
+        else:
+            distancia = 24 - punto
+
+        if distancia not in self.__dados_disponibles:
+            raise MovimientoInvalidoException("El reingreso no coincide con los dados disponibles")
+        
+        self.__dados_disponibles.remove(distancia)
+
+        if not self.__dados_disponibles:
+            self.cambiar_turno()
+
+    def get_turno(self) -> Jugador:
+        if not self.__jugadores:
+            raise ValueError("No hay jugadores en la partida")
+        return self.__jugadores[self.__turno_actual]
+
+    def cambiar_turno(self) -> None:
+        if len(self.__jugadores) != 2:
+            raise ValueError("Se necesitan 2 jugadores para cambiar turno")
+        self.__turno_actual = 1 - self.__turno_actual
+
+    def chequear_victoria(self) -> Jugador | None:
+        #devuelve el jugador ganador o none si nadie ganó aún.
+        for jugador in self.__jugadores:
+            if jugador.cantidad_fichas() == 0:
+                return jugador
+        return None
+    
+    def mostrar_estado(self) -> str:   # estado actual de la partida
+        turno = self.get_turno().get_nombre() if self.__jugadores else "Ninguno"
+        estado = f"Turno actual: {turno}\n"
+        estado += f"Dados disponibles: {self.__dados_disponibles}\n"
+        estado += f"Bar: {{blanco: {len(self.__bar['blanco'])}, negro: {len(self.__bar['negro'])}}}\n"
+        estado += f"Historial (últimos 5): {self.__historial[-5:]}\n"
+        return estado
+
+    def reiniciar_partida(self) -> None:  #reinicia para volver a jugar
+        self.__tablero = Tablero()
+        self.__dados = Dados()
+        self.__turno_actual = 0
+        self.__historial = []
+        self.__dados_disponibles = []
+        self.__bar = {"blanco": [], "negro": []}

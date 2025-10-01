@@ -65,3 +65,35 @@ cambios sprint 2
 #commit 10 
 15/09: Agrege metodo mover_ficha en Tablero con validaciones usando MovimientoInvalidoException. 
 Tamb sus tests para cubrir estos nuevos casos.
+
+cambios sprint 3
+
+#commit 1
+23/09: Agregue turnos inciales en BackgammonGame. (turno_actual,get_turno y cambiar_turno). Y los tests para verificar que el turno esta en el jugador 1, cambia al jugador 2 y vuelve al jugador 1
+
+#commit 2 
+25/09: Agregue gestion de turnos en Backgammon, para controlar que jugador juega y nuevos metodos de turnos, para que solo el jugador en turno pueda mover. Tamb nuevos tests de esto
+
+#commit 3
+25/09: Ahora en BackgammonGame valida que el destino este en el rango 0 a 23. Y los test para comprobar que en un destino invalido use MovimientoInvalidoException. 
+
+#commit 4
+25/09: Puse un historial de movimientos en BackgammonGame. Y nuevo test para verificar que los movimientos se registren correctamente 
+
+#commit 5
+27/09: Agregue verificacion de victoria en BackgammonGame con metodo chequear_victoria y sus nuevos tests
+
+#commit 6
+29/09: Hice la validacion de movimientos con dados en BackgammonGame, agregando dados_disponibles y midiendo la distancia. Y sus test correspondientes
+
+#commit 7 
+29/09: Agrege un atributo __bar en BackgammonGame para registrar las fichas capturadas y un nuevo metodo get_bar para acceder al bar. Ademas de nuevos tests
+
+#commit 8
+29/09: Nuevo metodo reingresar_ficha para permitir el reingreso de fichas capturadas (cumpliendo con las condiciones de por ejemplo q el lugar no este ocupado) y los test de reingreso desde el bar
+
+#commit 9
+30/09: Cree un nuevo metodo mostrar_estado() para saber informacion o estado de la partida, y sus test
+
+#commit 10
+30/09: Agrege reinicio de partida en BackgammonGame y sus tests correspondientes
