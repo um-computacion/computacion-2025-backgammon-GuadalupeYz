@@ -97,3 +97,8 @@ cambios sprint 3
 
 #commit 10
 30/09: Agrege reinicio de partida en BackgammonGame y sus tests correspondientes
+
+cambios sprint 4 
+
+#commit 1
+08/10: Hice la inicializacion de partida en la CLI y sus test 
