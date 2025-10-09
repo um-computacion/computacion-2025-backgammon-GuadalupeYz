@@ -17,6 +17,17 @@ class TestCLI(unittest.TestCase):
        self.assertIsInstance(cli._CLI__juego, BackgammonGame)
        self.assertEqual(len(cli._CLI__juego.get_jugadores()), 2)  
 
+class TestCLI(unittest.TestCase):
+    @patch("builtins.input", side_effect=["1", "Guada", "Lupita", ""])
+    @patch("builtins.print")
+    def test_jugar_turno_tira_dados(self, mock_print, mock_input):
+        cli = CLI()
+        cli.start()          
+        # Verifica que se imprimio el resultado de los dados
+        printed_texts = " ".join(str(call) for call in mock_print.call_args_list)
+        self.assertIn("Resultado del tiro", printed_texts)
+        self.assertIn("Turno de", printed_texts)
+
 if __name__ == "__main__":
     unittest.main()
                

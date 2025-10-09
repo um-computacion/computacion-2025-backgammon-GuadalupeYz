@@ -102,3 +102,6 @@ cambios sprint 4
 
 #commit 1
 08/10: Hice la inicializacion de partida en la CLI y sus test 
+
+#commit 2
+09/10: Agrege la funcionalidad de tirar dados y mostrar el turno actual. Y test para verificar que los dados se imprimen bien 

@@ -45,6 +45,23 @@ def iniciar_partida(self) -> None:
 
        print(f"Partida iniciada entre {nombre1} y {nombre2}. ¡A jugar!")
 
+       self.jugar_turno()
+
+def jugar_turno(self) -> None:   
+        if not self.__juego:
+            print("No hay una partida activa.")
+            return
+
+        jugador_actual = self.__juego.get_turno()
+        print(f"\nTurno de {jugador_actual.get_nombre()} ({jugador_actual.get_color()})")
+
+        input("Presiona ENTER para tirar los dados...")
+        dados = self.__juego.tirar_dados()
+        print(f"Resultado del tiro: {dados[0]} y {dados[1]}")
+
+        print("Ahora podes mover tus fichas con los valores obtenidos.")
+        print("-------------------------------------------------------") #para separar msje
+
 if __name__ == "__main__":
     cli = CLI()
     cli.start()
