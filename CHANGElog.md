@@ -108,3 +108,6 @@ cambios sprint 4
 
 #commit 3
 09/10: Ajuste la logica interactiva del juego en la clase CLI, nuevo metodo loop_partida() para gestionar los turnos, metodo mostrar_tablero() para visaulizar el estado del juego y manejo excepciones de movimiento invalido y fichas incorrectas
+
+#commit 4
+09/10: Tests para CLI. Use unittest.mock.patch para simular entradas de usuario, y verifique inicio de partida, turno y salida.

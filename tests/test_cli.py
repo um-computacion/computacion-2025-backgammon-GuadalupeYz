@@ -28,6 +28,30 @@ class TestCLI(unittest.TestCase):
         self.assertIn("Resultado del tiro", printed_texts)
         self.assertIn("Turno de", printed_texts)
 
+class TestCLI(unittest.TestCase):
+
+    def test_set_get_opcion(self):
+        cli = CLI()
+        cli.set_opcion("1")
+        self.assertEqual(cli.get_opcion(), "1")
+
+    #simula las entradas
+    @patch("builtins.input", side_effect=["1", "Guada", "Lupita", "s"])
+    def test_iniciar_partida_y_salir(self, mock_input):
+        cli = CLI()
+        try:
+            cli.start()
+        except Exception:
+            self.fail("Error inesperado durante la partida")
+
+    @patch("builtins.input", side_effect=["1", "Guada", "Lupita", "t", "0", "5", "s"])
+    def test_movimiento_en_partida(self, mock_input):
+        cli = CLI()
+        try:
+            cli.start()
+        except Exception:
+            self.fail("Error inesperado al mover ficha")
+
 if __name__ == "__main__":
     unittest.main()
-               
+
