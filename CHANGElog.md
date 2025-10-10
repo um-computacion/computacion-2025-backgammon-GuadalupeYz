@@ -105,3 +105,6 @@ cambios sprint 4
 
 #commit 2
 09/10: Agrege la funcionalidad de tirar dados y mostrar el turno actual. Y test para verificar que los dados se imprimen bien 
+
+#commit 3
+09/10: Ajuste la logica interactiva del juego en la clase CLI, nuevo metodo loop_partida() para gestionar los turnos, metodo mostrar_tablero() para visaulizar el estado del juego y manejo excepciones de movimiento invalido y fichas incorrectas
