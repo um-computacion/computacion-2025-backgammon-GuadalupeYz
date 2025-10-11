@@ -111,3 +111,6 @@ cambios sprint 4
 
 #commit 4
 09/10: Tests para CLI. Use unittest.mock.patch para simular entradas de usuario, y verifique inicio de partida, turno y salida.
+
+#commit 5
+10/10: Puse visualizacion del historial de movimientos en CLI. Con nuevos metodos mostrar_historial y mostrar_historial_turno

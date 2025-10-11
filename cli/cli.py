@@ -17,14 +17,17 @@ class CLI:
         print("¡¡¡Bienvenido al juego Backgammon!!!")
         print("Menu principal:")
         print("1. Inicio partida")
-        print("2. Salir")
+        print("2. Ver historial de movimientos") 
+        print("3. Salir")
 
         opcion = input("Elegi una opcion: ")
         self.set_opcion(opcion)
 
         if self.get_opcion() == "1":
-           self.iniciar_partida() 
-        elif self.get_opcion() == "2":
+            self.iniciar_partida()
+        elif self.get_opcion() == "2":   
+            self.mostrar_historial()
+        elif self.get_opcion() == "3":
             print("Saliendo del juego...")
         else:
             print("Opción inválida")
@@ -82,6 +85,7 @@ def loop_partida(self) -> None:
                     destino = int(input("Elegí el punto de destino: "))
                     self.__juego.mover_ficha(jugador_actual, origen, destino)
                     self.mostrar_tablero()
+                    self.mostrar_historial_turno() 
                 except (MovimientoInvalidoException, FichaInvalidaException, ValueError) as e:
                     print(f" Error: {e}")
 
@@ -101,6 +105,26 @@ def mostrar_tablero(self) -> None:
             print(f"Punto {i}: {[f.get_color()[0].upper() for f in punto]}")
         print("-------------------------------------------------------")
 
+def mostrar_historial_turno(self) -> None:   
+        historial = self.__juego.get_historial()
+        if historial:
+            print("\nÚltimos movimientos:")
+            for linea in historial[-3:]:  #muestra los ultimos 3
+                print("-", linea)
+        print("-------------------------------------------------------")
+
+def mostrar_historial(self) -> None:   
+        if not self.__juego:
+            print("Todavia no hay una partida iniciada.")
+            return
+        historial = self.__juego.get_historial()
+        if not historial:
+            print("No hay movimientos registrados aun.")
+        else:
+            print("\nHistorial completo de la partida:")
+            for mov in historial:
+                print("-", mov)
+        print("-------------------------------------------------------")
 
 if __name__ == "__main__":
     cli = CLI()
