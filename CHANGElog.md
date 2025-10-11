@@ -114,3 +114,18 @@ cambios sprint 4
 
 #commit 5
 10/10: Puse visualizacion del historial de movimientos en CLI. Con nuevos metodos mostrar_historial y mostrar_historial_turno
+
+#commit 6
+10/10: Test de CLI para mostrar el historial 
+
+
+
+
+
+
+
+
+
+
+
+

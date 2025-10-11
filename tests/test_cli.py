@@ -52,6 +52,21 @@ class TestCLI(unittest.TestCase):
         except Exception:
             self.fail("Error inesperado al mover ficha")
 
+class TestCLI(unittest.TestCase):
+
+    @patch("builtins.input", side_effect=["1", "Guada", "Lupita", "s"])
+    def test_iniciar_partida_con_historial(self, mock_input):
+        cli = CLI()
+        try:
+            cli.start()
+        except Exception:
+            self.fail("Error inesperado al iniciar partida")
+
+    @patch("builtins.input", side_effect=["2"])
+    def test_ver_historial_sin_partida(self, mock_input):
+        cli = CLI()
+        cli.start()
+
 if __name__ == "__main__":
     unittest.main()
 
