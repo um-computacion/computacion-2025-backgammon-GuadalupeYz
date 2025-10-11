@@ -118,6 +118,10 @@ cambios sprint 4
 #commit 6
 10/10: Test de CLI para mostrar el historial 
 
+#commit 7
+10/10: Mejore visualizacion del tablero en consola. En metodo mostrar_tablero con representación grafica en texto, en CLI
+
+
 
 
 

@@ -79,6 +79,8 @@ def loop_partida(self) -> None:
             print("Ahora podes mover tus fichas segun los valores obtenidos.")
             print("-------------------------------------------------------")
 
+            self.mostrar_tablero() #se muestra el tablero visual antes de mover
+
             while True:
                 try:
                     origen = int(input("Elegí el punto de origen: "))
@@ -100,10 +102,35 @@ def loop_partida(self) -> None:
 
 def mostrar_tablero(self) -> None:   
         puntos = self.__juego.get_tablero().get_points()
-        print("\nTablero:")
-        for i, punto in enumerate(puntos):
-            print(f"Punto {i}: {[f.get_color()[0].upper() for f in punto]}")
-        print("-------------------------------------------------------")
+        print("\n" + "=" * 70)
+        print(" " * 24 + "TABLERO DE BACKGAMMON")
+        print("=" * 70)
+
+        # parte superior (puntos 12 a 23)
+        print("\nZona superior:")
+        fila_superior = ""
+        for i in range(12, 24):
+            if puntos[i]:
+                color = puntos[i][-1].get_color()[0].upper()
+                cantidad = len(puntos[i])
+                fila_superior += f"{i:2d}[{color}{cantidad}] "
+            else:
+                fila_superior += f"{i:2d}[  ] "
+        print(fila_superior)
+
+        # parte inferior (puntos 11 a 0)
+        print("\nZona inferior:")
+        fila_inferior = ""
+        for i in range(11, -1, -1):
+            if puntos[i]:
+                color = puntos[i][-1].get_color()[0].upper()
+                cantidad = len(puntos[i])
+                fila_inferior += f"{i:2d}[{color}{cantidad}] "
+            else:
+                fila_inferior += f"{i:2d}[  ] "
+        print(fila_inferior)
+
+        print("\n" + "=" * 70)
 
 def mostrar_historial_turno(self) -> None:   
         historial = self.__juego.get_historial()
