@@ -121,6 +121,8 @@ cambios sprint 4
 #commit 7
 10/10: Mejore visualizacion del tablero en consola. En metodo mostrar_tablero con representación grafica en texto, en CLI
 
+#commit 8
+12/10: Agrege la primera interfaz grafica con Pygame, con nuevo archivo interfaz_pygame.py. e hice los archivos prompts para completarlos 
 
 
 
