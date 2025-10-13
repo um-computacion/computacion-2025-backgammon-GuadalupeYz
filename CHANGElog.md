@@ -127,6 +127,9 @@ cambios sprint 4
 #commit 9
 13/10: Se hizo el manejo de clics con el mouse en la interfaz_Pygame. Nuevo método manejar_click y resaltar_punto , y detección de eventos MOUSEBUTTONDOWN
 
+#commit 10
+13/10: Test para la interfaz Pygame en nuevo archivo test_interfaz_pygame.py.
+
 
 
 
