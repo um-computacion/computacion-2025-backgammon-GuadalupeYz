@@ -124,6 +124,10 @@ cambios sprint 4
 #commit 8
 12/10: Agrege la primera interfaz grafica con Pygame, con nuevo archivo interfaz_pygame.py. e hice los archivos prompts para completarlos 
 
+#commit 9
+13/10: Se hizo el manejo de clics con el mouse en la interfaz_Pygame. Nuevo método manejar_click y resaltar_punto , y detección de eventos MOUSEBUTTONDOWN
+
+
 
 
 

@@ -1,5 +1,7 @@
 import pygame
 from codigo.backgammon import BackgammonGame
+from codigo.jugadores import Jugador
+from codigo.excepciones import MovimientoInvalidoException, FichaInvalidaException
 
 # --- CONFIGURACION DE COLORES Y DIMENSIONES ---
 ANCHO_VENTANA = 900
@@ -9,6 +11,7 @@ COLOR_TABLERO = (150, 110, 70)
 COLOR_BLANCO = (245, 245, 245)
 COLOR_NEGRO = (20, 20, 20)
 COLOR_TEXTO = (10, 10, 10)
+COLOR_SELECCION = (255, 0, 0)  #para marcar punto seleccionado
 
 pygame.init()
 pygame.display.set_caption("Backgammon - Interfaz Gráfica")
@@ -19,6 +22,7 @@ class InterfazPygame:
         self.juego = juego
         self.pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
         self.en_ejecucion = True
+        self.punto_seleccionado = None
 
     def dibujar_tablero(self):
         self.pantalla.fill(COLOR_FONDO)
@@ -47,6 +51,10 @@ class InterfazPygame:
         # Dibujar fichas iniciales
         self.dibujar_fichas()
 
+        #resaltar punto seleccionado
+        if self.punto_seleccionado is not None:
+            self.resaltar_punto(self.punto_seleccionado)
+
     def dibujar_fichas(self):
         puntos = self.juego.get_tablero().get_points()
 
@@ -65,12 +73,53 @@ class InterfazPygame:
                 pygame.draw.circle(self.pantalla, color, (x, y), 18)
                 pygame.draw.circle(self.pantalla, (0, 0, 0), (x, y), 18, 2)
 
-    def ejecutar(self):
+def resaltar_punto(self, punto: int):
+        """Dibuja un círculo rojo en el punto seleccionado."""
+        if punto < 12:
+            x = 70 + punto * 65 + 32
+            y = 300
+        else:
+            x = 70 + (punto - 12) * 65 + 32
+            y = 300
+        pygame.draw.circle(self.pantalla, COLOR_SELECCION, (x, y), 10)
+
+def manejar_click(self, posicion: tuple[int, int]):
+        """Convierte la posición del clic en un número de punto (0–23)"""
+        x, y = posicion
+        if y < 300:
+            fila = 0
+        else:
+            fila = 1
+
+        columna = (x - 60) // 65
+        if columna < 0 or columna > 11:
+            return
+
+        punto = columna if fila == 0 else 23 - columna
+
+        # Primer clic: selecciona punto de origen
+        if self.punto_seleccionado is None:
+            self.punto_seleccionado = punto
+        else:
+            # Segundo clic: intenta mover ficha
+            try:
+                jugador = self.juego.get_turno()
+                self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
+                print(f"Ficha movida de {self.punto_seleccionado} a {punto}")
+            except (MovimientoInvalidoException, FichaInvalidaException) as e:
+                print(f"Error: {e}")
+            self.punto_seleccionado = None  # limpiar selección
+
+
+def ejecutar(self):
         reloj = pygame.time.Clock()
         while self.en_ejecucion:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     self.en_ejecucion = False
+             #manejar clic del mouse
+                elif evento.type == pygame.MOUSEBUTTONDOWN:
+                    self.manejar_click(evento.pos)
 
             self.dibujar_tablero()
             pygame.display.flip()
