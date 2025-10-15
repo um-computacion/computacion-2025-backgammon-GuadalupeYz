@@ -130,6 +130,8 @@ cambios sprint 4
 #commit 10
 13/10: Test para la interfaz Pygame en nuevo archivo test_interfaz_pygame.py.
 
+#commit 11
+14/10: Actualizacion de codigo en Pygame. Agrege self.hitmap para ver las coordenadas del tablero. Metodo manejar_click usa collidepoint para detectar donde se hizo clic. Se actualizó resaltar_punto
 
 
 

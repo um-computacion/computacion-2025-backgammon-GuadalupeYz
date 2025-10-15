@@ -23,9 +23,11 @@ class InterfazPygame:
         self.pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
         self.en_ejecucion = True
         self.punto_seleccionado = None
+        self.hitmap = {}   #guarda las coordenadas de cada punto
 
     def dibujar_tablero(self):
         self.pantalla.fill(COLOR_FONDO)
+        self.hitmap.clear()  #se limpia y vuelve a generar en cada frame
 
         # Dibujar base del tablero
         pygame.draw.rect(self.pantalla, COLOR_TABLERO, (50, 50, 800, 500))
@@ -43,6 +45,11 @@ class InterfazPygame:
                 (230, 180, 80) if i % 2 == 1 else (90, 50, 30),
                 [(x, 550), (x + 32, 350), (x + 65, 550)]
             )
+
+        #registrar las coordenadas del punto superior (0-11)
+            self.hitmap[i] = pygame.Rect(x, 50, 65, 250)
+            # y del inferior (12-23)
+            self.hitmap[23 - i] = pygame.Rect(x, 300, 65, 250)
 
         # Título
         texto = fuente.render("Backgammon", True, COLOR_TEXTO)
@@ -74,42 +81,24 @@ class InterfazPygame:
                 pygame.draw.circle(self.pantalla, (0, 0, 0), (x, y), 18, 2)
 
 def resaltar_punto(self, punto: int):
-        """Dibuja un círculo rojo en el punto seleccionado."""
-        if punto < 12:
-            x = 70 + punto * 65 + 32
-            y = 300
-        else:
-            x = 70 + (punto - 12) * 65 + 32
-            y = 300
-        pygame.draw.circle(self.pantalla, COLOR_SELECCION, (x, y), 10)
+         if punto in self.hitmap:
+            rect = self.hitmap[punto]
+            pygame.draw.rect(self.pantalla, COLOR_SELECCION, rect, 3)
 
 def manejar_click(self, posicion: tuple[int, int]):
-        """Convierte la posición del clic en un número de punto (0–23)"""
-        x, y = posicion
-        if y < 300:
-            fila = 0
-        else:
-            fila = 1
-
-        columna = (x - 60) // 65
-        if columna < 0 or columna > 11:
-            return
-
-        punto = columna if fila == 0 else 23 - columna
-
-        # Primer clic: selecciona punto de origen
-        if self.punto_seleccionado is None:
-            self.punto_seleccionado = punto
-        else:
-            # Segundo clic: intenta mover ficha
-            try:
-                jugador = self.juego.get_turno()
-                self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
-                print(f"Ficha movida de {self.punto_seleccionado} a {punto}")
-            except (MovimientoInvalidoException, FichaInvalidaException) as e:
-                print(f"Error: {e}")
-            self.punto_seleccionado = None  # limpiar selección
-
+        for punto, area in self.hitmap.items():
+            if area.collidepoint(posicion):
+                if self.punto_seleccionado is None:
+                    self.punto_seleccionado = punto
+                else:
+                    try:
+                        jugador = self.juego.get_turno()
+                        self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
+                        print(f"Ficha movida de {self.punto_seleccionado} a {punto}")
+                    except (MovimientoInvalidoException, FichaInvalidaException) as e:
+                        print(f"Error: {e}")
+                    self.punto_seleccionado = None
+                break
 
 def ejecutar(self):
         reloj = pygame.time.Clock()
