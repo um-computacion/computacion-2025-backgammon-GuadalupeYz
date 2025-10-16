@@ -97,3 +97,50 @@ cambios sprint 3
 
 #commit 10
 30/09: Agrege reinicio de partida en BackgammonGame y sus tests correspondientes
+
+cambios sprint 4 
+
+#commit 1
+08/10: Hice la inicializacion de partida en la CLI y sus test 
+
+#commit 2
+09/10: Agrege la funcionalidad de tirar dados y mostrar el turno actual. Y test para verificar que los dados se imprimen bien 
+
+#commit 3
+09/10: Ajuste la logica interactiva del juego en la clase CLI, nuevo metodo loop_partida() para gestionar los turnos, metodo mostrar_tablero() para visaulizar el estado del juego y manejo excepciones de movimiento invalido y fichas incorrectas
+
+#commit 4
+09/10: Tests para CLI. Use unittest.mock.patch para simular entradas de usuario, y verifique inicio de partida, turno y salida.
+
+#commit 5
+10/10: Puse visualizacion del historial de movimientos en CLI. Con nuevos metodos mostrar_historial y mostrar_historial_turno
+
+#commit 6
+10/10: Test de CLI para mostrar el historial 
+
+#commit 7
+10/10: Mejore visualizacion del tablero en consola. En metodo mostrar_tablero con representación grafica en texto, en CLI
+
+#commit 8
+12/10: Agrege la primera interfaz grafica con Pygame, con nuevo archivo interfaz_pygame.py. e hice los archivos prompts para completarlos 
+
+#commit 9
+13/10: Se hizo el manejo de clics con el mouse en la interfaz_Pygame. Nuevo método manejar_click y resaltar_punto , y detección de eventos MOUSEBUTTONDOWN
+
+#commit 10
+13/10: Test para la interfaz Pygame en nuevo archivo test_interfaz_pygame.py.
+
+#commit 11
+14/10: Actualizacion de codigo en Pygame. Agrege self.hitmap para ver las coordenadas del tablero. Metodo manejar_click usa collidepoint para detectar donde se hizo clic. Se actualizó resaltar_punto
+
+
+
+
+
+
+
+
+
+
+
+
