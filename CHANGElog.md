@@ -137,6 +137,6 @@ cambios sprint 5
 
 #commit 1: Mejora en la interfaz para mostrar dados y turno en pantalla. Se agregan tests que verifican que dibujar_tablero se ejecute sin errores y la seleccion de puntos funcione correctamente
 
-
+#commit 2: Nuevo botón interactivo “Tirar dados”. Se muestran en pantalla los valores de los dados. Se agrego sistema de mensajes (exito o error) visibles en la interfaz y mejoras visuales
 
 

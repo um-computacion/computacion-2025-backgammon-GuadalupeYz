@@ -12,6 +12,8 @@ COLOR_BLANCO = (245, 245, 245)
 COLOR_NEGRO = (20, 20, 20)
 COLOR_TEXTO = (10, 10, 10)
 COLOR_SELECCION = (255, 0, 0)  #para marcar punto seleccionado
+COLOR_BOTON = (100, 180, 100)
+COLOR_BOTON_HOVER = (130, 210, 130)
 
 pygame.init()
 pygame.display.set_caption("Backgammon - Interfaz Gráfica")
@@ -27,6 +29,7 @@ class InterfazPygame:
         self.hitmap = {}   #guarda las coordenadas de cada punto
         self.dados = (0, 0)  #guarda los valores actuales de los dados
         self.mensaje = ""    #para mostrar mensajes
+        self.boton_dados = pygame.Rect(750, 510, 100, 40)  # boton “tirar dados”
 
 
     def dibujar_tablero(self):
@@ -67,7 +70,8 @@ class InterfazPygame:
             self.resaltar_punto(self.punto_seleccionado)
 
         self.dibujar_info()
-
+        self.dibujar_boton_dados()
+    
     def dibujar_fichas(self):
         puntos = self.juego.get_tablero().get_points()
 
@@ -108,6 +112,14 @@ def dibujar_info(self):     #Muestra turno, dados y mensajes
         if self.mensaje:
             texto_msg = fuente.render(self.mensaje, True, (200, 0, 0))
             self.pantalla.blit(texto_msg, (ANCHO_VENTANA // 2 - 100, 30))
+
+def dibujar_boton_dados(self):
+        """Dibuja el botón para tirar los dados."""
+        mouse_pos = pygame.mouse.get_pos()
+        color = COLOR_BOTON_HOVER if self.boton_dados.collidepoint(mouse_pos) else COLOR_BOTON
+        pygame.draw.rect(self.pantalla, color, self.boton_dados, border_radius=8)
+        texto_boton = fuente.render("Tirar dados", True, (0, 0, 0))
+        self.pantalla.blit(texto_boton, (self.boton_dados.x + 8, self.boton_dados.y + 10))
 
 def manejar_click(self, posicion: tuple[int, int]):
         for punto, area in self.hitmap.items():
