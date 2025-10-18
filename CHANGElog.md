@@ -133,13 +133,9 @@ cambios sprint 4
 #commit 11
 14/10: Actualizacion de codigo en Pygame. Agrege self.hitmap para ver las coordenadas del tablero. Metodo manejar_click usa collidepoint para detectar donde se hizo clic. Se actualizó resaltar_punto
 
+cambios sprint 5
 
-
-
-
-
-
-
+#commit 1: Mejora en la interfaz para mostrar dados y turno en pantalla. Se agregan tests que verifican que dibujar_tablero se ejecute sin errores y la seleccion de puntos funcione correctamente
 
 
 

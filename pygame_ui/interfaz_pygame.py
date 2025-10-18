@@ -16,6 +16,7 @@ COLOR_SELECCION = (255, 0, 0)  #para marcar punto seleccionado
 pygame.init()
 pygame.display.set_caption("Backgammon - Interfaz Gráfica")
 fuente = pygame.font.SysFont("Arial", 18)
+fuente_grande = pygame.font.SysFont("Arial", 28) 
 
 class InterfazPygame:
     def __init__(self, juego: BackgammonGame):
@@ -24,6 +25,9 @@ class InterfazPygame:
         self.en_ejecucion = True
         self.punto_seleccionado = None
         self.hitmap = {}   #guarda las coordenadas de cada punto
+        self.dados = (0, 0)  #guarda los valores actuales de los dados
+        self.mensaje = ""    #para mostrar mensajes
+
 
     def dibujar_tablero(self):
         self.pantalla.fill(COLOR_FONDO)
@@ -62,6 +66,8 @@ class InterfazPygame:
         if self.punto_seleccionado is not None:
             self.resaltar_punto(self.punto_seleccionado)
 
+        self.dibujar_info()
+
     def dibujar_fichas(self):
         puntos = self.juego.get_tablero().get_points()
 
@@ -84,6 +90,24 @@ def resaltar_punto(self, punto: int):
          if punto in self.hitmap:
             rect = self.hitmap[punto]
             pygame.draw.rect(self.pantalla, COLOR_SELECCION, rect, 3)
+
+def dibujar_info(self):     #Muestra turno, dados y mensajes
+        jugador = self.juego.get_turno()
+        texto_turno = fuente_grande.render(
+            f"Turno: {jugador.get_nombre()} ({jugador.get_color()})",
+            True,
+            COLOR_TEXTO,
+        )
+        self.pantalla.blit(texto_turno, (100, 560))
+
+        # Mostrar dados
+        texto_dados = fuente.render(f"Dados: {self.dados[0]} - {self.dados[1]}", True, COLOR_TEXTO)
+        self.pantalla.blit(texto_dados, (600, 560))
+
+        # Mensajes de juego
+        if self.mensaje:
+            texto_msg = fuente.render(self.mensaje, True, (200, 0, 0))
+            self.pantalla.blit(texto_msg, (ANCHO_VENTANA // 2 - 100, 30))
 
 def manejar_click(self, posicion: tuple[int, int]):
         for punto, area in self.hitmap.items():
