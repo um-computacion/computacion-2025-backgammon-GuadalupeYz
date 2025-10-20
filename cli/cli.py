@@ -95,10 +95,12 @@ def loop_partida(self) -> None:
                 if continuar.lower() != "s":
                     break
 
-            ganador = self.__juego.chequear_victoria()
+            ganador = self.__juego.finalizar_jugada()
             if ganador:
-                print(f"¡{ganador.get_nombre()} ganó la partida!")
+                print(f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉")
+                print("La partida ha finalizado.")
                 break
+
 
 def mostrar_tablero(self) -> None:   
         puntos = self.__juego.get_tablero().get_points()

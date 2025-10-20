@@ -142,25 +142,23 @@ def mostrar_victoria(self):
 
 
 def manejar_click(self, posicion: tuple[int, int]):
-        for punto, area in self.hitmap.items():
-            if area.collidepoint(posicion):
-                if self.punto_seleccionado is None:
-                    self.punto_seleccionado = punto
-                else:
-                    try:
-                        jugador = self.juego.get_turno()
-                        self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
-                        print(f"Ficha movida de {self.punto_seleccionado} a {punto}")
+    for punto, area in self.hitmap.items():
+        if area.collidepoint(posicion):
+            if self.punto_seleccionado is None:
+                self.punto_seleccionado = punto
+            else:
+                try:
+                    jugador = self.juego.get_turno()
+                    self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
 
-                        ganador = self.juego.get_ganador()
-                        if ganador:
-                            self.juego_terminado = True
-                            print(f"¡{ganador.get_nombre()} ganó la partida!")
+                    ganador = self.juego.finalizar_jugada()
+                    if ganador:
+                        self.juego_terminado = True
 
-                    except (MovimientoInvalidoException, FichaInvalidaException) as e:
-                        print(f"Error: {e}")
-                    self.punto_seleccionado = None
-                break
+                except (MovimientoInvalidoException, FichaInvalidaException) as e:
+                    print(f"Error: {e}")
+                self.punto_seleccionado = None
+            break
 
 def ejecutar(self):
         reloj = pygame.time.Clock()

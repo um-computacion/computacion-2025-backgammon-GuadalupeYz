@@ -408,6 +408,16 @@ def test_reiniciar_partida_vacia_todo(self):
     self.assertEqual(juego.get_turno().get_nombre(), "Carli")  # turno vuelve al jugador1
     self.assertEqual(juego.get_dados_disponibles(), [])  # deberia estar vacio
 
+def test_finalizar_jugada_sin_victoria(self):
+    #No debe detectar ganador al inicio.
+    self.assertIsNone(self.juego.finalizar_jugada())
+
+def test_finalizar_jugada_con_victoria(self):
+    #Debe devolver el jugador cuando sus fichas se agotan.
+    ganador = self.juego.get_jugadores()[0]
+    ganador._Jugador__fichas.clear()  # vaciamos sus fichas
+    self.assertEqual(self.juego.finalizar_jugada(), ganador)
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -183,3 +183,11 @@ class BackgammonGame:
         self.__historial = []
         self.__dados_disponibles = []
         self.__bar = {"blanco": [], "negro": []}
+
+    def finalizar_jugada(self) -> Jugador | None:
+        #Verifica si hay ganador tras la jugada actual
+        ganador = self.chequear_victoria()
+        if ganador:
+            print(f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉")
+            return ganador
+        return None
