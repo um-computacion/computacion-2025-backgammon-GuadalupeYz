@@ -19,6 +19,7 @@ pygame.init()
 pygame.display.set_caption("Backgammon - Interfaz Gráfica")
 fuente = pygame.font.SysFont("Arial", 18)
 fuente_grande = pygame.font.SysFont("Arial", 28) 
+fuente_victoria = pygame.font.SysFont("Arial", 48)  
 
 class InterfazPygame:
     def __init__(self, juego: BackgammonGame):
@@ -30,7 +31,7 @@ class InterfazPygame:
         self.dados = (0, 0)  #guarda los valores actuales de los dados
         self.mensaje = ""    #para mostrar mensajes
         self.boton_dados = pygame.Rect(750, 510, 100, 40)  # boton “tirar dados”
-
+        self.juego_terminado = False  
 
     def dibujar_tablero(self):
         self.pantalla.fill(COLOR_FONDO)
@@ -71,6 +72,10 @@ class InterfazPygame:
 
         self.dibujar_info()
         self.dibujar_boton_dados()
+
+        #si hay victoria, mostrar mensaje
+        if self.juego_terminado:
+            self.mostrar_victoria()
     
     def dibujar_fichas(self):
         puntos = self.juego.get_tablero().get_points()
@@ -121,6 +126,21 @@ def dibujar_boton_dados(self):
         texto_boton = fuente.render("Tirar dados", True, (0, 0, 0))
         self.pantalla.blit(texto_boton, (self.boton_dados.x + 8, self.boton_dados.y + 10))
 
+def mostrar_victoria(self):
+        # Muestra un mensaje grande de victoria
+        ganador = self.juego.get_ganador()
+        if not ganador:
+            return
+        texto_victoria = fuente_victoria.render(
+            f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉",
+            True,
+            (255, 255, 255),
+        )
+        rect_texto = texto_victoria.get_rect(center=(ANCHO_VENTANA // 2, ALTO_VENTANA // 2))
+        pygame.draw.rect(self.pantalla, (0, 0, 0), rect_texto.inflate(40, 20))
+        self.pantalla.blit(texto_victoria, rect_texto)
+
+
 def manejar_click(self, posicion: tuple[int, int]):
         for punto, area in self.hitmap.items():
             if area.collidepoint(posicion):
@@ -131,6 +151,12 @@ def manejar_click(self, posicion: tuple[int, int]):
                         jugador = self.juego.get_turno()
                         self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
                         print(f"Ficha movida de {self.punto_seleccionado} a {punto}")
+
+                        ganador = self.juego.get_ganador()
+                        if ganador:
+                            self.juego_terminado = True
+                            print(f"¡{ganador.get_nombre()} ganó la partida!")
+
                     except (MovimientoInvalidoException, FichaInvalidaException) as e:
                         print(f"Error: {e}")
                     self.punto_seleccionado = None

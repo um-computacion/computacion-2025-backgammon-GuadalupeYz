@@ -139,4 +139,4 @@ cambios sprint 5
 
 #commit 2: Nuevo botón interactivo “Tirar dados”. Se muestran en pantalla los valores de los dados. Se agrego sistema de mensajes (exito o error) visibles en la interfaz y mejoras visuales
 
-
+#commit 3: Agrego mostrar mensaje de victoria y bloquear interaccion al finalizar partida. Nuevo metodo mostrar_victoria y sus tests correspondientes para probar los cambios

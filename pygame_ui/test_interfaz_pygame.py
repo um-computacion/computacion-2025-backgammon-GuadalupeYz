@@ -65,5 +65,45 @@ class TestInterfazPygame(unittest.TestCase):
         self.assertIsNone(self.interfaz.punto_seleccionado)
 
 
+class TestInterfazPygameVictoria(unittest.TestCase):
+    def setUp(self):
+        pygame.display.init()
+        self.juego = BackgammonGame()
+        j1 = Jugador("Alice", "blanco")
+        j2 = Jugador("Bob", "negro")
+        self.juego.agregar_jugador(j1)
+        self.juego.agregar_jugador(j2)
+        self.juego.setup_inicial()
+        self.interfaz = InterfazPygame(self.juego)
+
+    def tearDown(self):
+        pygame.display.quit()
+
+    def test_mostrar_victoria_no_lanza_errores(self): 
+        #Verifica que mostrar_victoria se pueda ejecutar sin errores
+        try:
+            self.interfaz.mostrar_victoria()
+        except Exception as e:
+            self.fail(f"mostrar_victoria lanzó una excepción: {e}")
+
+    def test_manejar_click_finaliza_partida_si_hay_ganador(self):
+        #Simula que el juego tiene ganador y verifica que la interfaz lo marque
+        # Forzamos un ganador
+        self.juego.get_ganador = lambda: self.juego.get_jugadores()[0]
+
+        # Simula clic válido
+        self.interfaz.hitmap = {0: pygame.Rect(0, 0, 100, 100)}
+        self.interfaz.manejar_click((10, 10))
+
+        self.assertTrue(self.interfaz.juego_terminado)
+
+    def test_no_error_al_dibujar_tablero_con_partida_terminada(self):
+        #Dibuja tablero luego de terminar partida (debe mostrar mensaje sin errores)
+        self.interfaz.juego_terminado = True
+        try:
+            self.interfaz.dibujar_tablero()
+        except Exception as e:
+            self.fail(f"dibujar_tablero falló con juego terminado: {e}")
+
 if __name__ == "__main__":
     unittest.main()
