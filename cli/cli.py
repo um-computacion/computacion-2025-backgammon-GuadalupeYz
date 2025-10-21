@@ -32,7 +32,7 @@ class CLI:
         else:
             print("Opción inválida")
 
-def iniciar_partida(self) -> None: 
+    def iniciar_partida(self) -> None: 
        self.__juego = BackgammonGame()
 
        print("Cargando jugadores...")
@@ -51,7 +51,7 @@ def iniciar_partida(self) -> None:
 
        self.jugar_turno()
 
-def jugar_turno(self) -> None:   
+    def jugar_turno(self) -> None:   
         if not self.__juego:
             print("No hay una partida activa.")
             return
@@ -68,7 +68,7 @@ def jugar_turno(self) -> None:
 
         self.loop_partida()   
 
-def loop_partida(self) -> None:   
+    def loop_partida(self) -> None:   
         while True:
             jugador_actual = self.__juego.get_turno()
             print(f"\nTurno de {jugador_actual.get_nombre()} ({jugador_actual.get_color()})")
@@ -102,7 +102,7 @@ def loop_partida(self) -> None:
                 break
 
 
-def mostrar_tablero(self) -> None:   
+    def mostrar_tablero(self) -> None:   
         puntos = self.__juego.get_tablero().get_points()
         print("\n" + "=" * 70)
         print(" " * 24 + "TABLERO DE BACKGAMMON")
@@ -134,7 +134,7 @@ def mostrar_tablero(self) -> None:
 
         print("\n" + "=" * 70)
 
-def mostrar_historial_turno(self) -> None:   
+    def mostrar_historial_turno(self) -> None:   
         historial = self.__juego.get_historial()
         if historial:
             print("\nÚltimos movimientos:")
@@ -142,7 +142,7 @@ def mostrar_historial_turno(self) -> None:
                 print("-", linea)
         print("-------------------------------------------------------")
 
-def mostrar_historial(self) -> None:   
+    def mostrar_historial(self) -> None:   
         if not self.__juego:
             print("Todavia no hay una partida iniciada.")
             return

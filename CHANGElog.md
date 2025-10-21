@@ -143,3 +143,4 @@ cambios sprint 5
 
 #commit 4: Conexión de victoria con CLI e Interfaz. Se añadio el método finalizar_jugada() en BackgammonGame y ahora en Interfaz Pygame manejar_click() puede llamar a finalizar_jugada() para sincronizar ambos modos texto y grafico
 
+#commit 5: Soporte para finalizar partida tras detectar un ganador. Metodo finalizar_jugada() en la interfaz que consulta al backend y muestra el mensaje de victoria. Bloqueo de interacción

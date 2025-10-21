@@ -142,6 +142,8 @@ def mostrar_victoria(self):
 
 
 def manejar_click(self, posicion: tuple[int, int]):
+    if self.juego_terminado:
+            return  # no aceptar más clics
     for punto, area in self.hitmap.items():
         if area.collidepoint(posicion):
             if self.punto_seleccionado is None:
@@ -150,11 +152,14 @@ def manejar_click(self, posicion: tuple[int, int]):
                 try:
                     jugador = self.juego.get_turno()
                     self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
-
-                    ganador = self.juego.finalizar_jugada()
+                    ganador = (
+                            self.juego.finalizar_jugada()
+                            if hasattr(self.juego, "finalizar_jugada")
+                            else None
+                        )
                     if ganador:
                         self.juego_terminado = True
-
+                        self.mensaje = f"¡{ganador.get_nombre()} ganó la partida!"
                 except (MovimientoInvalidoException, FichaInvalidaException) as e:
                     print(f"Error: {e}")
                 self.punto_seleccionado = None
