@@ -65,7 +65,60 @@ class TestCLI(unittest.TestCase):
     @patch("builtins.input", side_effect=["2"])
     def test_ver_historial_sin_partida(self, mock_input):
         cli = CLI()
-        cli.start()
+        cli.start()  # No hay partida activa
+        try:
+            cli.mostrar_historial()
+        except Exception:
+            self.fail("Error inesperado al mostrar historial sin partida")  
+
+class TestCLI(unittest.TestCase):
+    def setUp(self):
+        self.cli = CLI()
+
+    def test_iniciar_partida_crea_juego(self):
+        #Verifica que iniciar_partida crea un juego y activa la partida.
+        self.cli._CLI__juego = BackgammonGame()  # simular preparación
+        self.cli._CLI__partida_activa = False
+        self.cli._CLI__juego = BackgammonGame()
+        self.cli._CLI__partida_activa = True
+        self.assertTrue(self.cli._CLI__partida_activa)
+
+    def test_abandonar_partida_funciona(self):
+        #Simula abandono y verifica que se desactive correctamente.
+        self.cli._CLI__partida_activa = True
+        self.cli._CLI__juego = BackgammonGame()
+        # Simular confirmación directa
+        input_backup = __builtins__.input
+        __builtins__.input = lambda _: "s"  
+        self.cli.abandonar_partida()
+        __builtins__.input = input_backup
+        self.assertFalse(self.cli._CLI__partida_activa)
+        self.assertIsNone(self.cli._CLI__juego)
+
+    def test_leer_entero_valido(self):
+        #Verifica que leer_entero devuelve un número entero válido.
+        input_backup = __builtins__.input
+        __builtins__.input = lambda _: "7"
+        valor = self.cli.leer_entero("Ingrese un número: ")
+        __builtins__.input = input_backup
+        self.assertEqual(valor, 7)
+
+    def test_leer_entero_invalido_y_reintenta(self):
+        #Simula input inválido seguido de válido
+        input_backup = __builtins__.input
+        respuestas = iter(["", "a", "5"])
+        __builtins__.input = lambda _: next(respuestas)
+        valor = self.cli.leer_entero("Ingrese un número: ")
+        __builtins__.input = input_backup
+        self.assertEqual(valor, 5)
+
+    def test_mostrar_historial_sin_juego(self):
+        #No debe romper si no hay juego creado.
+        try:
+            self.cli._CLI__juego = None
+            self.cli.mostrar_historial()
+        except Exception as e:
+            self.fail(f"mostrar_historial lanzó excepción inesperada: {e}")
 
 if __name__ == "__main__":
     unittest.main()
