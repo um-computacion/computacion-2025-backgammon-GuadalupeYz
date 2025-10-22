@@ -128,7 +128,7 @@ def dibujar_boton_dados(self):
 
 def mostrar_victoria(self):
         # Muestra un mensaje grande de victoria
-        ganador = self.juego.get_ganador()
+        ganador = getattr(self.juego, "get_ganador", lambda: None)()
         if not ganador:
             return
         texto_victoria = fuente_victoria.render(
@@ -144,26 +144,34 @@ def mostrar_victoria(self):
 def manejar_click(self, posicion: tuple[int, int]):
     if self.juego_terminado:
             return  # no aceptar más clics
+        # Click en el botón de tirar dados
+    if self.boton_dados.collidepoint(posicion):
+            self.dados = self.juego.tirar_dados()
+            self.mensaje = ""
+            return
+
     for punto, area in self.hitmap.items():
-        if area.collidepoint(posicion):
-            if self.punto_seleccionado is None:
-                self.punto_seleccionado = punto
-            else:
-                try:
-                    jugador = self.juego.get_turno()
-                    self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
-                    ganador = (
+            if area.collidepoint(posicion):
+                if self.punto_seleccionado is None:
+                    self.punto_seleccionado = punto
+                else:
+                    try:
+                        jugador = self.juego.get_turno()
+                        self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
+                        ganador = (
                             self.juego.finalizar_jugada()
                             if hasattr(self.juego, "finalizar_jugada")
                             else None
                         )
-                    if ganador:
-                        self.juego_terminado = True
-                        self.mensaje = f"¡{ganador.get_nombre()} ganó la partida!"
-                except (MovimientoInvalidoException, FichaInvalidaException) as e:
-                    print(f"Error: {e}")
-                self.punto_seleccionado = None
-            break
+                        if ganador:
+                            self.juego_terminado = True
+                            self.mensaje = f"¡{ganador.get_nombre()} ganó la partida!"
+                        else:
+                            self.mensaje = "Movimiento exitoso."
+                    except (MovimientoInvalidoException, FichaInvalidaException) as e:
+                        self.mensaje = str(e)
+                    self.punto_seleccionado = None
+                break
 
 def ejecutar(self):
         reloj = pygame.time.Clock()

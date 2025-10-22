@@ -105,13 +105,13 @@ class TestInterfazPygameVictoria(unittest.TestCase):
         except Exception as e:
             self.fail(f"dibujar_tablero falló con juego terminado: {e}")
 
-def test_instancia_inicial(self):
-    """La interfaz se crea correctamente"""
-    self.assertIsInstance(self.interfaz, InterfazPygame)
-    self.assertFalse(self.interfaz.juego_terminado)
+    def test_instancia_inicial(self):
+     """La interfaz se crea correctamente"""
+     self.assertIsInstance(self.interfaz, InterfazPygame)
+     self.assertFalse(self.interfaz.juego_terminado)
 
-def test_victoria_muestra_mensaje(self):
-    """Simula que el juego tiene un ganador y muestra el mensaje"""
+    def test_victoria_muestra_mensaje(self):
+     """Simula que el juego tiene un ganador y muestra el mensaje"""
     class DummyJugador:
         def __init__(self):
             self.nombre = "Ganador"
@@ -127,14 +127,34 @@ def test_victoria_muestra_mensaje(self):
     except Exception as e:
         self.fail(f"mostrar_victoria lanzó una excepción: {e}")
 
-def test_manejar_click_bloquea_despues_de_victoria(self):
-    """No debe permitir más clicks una vez terminado el juego"""
-    self.interfaz.juego_terminado = True
-    before = self.interfaz.punto_seleccionado
+    def test_manejar_click_bloquea_despues_de_victoria(self):
+     """No debe permitir más clicks una vez terminado el juego"""
+     self.interfaz.juego_terminado = True
+    before = self.interfaz.punto_seleccionado 
     self.interfaz.manejar_click((100, 100))  # simulamos click
     after = self.interfaz.punto_seleccionado
     self.assertEqual(before, after, "El click no debe modificar el estado si el juego terminó")
 
+
+    def test_dibujar_tablero_no_lanza_excepcion(self):
+        """Verifica que se pueda dibujar el tablero sin errores"""
+        try:
+            self.interfaz.dibujar_tablero()
+        except Exception as e:
+            self.fail(f"dibujar_tablero lanzó una excepción inesperada: {e}")
+
+    def test_click_boton_dados_actualiza_dados(self):
+        """Simula click en botón de dados"""
+        self.interfaz.manejar_click(self.interfaz.boton_dados.center)
+        resultado = self.interfaz.dados
+        self.assertTrue(isinstance(resultado, tuple))
+        self.assertEqual(len(resultado), 2)
+
+    def test_mensaje_de_error_en_movimiento_invalido(self):
+        """Simula click en puntos inválidos para generar mensaje de error"""
+        punto_invalido = (0, 0)
+        self.interfaz.manejar_click(punto_invalido)
+        self.assertIsInstance(self.interfaz.mensaje, str)
 
 if __name__ == "__main__":
     unittest.main()

@@ -146,3 +146,5 @@ cambios sprint 5
 #commit 5: Soporte para finalizar partida tras detectar un ganador. Metodo finalizar_jugada() en la interfaz que consulta al backend y muestra el mensaje de victoria. Bloqueo de interacción
 
 #commit 6: Agrego nueva opcion '4. Abandonar partida' al menu principal en CLI, y mejoras en la validación de entradas vacias o no numericas. Tambien agregue tests para probar la logica
+
+#commit 7: Manejo de eventos del botón “Tirar dados”. Se muestran los valores de los dados en pantalla tras cada tirada. Mejoras visuales en la actualización del tablero y textos.
