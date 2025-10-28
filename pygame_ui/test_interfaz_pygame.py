@@ -117,23 +117,22 @@ class TestInterfazPygameVictoria(unittest.TestCase):
             self.nombre = "Ganador"
         def get_nombre(self):
             return self.nombre
-
-    # Simulamos un ganador forzado
-    self.interfaz.juego.get_ganador = lambda: DummyJugador()
-    self.interfaz.juego_terminado = True
-
-    try:
-        self.interfaz.mostrar_victoria()
-    except Exception as e:
-        self.fail(f"mostrar_victoria lanzó una excepción: {e}")
+        # Simulamos un ganador forzado
+            self.interfaz.juego.get_ganador = lambda: DummyJugador()
+            self.interfaz.juego_terminado = True
+ 
+            try:
+              self.interfaz.mostrar_victoria()
+            except Exception as e:
+              self.fail(f"mostrar_victoria lanzó una excepción: {e}")
 
     def test_manejar_click_bloquea_despues_de_victoria(self):
      """No debe permitir más clicks una vez terminado el juego"""
      self.interfaz.juego_terminado = True
-    before = self.interfaz.punto_seleccionado 
-    self.interfaz.manejar_click((100, 100))  # simulamos click
-    after = self.interfaz.punto_seleccionado
-    self.assertEqual(before, after, "El click no debe modificar el estado si el juego terminó")
+     before = self.interfaz.punto_seleccionado 
+     self.interfaz.manejar_click((100, 100))  # simulamos click
+     after = self.interfaz.punto_seleccionado
+     self.assertEqual(before, after, "El click no debe modificar el estado si el juego terminó")
 
 
     def test_dibujar_tablero_no_lanza_excepcion(self):

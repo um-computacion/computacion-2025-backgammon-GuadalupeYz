@@ -1,185 +1,340 @@
 import pygame
 from codigo.backgammon import BackgammonGame
-from codigo.jugadores import Jugador
 from codigo.excepciones import MovimientoInvalidoException, FichaInvalidaException
 
-# --- CONFIGURACION DE COLORES Y DIMENSIONES ---
-ANCHO_VENTANA = 900
-ALTO_VENTANA = 600
-COLOR_FONDO = (200, 170, 120)
-COLOR_TABLERO = (150, 110, 70)
-COLOR_BLANCO = (245, 245, 245)
-COLOR_NEGRO = (20, 20, 20)
-COLOR_TEXTO = (10, 10, 10)
-COLOR_SELECCION = (255, 0, 0)  #para marcar punto seleccionado
-COLOR_BOTON = (100, 180, 100)
-COLOR_BOTON_HOVER = (130, 210, 130)
+# --- Colores y configuración ---
+ANCHO_VENTANA, ALTO_VENTANA = 900, 600
+COLOR_FONDO = (190, 150, 100)
+COLOR_TABLERO = (160, 110, 60)
+COLOR_TEXTO = (0, 0, 0)
+COLOR_SELECCION = (255, 0, 0)
+COLOR_BOTON = (100, 200, 100)
+COLOR_BOTON_HOVER = (150, 255, 150)
+COLOR_BLANCO = (255, 255, 255)
+COLOR_NEGRO = (0, 0, 0)
 
 pygame.init()
-pygame.display.set_caption("Backgammon - Interfaz Gráfica")
-fuente = pygame.font.SysFont("Arial", 18)
-fuente_grande = pygame.font.SysFont("Arial", 28) 
-fuente_victoria = pygame.font.SysFont("Arial", 48)  
+fuente = pygame.font.SysFont("Arial", 20)
+fuente_grande = pygame.font.SysFont("Arial", 24, bold=True)
+fuente_victoria = pygame.font.SysFont("Arial", 32, bold=True)
 
+# --- Clase principal de interfaz ---
 class InterfazPygame:
     def __init__(self, juego: BackgammonGame):
         self.juego = juego
-        self.pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
+        self.pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA + 100))
+        pygame.display.set_caption("Backgammon - Interfaz Gráfica")
         self.en_ejecucion = True
         self.punto_seleccionado = None
-        self.hitmap = {}   #guarda las coordenadas de cada punto
-        self.dados = (0, 0)  #guarda los valores actuales de los dados
-        self.mensaje = ""    #para mostrar mensajes
-        self.boton_dados = pygame.Rect(750, 510, 100, 40)  # boton “tirar dados”
-        self.juego_terminado = False  
+        self.hitmap = {}
+        self.dados = (0, 0)
+        self.mensaje = ""
+        self.boton_dados = pygame.Rect(700, 590, 130, 45)
+        self.juego_terminado = False
+        self.dados_tirados = False  # 🔹 bandera nueva
+        self.puntos_destino_validos = []
 
     def dibujar_tablero(self):
-        self.pantalla.fill(COLOR_FONDO)
-        self.hitmap.clear()  #se limpia y vuelve a generar en cada frame
+     self.pantalla.fill(COLOR_FONDO)
+     self.hitmap.clear()
 
-        # Dibujar base del tablero
-        pygame.draw.rect(self.pantalla, COLOR_TABLERO, (50, 50, 800, 500))
+    # --- Tablero base ---
+     pygame.draw.rect(self.pantalla, COLOR_TABLERO, (50, 50, 800, 500))
 
-        # Líneas divisorias (12 triángulos por lado)
-        for i in range(12):
-            x = 60 + i * 65
-            pygame.draw.polygon(
-                self.pantalla,
-                (230, 180, 80) if i % 2 == 0 else (90, 50, 30),
-                [(x, 50), (x + 32, 250), (x + 65, 50)]
-            )
-            pygame.draw.polygon(
-                self.pantalla,
-                (230, 180, 80) if i % 2 == 1 else (90, 50, 30),
-                [(x, 550), (x + 32, 350), (x + 65, 550)]
-            )
-
-        #registrar las coordenadas del punto superior (0-11)
-            self.hitmap[i] = pygame.Rect(x, 50, 65, 250)
-            # y del inferior (12-23)
-            self.hitmap[23 - i] = pygame.Rect(x, 300, 65, 250)
-
-        # Título
-        texto = fuente.render("Backgammon", True, COLOR_TEXTO)
-        self.pantalla.blit(texto, (ANCHO_VENTANA // 2 - 60, 10))
-
-        # Dibujar fichas iniciales
-        self.dibujar_fichas()
-
-        #resaltar punto seleccionado
-        if self.punto_seleccionado is not None:
-            self.resaltar_punto(self.punto_seleccionado)
-
-        self.dibujar_info()
-        self.dibujar_boton_dados()
-
-        #si hay victoria, mostrar mensaje
-        if self.juego_terminado:
-            self.mostrar_victoria()
-    
-    def dibujar_fichas(self):
-        puntos = self.juego.get_tablero().get_points()
-
-        for i, pila in enumerate(puntos):
-            for j, ficha in enumerate(pila):
-                color = COLOR_BLANCO if ficha.get_color() == "blanco" else COLOR_NEGRO
-
-                # Coordenadas de ficha
-                if i < 12:
-                    x = 70 + i * 65
-                    y = 520 - j * 22
-                else:
-                    x = 70 + (i - 12) * 65
-                    y = 80 + j * 22
-
-                pygame.draw.circle(self.pantalla, color, (x, y), 18)
-                pygame.draw.circle(self.pantalla, (0, 0, 0), (x, y), 18, 2)
-
-def resaltar_punto(self, punto: int):
-         if punto in self.hitmap:
-            rect = self.hitmap[punto]
-            pygame.draw.rect(self.pantalla, COLOR_SELECCION, rect, 3)
-
-def dibujar_info(self):     #Muestra turno, dados y mensajes
-        jugador = self.juego.get_turno()
-        texto_turno = fuente_grande.render(
-            f"Turno: {jugador.get_nombre()} ({jugador.get_color()})",
-            True,
-            COLOR_TEXTO,
+    # --- Triángulos ---
+     for i in range(12):
+        x = 60 + i * 65
+        # superiores
+        pygame.draw.polygon(
+            self.pantalla,
+            (230, 180, 80) if i % 2 == 0 else (90, 50, 30),
+            [(x, 50), (x + 32, 250), (x + 65, 50)]
         )
-        self.pantalla.blit(texto_turno, (100, 560))
+        # inferiores
+        pygame.draw.polygon(
+            self.pantalla,
+            (230, 180, 80) if i % 2 == 1 else (90, 50, 30),
+            [(x, 550), (x + 32, 350), (x + 65, 550)]
+        )
 
-        # Mostrar dados
-        texto_dados = fuente.render(f"Dados: {self.dados[0]} - {self.dados[1]}", True, COLOR_TEXTO)
-        self.pantalla.blit(texto_dados, (600, 560))
+        # hitmap (0..11 arriba, 23..12 abajo)
+        self.hitmap[i] = pygame.Rect(x, 50, 65, 250)
+        self.hitmap[23 - i] = pygame.Rect(x, 300, 65, 250)
 
-        # Mensajes de juego
-        if self.mensaje:
-            texto_msg = fuente.render(self.mensaje, True, (200, 0, 0))
-            self.pantalla.blit(texto_msg, (ANCHO_VENTANA // 2 - 100, 30))
+    # --- BAR central ---
+     pygame.draw.rect(self.pantalla, (90, 50, 30), (440, 50, 20, 500))
+     texto_bar = fuente.render("BAR", True, (255, 255, 255))
+     self.pantalla.blit(texto_bar, (445, 260))
 
-def dibujar_boton_dados(self):
-        """Dibuja el botón para tirar los dados."""
-        mouse_pos = pygame.mouse.get_pos()
-        color = COLOR_BOTON_HOVER if self.boton_dados.collidepoint(mouse_pos) else COLOR_BOTON
-        pygame.draw.rect(self.pantalla, color, self.boton_dados, border_radius=8)
-        texto_boton = fuente.render("Tirar dados", True, (0, 0, 0))
-        self.pantalla.blit(texto_boton, (self.boton_dados.x + 8, self.boton_dados.y + 10))
+    # --- Fichas en el BAR ---
+     bar = self.juego.get_bar()
+     x_centro = 450  # centro exacto del BAR
+     for color_str, fichas in bar.items():
+        if not fichas:
+            continue
+        # desplazamiento para que no se solapen
+        x = x_centro - 15 if color_str == "blanco" else x_centro + 15
+        for j, _ in enumerate(fichas):
+            # apiladas verticalmente en el centro
+            y = 270 + j * 22
+            color = COLOR_BLANCO if color_str == "blanco" else COLOR_NEGRO
+            pygame.draw.circle(self.pantalla, color, (x, y), 18)
+            pygame.draw.circle(self.pantalla, (40, 40, 40), (x, y), 18, 2)
 
-def mostrar_victoria(self):
-        # Muestra un mensaje grande de victoria
+    # --- Fichas ---
+     self.dibujar_fichas()
+
+    # --- Selección y destinos válidos ---
+     if self.punto_seleccionado is not None:
+        self.resaltar_punto(self.punto_seleccionado)
+
+     if hasattr(self, "puntos_destino_validos"):
+        for destino in self.puntos_destino_validos:
+            if destino in self.hitmap:
+                pygame.draw.rect(self.pantalla, (0, 255, 0), self.hitmap[destino], 3)
+
+    # --- Info del juego ---
+     self.dibujar_info()
+     self.dibujar_boton_dados()
+ 
+     if self.juego_terminado:
+        self.mostrar_victoria()
+
+
+    def dibujar_fichas(self):
+     """Dibuja las fichas en el tablero con posicionamiento correcto."""
+     puntos = self.juego.get_tablero().get_points()  #  SIN doble guion bajo
+
+     for punto_idx, pila in enumerate(puntos):
+        if not pila:
+            continue
+
+        for j, ficha in enumerate(pila):
+            color = COLOR_BLANCO if ficha.get_color() == "blanco" else COLOR_NEGRO
+
+            #  CORRECCIÓN: Usar 65 píxeles (igual que triángulos)
+            if punto_idx <= 11:  # Puntos 0-11 (arriba)
+                x = 60 + punto_idx * 65 + 32  # +32 para centrar
+                y = 80 + j * 22
+            else:  # Puntos 12-23 (abajo)
+                col = 23 - punto_idx
+                x = 60 + col * 65 + 32
+                y = 520 - j * 22
+
+            pygame.draw.circle(self.pantalla, color, (x, y), 18)
+            pygame.draw.circle(self.pantalla, (50, 50, 50), (x, y), 18, 2)
+
+
+    def resaltar_punto(self, punto: int):
+        if punto in self.hitmap:
+            rect = self.hitmap[punto]
+            pygame.draw.rect(self.pantalla, (0, 150, 255), rect, 3)  # celeste
+
+    def dibujar_info(self):
+     jugador = self.juego.get_turno()
+
+    # --- Texto de turno ---
+     texto_turno = fuente_grande.render(
+        f"Turno: {jugador.get_nombre()} ({jugador.get_color()})",
+        True,
+        COLOR_TEXTO,
+    )
+     self.pantalla.blit(texto_turno, (100, 560))
+
+    # --- Resultado de los dados ---
+     texto_dados = fuente.render(
+         f"Dados: {self.dados[0]} - {self.dados[1]}",
+        True,
+        COLOR_TEXTO,
+    )
+     self.pantalla.blit(texto_dados, (700, 640))  # más abajo y a la derecha
+# --- Mensaje principal (rojo) ---
+     
+     if self.mensaje:
+       texto_msg = fuente.render(self.mensaje, True, (200, 0, 0))
+       self.pantalla.blit(texto_msg, (100, 590))  # más arriba y centrado
+       pygame.draw.rect(self.pantalla, (230, 210, 180), (90, 620, 500, 70))
+
+    # --- Instrucciones de colores ---
+     ayuda1 = fuente.render(" Verde: puntos donde podés mover la ficha", True, (0, 180, 0))
+     ayuda2 = fuente.render(" Azul: punto de llegada", True, (0, 120, 255))
+     ayuda3 = fuente.render(" Celeste: ficha seleccionada", True, (0, 160, 255))
+
+    # ahora con separación visual más grande
+     self.pantalla.blit(ayuda1, (100, 630))
+     self.pantalla.blit(ayuda2, (100, 650))
+     self.pantalla.blit(ayuda3, (100, 670))
+
+    def dibujar_boton_dados(self):
+     """Dibuja el botón para tirar los dados."""
+     mouse_pos = pygame.mouse.get_pos()
+     color = COLOR_BOTON_HOVER if self.boton_dados.collidepoint(mouse_pos) else COLOR_BOTON
+
+     # mover el botón un poco a la derecha y más abajo
+     self.boton_dados = pygame.Rect(730, 600, 120, 45)
+
+
+     pygame.draw.rect(self.pantalla, color, self.boton_dados, border_radius=8)
+     texto_boton = fuente.render("Tirar dados", True, (0, 0, 0))
+     self.pantalla.blit(texto_boton, (self.boton_dados.x + 10, self.boton_dados.y + 10))
+
+    def mostrar_victoria(self):
         ganador = getattr(self.juego, "get_ganador", lambda: None)()
         if not ganador:
             return
         texto_victoria = fuente_victoria.render(
-            f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉",
-            True,
-            (255, 255, 255),
+            f" ¡{ganador.get_nombre()} ganó la partida! ",
+            True, (255, 255, 255)
         )
         rect_texto = texto_victoria.get_rect(center=(ANCHO_VENTANA // 2, ALTO_VENTANA // 2))
         pygame.draw.rect(self.pantalla, (0, 0, 0), rect_texto.inflate(40, 20))
         self.pantalla.blit(texto_victoria, rect_texto)
 
+    def calcular_destinos_validos(self, punto_origen: int) -> list[int]:
+     """Devuelve los puntos destino válidos desde punto_origen según color/dados."""
+     dados = self.juego.get_dados_disponibles() or []
+     if not dados:
+        return []
 
-def manejar_click(self, posicion: tuple[int, int]):
-    if self.juego_terminado:
-            return  # no aceptar más clics
-        # Click en el botón de tirar dados
-    if self.boton_dados.collidepoint(posicion):
+     jugador = self.juego.get_turno()
+     color = (jugador.get_color() or "").strip().lower()
+     puntos = self.juego.get_tablero().get_points()
+     destinos: list[int] = []
+
+    # Sentido correcto:
+    # - blancas avanzan hacia la IZQUIERDA (índice menor) => destino = origen - d
+    # - negras  avanzan hacia la DERECHA (índice mayor)   => destino = origen + d
+     for d in dados:
+        destino = punto_origen - d if color == "blanco" else punto_origen + d
+        if 0 <= destino < 24:
+            pila = puntos[destino]
+            # no permitir puntos bloqueados (2+ del rival)
+            if pila and pila[-1].get_color() != color and len(pila) > 1:
+                continue
+            destinos.append(destino)
+
+    # eliminar duplicados (por dobles) y ordenar para pintar prolijo
+     return sorted(set(destinos))
+
+
+    def manejar_click(self, posicion: tuple[int, int]):
+     if self.juego_terminado:
+        return
+
+     jugador = self.juego.get_turno()
+     color = jugador.get_color()
+     dados = self.juego.get_dados_disponibles() or []
+
+    # --- Click en botón "Tirar dados" ---
+     if self.boton_dados.collidepoint(posicion):
+        if not self.dados_tirados:
             self.dados = self.juego.tirar_dados()
-            self.mensaje = ""
+            self.dados_tirados = True
+            self.mensaje = f"Dados: {self.dados[0]} - {self.dados[1]}"
+        else:
+            self.mensaje = "Ya tiraste los dados."
+        return
+
+    # --- Si hay fichas en la barra ---
+     bar_color = jugador.get_color()
+     en_barra = self.juego.get_bar()[bar_color]
+     if en_barra:   # 🔹 Solo entra acá si realmente hay fichas capturadas
+        if not dados:
+            self.mensaje = "Debes tirar los dados para reingresar desde el BAR."
             return
 
-    for punto, area in self.hitmap.items():
-            if area.collidepoint(posicion):
-                if self.punto_seleccionado is None:
+        # Puntos válidos para reingreso
+        if bar_color == "blanco":
+            posibles = [24 - d for d in dados]   # 1→23, 2→22, ..., 6→18
+        else:
+            posibles = [d - 1 for d in dados]    # 1→0,  2→1,  ..., 6→5
+
+        puntos = self.juego.get_tablero().get_points()
+        posibles = [
+            p for p in posibles
+            if 0 <= p < 24 and not (puntos[p] and puntos[p][-1].get_color() != bar_color and len(puntos[p]) > 1)
+        ]
+
+        # Pintar casillas válidas
+        self.punto_seleccionado = None
+        self.puntos_destino_validos = posibles
+        self.mensaje = "Reingresá una ficha desde el BAR."
+
+        for punto, area in self.hitmap.items():
+            if area.collidepoint(posicion) and punto in posibles:
+                try:
+                    self.juego.reingresar_ficha(jugador, punto)
+                    if not self.juego.get_dados_disponibles():
+                        self.dados_tirados = False
+                        self.dados = (0, 0)
+                    self.mensaje = f"Reingresaste en {punto}."
+                    self.puntos_destino_validos = []
+                    return
+                except (MovimientoInvalidoException, FichaInvalidaException) as e:
+                    self.mensaje = str(e)
+                    return
+
+        # Click fuera del reingreso
+        return
+
+    # --- Movimiento normal sobre el tablero ---
+     for punto, area in self.hitmap.items():
+        if area.collidepoint(posicion):
+            puntos = self.juego.get_tablero().get_points()
+
+            # Selección de ficha
+            if self.punto_seleccionado is None:
+                if puntos[punto] and puntos[punto][-1].get_color() == jugador.get_color():
                     self.punto_seleccionado = punto
+                    self.puntos_destino_validos = self.calcular_destinos_validos(punto)
+                    self.mensaje = f"Ficha seleccionada en punto {punto}."
                 else:
-                    try:
-                        jugador = self.juego.get_turno()
-                        self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
-                        ganador = (
-                            self.juego.finalizar_jugada()
-                            if hasattr(self.juego, "finalizar_jugada")
-                            else None
-                        )
-                        if ganador:
-                            self.juego_terminado = True
-                            self.mensaje = f"¡{ganador.get_nombre()} ganó la partida!"
+                    self.mensaje = "Debes seleccionar una ficha tuya."
+                return
+
+            # Movimiento de ficha
+            else:
+                if not self.juego.get_dados_disponibles():
+                    self.mensaje = "Primero tirá los dados."
+                    self.punto_seleccionado = None
+                    self.puntos_destino_validos = []
+                    return
+
+                try:
+                    self.juego.mover_ficha(jugador, self.punto_seleccionado, punto)
+                    ganador = self.juego.finalizar_jugada()
+
+                    if ganador:
+                        self.juego_terminado = True
+                        self.mensaje = f"🎉 ¡{ganador.get_nombre()} ganó!"
+                    else:
+                        if not self.juego.get_dados_disponibles():
+                            self.dados_tirados = False
+                            self.dados = (0, 0)
+                            turno = self.juego.get_turno()
+                            self.mensaje = f"Turno de {turno.get_nombre()} ({turno.get_color()})."
                         else:
                             self.mensaje = "Movimiento exitoso."
-                    except (MovimientoInvalidoException, FichaInvalidaException) as e:
-                        self.mensaje = str(e)
-                    self.punto_seleccionado = None
-                break
 
-def ejecutar(self):
+                    self.punto_seleccionado = None
+                    self.puntos_destino_validos = []
+                    self.dibujar_tablero()
+                    pygame.display.flip()
+                    return
+
+                except (MovimientoInvalidoException, FichaInvalidaException) as e:
+                    self.mensaje = str(e)
+                    self.punto_seleccionado = None
+                    self.puntos_destino_validos = []
+                    return
+
+
+    def ejecutar(self):
         reloj = pygame.time.Clock()
         while self.en_ejecucion:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     self.en_ejecucion = False
-             #manejar clic del mouse
                 elif evento.type == pygame.MOUSEBUTTONDOWN:
                     self.manejar_click(evento.pos)
 
@@ -190,14 +345,22 @@ def ejecutar(self):
         pygame.quit()
 
 # --- PRUEBA DIRECTA ---
+# --- PRUEBA DIRECTA ---
 if __name__ == "__main__":
-    juego = BackgammonGame()
     from codigo.jugadores import Jugador
-    jugador1 = Jugador("Alice", "blanco")
-    jugador2 = Jugador("Bob", "negro")
-    juego.agregar_jugador(jugador1)
-    juego.agregar_jugador(jugador2)
+
+    print("=== CONFIGURACIÓN DE JUGADORES ===")
+    nombre_blanco = input("Nombre del jugador blancas: ")
+    nombre_negro = input("Nombre del jugador negras: ")
+
+    juego = BackgammonGame()
+    jugador_blanco = Jugador(nombre_blanco, "blanco")
+    jugador_negro = Jugador(nombre_negro, "negro")
+
+    juego.agregar_jugador(jugador_blanco)
+    juego.agregar_jugador(jugador_negro)
     juego.setup_inicial()
 
     interfaz = InterfazPygame(juego)
     interfaz.ejecutar()
+

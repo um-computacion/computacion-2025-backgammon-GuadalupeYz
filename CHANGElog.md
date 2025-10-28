@@ -148,3 +148,5 @@ cambios sprint 5
 #commit 6: Agrego nueva opcion '4. Abandonar partida' al menu principal en CLI, y mejoras en la validación de entradas vacias o no numericas. Tambien agregue tests para probar la logica
 
 #commit 7: Manejo de eventos del botón “Tirar dados”. Se muestran los valores de los dados en pantalla tras cada tirada. Mejoras visuales en la actualización del tablero y textos.
+
+#commit 8: Mejoras visuales y funcionales en interfaz Pygame. Se agrego visualizacion del BAR central con fichas capturadas. Centrado y apilado de las fichas en el tablero. Ajuste el boton 'Tirar dados' y los mensajes informativos. Seleccion de fichas (resaltado celeste y destinos verdes). Logica de reingreso de fichas desde el BAR. 
