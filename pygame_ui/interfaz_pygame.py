@@ -363,6 +363,23 @@ class InterfazPygame:
 
         pygame.quit()
 
+    # --- Bear-off (fase de sacar fichas) ---
+    def dibujar_bear_off(self):
+        """
+        Área reservada para mostrar las fichas que ya fueron retiradas del tablero.
+        Por ahora solo se dibuja un rectángulo placeholder (no funcional).
+        """
+        pygame.draw.rect(self.pantalla, (180, 160, 120), (870, 100, 40, 400))
+        texto = fuente.render("Bear-off", True, (0, 0, 0))
+        self.pantalla.blit(texto, (865, 70))
+
+        #  En el futuro: se dibujarán las fichas sacadas del tablero.
+        # Ejemplo:
+        # for i, ficha in enumerate(self.juego.get_fichas_sacadas("blanco")):
+        #     y = 500 - i * 25
+        #     pygame.draw.circle(self.pantalla, COLOR_BLANCO, (890, y), 12)
+
+
 # --- PRUEBA DIRECTA ---
 # --- PRUEBA DIRECTA ---
 if __name__ == "__main__":
