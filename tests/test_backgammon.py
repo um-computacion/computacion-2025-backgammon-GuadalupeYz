@@ -418,6 +418,22 @@ def test_finalizar_jugada_con_victoria(self):
     ganador._Jugador__fichas.clear()  # vaciamos sus fichas
     self.assertEqual(self.juego.finalizar_jugada(), ganador)
 
+ # TEST rápido temporal
+juego = BackgammonGame()
+jugador_blanco = Jugador("Blanco", "blanco")
+jugador_negro = Jugador("Negro", "negro")
+juego.agregar_jugador(jugador_blanco)
+juego.agregar_jugador(jugador_negro)
+juego.setup_inicial()
+
+# Simular todas las blancas dentro de su casa (solo para probar)
+for i in range(0, 6):
+    for _ in range(2):
+        juego.get_tablero().colocar_ficha(i, Ficha("blanco"))
+
+print(juego.puede_sacar_fichas(jugador_blanco))  # debería devolver True
+
+
 if __name__ == "__main__":
     unittest.main()
 

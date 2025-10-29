@@ -158,12 +158,12 @@ class InterfazPygame:
     # --- Instrucciones de colores ---
      ayuda1 = fuente.render(" Verde: puntos donde podés mover la ficha", True, (0, 180, 0))
      ayuda2 = fuente.render(" Azul: punto de llegada", True, (0, 120, 255))
-     ayuda3 = fuente.render(" Celeste: ficha seleccionada", True, (0, 160, 255))
+     #ayuda3 = fuente.render(" Celeste: ficha seleccionada", True, (0, 160, 255))
 
     # ahora con separación visual más grande
      self.pantalla.blit(ayuda1, (100, 630))
      self.pantalla.blit(ayuda2, (100, 650))
-     self.pantalla.blit(ayuda3, (100, 670))
+     #self.pantalla.blit(ayuda3, (100, 670))
 
     def dibujar_boton_dados(self):
      """Dibuja el botón para tirar los dados."""
@@ -216,7 +216,6 @@ class InterfazPygame:
     # eliminar duplicados (por dobles) y ordenar para pintar prolijo
      return sorted(set(destinos))
 
-
     def manejar_click(self, posicion: tuple[int, int]):
      if self.juego_terminado:
         return
@@ -235,15 +234,16 @@ class InterfazPygame:
             self.mensaje = "Ya tiraste los dados."
         return
 
-    # --- Si hay fichas en la barra ---
+    # --- Reingreso desde la barra ---
      bar_color = jugador.get_color()
      en_barra = self.juego.get_bar()[bar_color]
-     if en_barra:   # 🔹 Solo entra acá si realmente hay fichas capturadas
+
+     if en_barra:  # 🔹 Solo si hay fichas en el BAR
         if not dados:
             self.mensaje = "Debes tirar los dados para reingresar desde el BAR."
             return
 
-        # Puntos válidos para reingreso
+        # Puntos válidos según color y dados
         if bar_color == "blanco":
             posibles = [24 - d for d in dados]   # 1→23, 2→22, ..., 6→18
         else:
@@ -252,37 +252,57 @@ class InterfazPygame:
         puntos = self.juego.get_tablero().get_points()
         posibles = [
             p for p in posibles
-            if 0 <= p < 24 and not (puntos[p] and puntos[p][-1].get_color() != bar_color and len(puntos[p]) > 1)
+            if 0 <= p < 24 and not (
+                puntos[p] and puntos[p][-1].get_color() != bar_color and len(puntos[p]) > 1
+            )
         ]
 
-        # Pintar casillas válidas
+        # Si NO hay posibles casillas de entrada
+        if not posibles:
+            self.mensaje = "No hay movimientos válidos, se pasa el turno."
+            self.juego.finalizar_turno()
+            self.dados_tirados = False
+            self.dados = (0, 0)
+            turno = self.juego.get_turno()
+            self.mensaje = f"Turno de {turno.get_nombre()} ({turno.get_color()})."
+            pygame.display.flip()
+            return
+
+        # Mostrar opciones de reingreso
         self.punto_seleccionado = None
         self.puntos_destino_validos = posibles
         self.mensaje = "Reingresá una ficha desde el BAR."
 
+        # --- Click sobre casillas válidas ---
         for punto, area in self.hitmap.items():
             if area.collidepoint(posicion) and punto in posibles:
                 try:
                     self.juego.reingresar_ficha(jugador, punto)
+
                     if not self.juego.get_dados_disponibles():
                         self.dados_tirados = False
                         self.dados = (0, 0)
+                        turno = self.juego.get_turno()
+                        self.mensaje = f"Turno de {turno.get_nombre()} ({turno.get_color()})."
+                        pygame.display.flip()
+                        return
+
                     self.mensaje = f"Reingresaste en {punto}."
                     self.puntos_destino_validos = []
                     return
+
                 except (MovimientoInvalidoException, FichaInvalidaException) as e:
                     self.mensaje = str(e)
                     return
 
-        # Click fuera del reingreso
-        return
+        return  # Salir si el jugador tenía fichas en el BAR
 
-    # --- Movimiento normal sobre el tablero ---
+     # --- Movimiento normal sobre el tablero ---
      for punto, area in self.hitmap.items():
         if area.collidepoint(posicion):
             puntos = self.juego.get_tablero().get_points()
 
-            # Selección de ficha
+            # Seleccionar una ficha
             if self.punto_seleccionado is None:
                 if puntos[punto] and puntos[punto][-1].get_color() == jugador.get_color():
                     self.punto_seleccionado = punto
@@ -292,7 +312,7 @@ class InterfazPygame:
                     self.mensaje = "Debes seleccionar una ficha tuya."
                 return
 
-            # Movimiento de ficha
+            # Intentar mover la ficha seleccionada
             else:
                 if not self.juego.get_dados_disponibles():
                     self.mensaje = "Primero tirá los dados."
@@ -327,7 +347,6 @@ class InterfazPygame:
                     self.punto_seleccionado = None
                     self.puntos_destino_validos = []
                     return
-
 
     def ejecutar(self):
         reloj = pygame.time.Clock()

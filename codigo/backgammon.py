@@ -219,23 +219,58 @@ class BackgammonGame:
         if not self.__dados_disponibles:
             self.cambiar_turno()
 
+
+    def puede_sacar_fichas(self, jugador: Jugador) -> bool:
+     """
+     Devuelve True si todas las fichas del jugador están dentro de su cuadrante interno.
+     - Blancas: puntos 0 a 5
+     - Negras: puntos 18 a 23
+     """
+     color = jugador.get_color()
+     puntos = self.__tablero.get_points()
+
+    # Rangos según el color
+     if color == "blanco":
+        rango_casa = range(0, 6)      # 0,1,2,3,4,5
+     else:
+        rango_casa = range(18, 24)    # 18..23
+
+    # Si alguna ficha está fuera del cuadrante interno → False
+     for i, pila in enumerate(puntos):
+        for ficha in pila:
+            if ficha.get_color() == color and i not in rango_casa:
+                return False
+
+     return True
+
     # -------- Reingreso desde la barra --------
     def reingresar_ficha(self, jugador: Jugador, punto: int) -> None:
      color = jugador.get_color()
      if not self.__bar[color]:
-        raise MovimientoInvalidoException("El jugador no tiene fichas en el bar")
+        raise MovimientoInvalidoException("El jugador no tiene fichas en el BAR")
+
      if not (0 <= punto < 24):
         raise MovimientoInvalidoException("El punto de reingreso debe estar entre 0 y 23")
+
      if not self.__dados_disponibles:
         raise MovimientoInvalidoException("Aún no tiraste los dados")
 
-     destino_fichas = self.__tablero.get_points()[punto]
-     if destino_fichas and destino_fichas[0].get_color() != color and len(destino_fichas) > 1:
+     puntos = self.__tablero.get_points()
+     destino_fichas = puntos[punto]
+
+    # Caso bloqueado (2+ fichas rivales)
+     if destino_fichas and destino_fichas[-1].get_color() != color and len(destino_fichas) > 1:
         raise MovimientoInvalidoException("No se puede reingresar en un punto ocupado por más de una ficha rival")
 
-    # Puntos de entrada reales:
-    # - blancas entran en 23..18 según dado d -> punto = 24 - d ; distancia usada = 24 - punto
-    # - negras  entran en 0..5  según dado d -> punto = d - 1   ; distancia usada = punto + 1
+    # Captura (solo una ficha rival en el destino)
+     if destino_fichas and destino_fichas[-1].get_color() != color and len(destino_fichas) == 1:
+        ficha_capturada = destino_fichas.pop()
+        self.__bar[ficha_capturada.get_color()].append(ficha_capturada)
+        self.__historial.append(
+            f"{jugador.get_nombre()} capturó una ficha de color {ficha_capturada.get_color()} al reingresar en {punto}"
+        )
+
+    # Calcular distancia según color
      if color == "blanco":
         distancia = 24 - punto
      else:
@@ -243,13 +278,17 @@ class BackgammonGame:
 
      if distancia not in self.__dados_disponibles:
         raise MovimientoInvalidoException("El reingreso no coincide con los dados disponibles")
- 
+
+    #  Sacar ficha del BAR y colocarla
      ficha = self.__bar[color].pop()
      self.__tablero.colocar_ficha(punto, ficha)
-     self.__historial.append(f"{jugador.get_nombre()} reingresó una ficha en {punto}")
+     self.__historial.append(f"{jugador.get_nombre()} reingresó una ficha en el punto {punto}")
 
+    #  Consumir dado usado
      self.__dados_disponibles.remove(distancia)
-     if not self.__dados_disponibles:
+
+    # Si no quedan dados o ya no hay fichas en el bar → cambiar turno
+     if not self.__dados_disponibles or not self.__bar[color]:
         self.cambiar_turno()
 
     # -------- Estado / victoria / reinicio --------
@@ -281,3 +320,70 @@ class BackgammonGame:
             print(f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉")
             return ganador
         return None
+
+    def sacar_ficha(self, jugador: Jugador, punto: int) -> None:
+     """
+     Saca una ficha del tablero si está en su cuadrante interno.
+     El punto debe coincidir con algún dado disponible.
+     """
+     color = jugador.get_color()
+     if not self.puede_sacar_fichas(jugador):
+        raise MovimientoInvalidoException("No podés sacar fichas hasta que todas estén en tu casa")
+
+     puntos = self.__tablero.get_points()
+     if not puntos[punto] or puntos[punto][-1].get_color() != color:
+        raise MovimientoInvalidoException("No hay una ficha tuya en ese punto")
+
+     # Determinar la distancia según el color
+     if color == "blanco":
+        distancia = punto + 1  # puntos 0–5 → dados 1–6
+     else:
+        distancia = 24 - punto  # puntos 18–23 → dados 6–1
+
+     if distancia not in self.__dados_disponibles:
+        raise MovimientoInvalidoException("El número del dado no permite sacar esta ficha")
+
+     # Sacar ficha
+     ficha = puntos[punto].pop()
+     jugador.eliminar_ficha(ficha)
+     self.__historial.append(f"{jugador.get_nombre()} sacó una ficha de {punto}")
+
+    # Consumir dado
+     self.__dados_disponibles.remove(distancia)
+
+     # Cambiar turno si no quedan dados
+     if not self.__dados_disponibles:
+        self.cambiar_turno()
+
+    if __name__ == "__main__":
+      from codigo.fichas import Ficha
+      from codigo.jugadores import Jugador
+      from codigo.tablero import Tablero
+      from codigo.backgammon import BackgammonGame
+
+      print("=== PRUEBA DEL MÉTODO sacar_ficha ===")
+
+      juego = BackgammonGame()
+      jugador_blanco = Jugador("blanco", "blanco")
+      jugador_negro = Jugador("negro", "negro")
+      juego.agregar_jugador(jugador_blanco)
+      juego.agregar_jugador(jugador_negro)
+      juego.setup_inicial()
+
+    # Simulamos TODAS las fichas blancas en su casa (puntos 0 a 5)
+      for punto in juego.get_tablero().get_points():
+        punto.clear()
+
+      for i in range(6):
+        for _ in range(2):
+            juego.get_tablero().colocar_ficha(i, Ficha("blanco"))
+
+    #  Tiramos dados
+      juego._BackgammonGame__dados_disponibles = [3]
+
+      print("¿Puede sacar fichas?", juego.puede_sacar_fichas(jugador_blanco))  # debería dar True
+      try:
+        juego.sacar_ficha(jugador_blanco, 2)
+        print("Ficha sacada correctamente ")
+      except Exception as e:
+        print("Error ", e)
