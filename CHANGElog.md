@@ -1,0 +1,170 @@
+cambios sprint 1
+
+#commit 1
+24/08: cree un readme inicial explicando mi primer dia, en donde tengo que estudiar el
+juego backgammon. Tmb hice un archivo de codigo y un archivo de test para luego expandir.
+
+#commit 2
+25/08: habiendo estudiado el juego cree los archivos q entiendo necesarios y los 
+solicitados en el docuemnto, acompañados de una justificacion. 
+
+#commit 3
+26/08: agrego codigo en tablero.py , en dados.py y en cli.py ,es inicial, mañana sigo. Tmb agrege carpeta git.
+
+#commit 4
+27/08: agrego y modifico codigo en tablero.py, en dados.py y en cli.py. Tmb cambio el README ya que lo estaba usando mal. Agrego archivo test_cli.py. Plantee los primeros test 
+para cli, tablero y dados.
+
+#commit 5
+28/08: hice codigo inicial de la clase jugador, y su test inicial tmb. 
+
+#commit 6
+29/08: agrego un test mas a jugador que me falto probar la funcion obtener_fichas. Tmb la base de la clase ficha, mañana sigo con eso. 
+
+#commit 7
+30/08: integre la clase ficha en jugadores, por lo que tmb cambie esto en test jugadores y cree unos test iniciales de ficha. Tmb cambie los test de tablero que tenian un error ya que me olvide de cambiar los atributos. 
+
+#commit 8
+31/08: ahora empiezo con clase backgammon y probando ese codigo en sus test iniciales.
+
+#commit 9 
+01/09: cmabie en jugadores y dados la implementacion que mencionaron los profesores "Atributos con el prefijo __ delante y la implementación de setter y getter" , por lo que cambie sus test tmb.
+
+#commit 10
+02/09: segui con los cambios de getters y setters en fichas, tablero y backgammon. En sus codigo y sus tests.
+
+cambios sprint 2 
+
+#commit 1
+04/09: Plantie la primer excepcion de la logica del juego. Y cambie cli agregando set and get y su test. 
+
+#commit 2
+07/09: Cambie el codigo tablero para agregar validacion al poner fichas (maximo 15 fichas por punto y rango entre 0 y 23), con getters/setters y cambie los tests 
+
+#commit 3
+08/09: Mejore la clase Jugador agregando eliminar_ficha con su validacion. Tamb los tests de Jugador.
+
+#commit 4
+09/09: Actualice BackgammonGame para que al iniciar el juego se coloquen las fichas de jugadores en el tablero. Tamb cambie los tests para verificarlo.
+
+#commit 5
+10/09: Defini MovimientoInvalidoException en excepciones.py para aplicarlo en jugadores.py y probarlo en sus test. 
+
+#commit 6 
+11/09: Hice los test de excepciones para vereficarlas en test_excepciones.py. 
+
+#commit 7
+13/09: Agrege en el codigo tablero el set para los get and set, y agrege los test del set. 
+
+#commit 8
+14/09: Agregue nuevos metodos en Backgammon para mover la ficha e integre las excepciones MovimientoInvalidoException y FichaInvalidaException dentro del juego
+
+#commit 9
+14/09: Ahora añadi sus tests para validar tira dados, movimiento valido de fichas y error al mover fichas 
+
+#commit 10 
+15/09: Agrege metodo mover_ficha en Tablero con validaciones usando MovimientoInvalidoException. 
+Tamb sus tests para cubrir estos nuevos casos.
+
+cambios sprint 3
+
+#commit 1
+23/09: Agregue turnos inciales en BackgammonGame. (turno_actual,get_turno y cambiar_turno). Y los tests para verificar que el turno esta en el jugador 1, cambia al jugador 2 y vuelve al jugador 1
+
+#commit 2 
+25/09: Agregue gestion de turnos en Backgammon, para controlar que jugador juega y nuevos metodos de turnos, para que solo el jugador en turno pueda mover. Tamb nuevos tests de esto
+
+#commit 3
+25/09: Ahora en BackgammonGame valida que el destino este en el rango 0 a 23. Y los test para comprobar que en un destino invalido use MovimientoInvalidoException. 
+
+#commit 4
+25/09: Puse un historial de movimientos en BackgammonGame. Y nuevo test para verificar que los movimientos se registren correctamente 
+
+#commit 5
+27/09: Agregue verificacion de victoria en BackgammonGame con metodo chequear_victoria y sus nuevos tests
+
+#commit 6
+29/09: Hice la validacion de movimientos con dados en BackgammonGame, agregando dados_disponibles y midiendo la distancia. Y sus test correspondientes
+
+#commit 7 
+29/09: Agrege un atributo __bar en BackgammonGame para registrar las fichas capturadas y un nuevo metodo get_bar para acceder al bar. Ademas de nuevos tests
+
+#commit 8
+29/09: Nuevo metodo reingresar_ficha para permitir el reingreso de fichas capturadas (cumpliendo con las condiciones de por ejemplo q el lugar no este ocupado) y los test de reingreso desde el bar
+
+#commit 9
+30/09: Cree un nuevo metodo mostrar_estado() para saber informacion o estado de la partida, y sus test
+
+#commit 10
+30/09: Agrege reinicio de partida en BackgammonGame y sus tests correspondientes
+
+cambios sprint 4 
+
+#commit 1
+08/10: Hice la inicializacion de partida en la CLI y sus test 
+
+#commit 2
+09/10: Agrege la funcionalidad de tirar dados y mostrar el turno actual. Y test para verificar que los dados se imprimen bien 
+
+#commit 3
+09/10: Ajuste la logica interactiva del juego en la clase CLI, nuevo metodo loop_partida() para gestionar los turnos, metodo mostrar_tablero() para visaulizar el estado del juego y manejo excepciones de movimiento invalido y fichas incorrectas
+
+#commit 4
+09/10: Tests para CLI. Use unittest.mock.patch para simular entradas de usuario, y verifique inicio de partida, turno y salida.
+
+#commit 5
+10/10: Puse visualizacion del historial de movimientos en CLI. Con nuevos metodos mostrar_historial y mostrar_historial_turno
+
+#commit 6
+10/10: Test de CLI para mostrar el historial 
+
+#commit 7
+10/10: Mejore visualizacion del tablero en consola. En metodo mostrar_tablero con representación grafica en texto, en CLI
+
+#commit 8
+12/10: Agrege la primera interfaz grafica con Pygame, con nuevo archivo interfaz_pygame.py. e hice los archivos prompts para completarlos 
+
+#commit 9
+13/10: Se hizo el manejo de clics con el mouse en la interfaz_Pygame. Nuevo método manejar_click y resaltar_punto , y detección de eventos MOUSEBUTTONDOWN
+
+#commit 10
+13/10: Test para la interfaz Pygame en nuevo archivo test_interfaz_pygame.py.
+
+#commit 11
+14/10: Actualizacion de codigo en Pygame. Agrege self.hitmap para ver las coordenadas del tablero. Metodo manejar_click usa collidepoint para detectar donde se hizo clic. Se actualizó resaltar_punto
+
+cambios sprint 5
+
+#commit 1: Mejora en la interfaz para mostrar dados y turno en pantalla. Se agregan tests que verifican que dibujar_tablero se ejecute sin errores y la seleccion de puntos funcione correctamente
+
+#commit 2: Nuevo botón interactivo “Tirar dados”. Se muestran en pantalla los valores de los dados. Se agrego sistema de mensajes (exito o error) visibles en la interfaz y mejoras visuales
+
+#commit 3: Agrego mostrar mensaje de victoria y bloquear interaccion al finalizar partida. Nuevo metodo mostrar_victoria y sus tests correspondientes para probar los cambios
+
+#commit 4: Conexión de victoria con CLI e Interfaz. Se añadio el método finalizar_jugada() en BackgammonGame y ahora en Interfaz Pygame manejar_click() puede llamar a finalizar_jugada() para sincronizar ambos modos texto y grafico
+
+#commit 5: Soporte para finalizar partida tras detectar un ganador. Metodo finalizar_jugada() en la interfaz que consulta al backend y muestra el mensaje de victoria. Bloqueo de interacción
+
+#commit 6: Agrego nueva opcion '4. Abandonar partida' al menu principal en CLI, y mejoras en la validación de entradas vacias o no numericas. Tambien agregue tests para probar la logica
+
+#commit 7: Manejo de eventos del botón “Tirar dados”. Se muestran los valores de los dados en pantalla tras cada tirada. Mejoras visuales en la actualización del tablero y textos.
+
+#commit 8
+28/10: Mejoras visuales y funcionales en interfaz Pygame. Se agrego visualizacion del BAR central con fichas capturadas. Centrado y apilado de las fichas en el tablero. Ajuste el boton 'Tirar dados' y los mensajes informativos. Seleccion de fichas (resaltado celeste y destinos verdes). Logica de reingreso de fichas desde el BAR. 
+
+#commit 9
+28/10: Metodo sacar_ficha() y un bloque de prueba (if __name__ == "__main__") para verificar que las fichas puedan retirarse cuando todas están en la casa.
+
+#commit 10
+28/10:Preparar interfaz para mostrar fichas retiradas (inicio fase bear-off)
+
+cambios sprint 6 
+
+#commit 1
+30/10: Interfaz pygame y CLI listas, con los respectivos tests. Agrego CI con coverage y pylint automáticos
+
+#commit 2
+30/10: Cambiando documento requirements.txt para integracion continua
+
+#commit 3
+30/10: Agrego pylint con su acrpeta y codigo para testear la calidad , y tambien completo documentacion del proyecto para su desarrollo.

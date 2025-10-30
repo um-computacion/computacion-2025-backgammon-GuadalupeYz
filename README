@@ -1,0 +1,119 @@
+Proyecto Backgammon
+Por alumna Guadalupe Yañez
+Computación
+Año 2025
+
+Descripción general
+
+Este proyecto consiste en la implementación del clásico juego de Backgammon, desarrollado en Python, siguiendo las reglas tradicionales del juego.
+Cuenta con dos interfaces completamente funcionales:
+
+CLI (Consola): modo texto para ejecutar partidas directamente desde terminal.
+Pygame: interfaz gráfica con tablero visual, fichas y dados interactivos.
+
+Ambas interfaces utilizan la misma lógica central (core), diseñada bajo principios SOLID y orientación a objetos, garantizando un código modular,
+ extensible y mantenible.
+
+Estructura del proyecto
+/backgammon/
+├── codigo/              → Lógica central del juego (tablero, jugadores, fichas, dados, excepciones)
+├── cli/                 → Interfaz por consola (CLI)
+├── pygame_ui/           → Interfaz gráfica (Pygame)
+├── tests/               → Pruebas unitarias
+├── assets/              → Imágenes y sonidos (opcional)
+├── requirements.txt     → Dependencias del proyecto
+├── README.md            → Información general
+├── changelog.md         → Registro de cambios por sprint
+└── justificacion.md     → Justificación del diseño y decisiones técnicas
+
+
+Lógica central
+El módulo codigo/ contiene la implementación principal del juego.
+Clases principales:
+
+BackgammonGame:Controla el flujo del juego, turnos, movimientos, reglas y condición de victoria.
+Tablero:Representa los 24 puntos del tablero y su estado actual.
+Jugador:Contiene nombre, color y fichas del jugador.
+Ficha.Representa una ficha individual del tablero.
+Dados:Administra las tiradas y valores disponibles.
+Excepciones:Define errores personalizados (movimiento inválido, ficha incorrecta, etc.).
+
+
+Interfaz CLI (consola)
+El modo CLI permite jugar directamente desde la terminal.
+
+Ejecución:
+python3 -m cli.cli
+
+Cómo jugar:
+Elegí la opción “Iniciar partida”.
+Ingresá los nombres de los dos jugadores.
+Presioná ENTER para tirar los dados.
+Ingresá el punto de origen y destino de la ficha a mover.
+Seguí las indicaciones hasta que uno de los jugadores gane.
+
+La consola mostrará:
+Tablero actualizado en cada turno.
+Historial de movimientos.
+Mensajes de error si un movimiento no es válido.
+
+
+Interfaz gráfica (Pygame)
+Ejecución:
+python3 -m pygame_ui.interfaz_pygame
+
+Cómo jugar:
+Clic en los triángulos del tablero para seleccionar fichas y moverlas según los dados.
+Las fichas capturadas van a la barra y deben reingresarse.
+Cuando todas las fichas de un jugador están en su casa, puede comenzar a sacarlas del tablero (Bear-Off).
+Cuando un jugador retira sus 15 fichas, aparece el mensaje:
+🎉 ¡[nombre] ganó la partida! 🎉
+
+
+Pruebas unitarias
+Las pruebas se implementaron con unittest.
+Se incluye testeo completo para:
+Lógica central (backgammon.py)
+Movimiento de fichas y reglas (mover_ficha, sacar_ficha, reingresar_ficha)
+Interfaz CLI
+Cobertura de código superior al 90%
+
+Ejecutar tests:
+python3 -m unittest discover -s tests
+
+Para medir cobertura:
+coverage run -m unittest discover -s tests
+coverage report -m
+
+
+Integración continua (CI)
+El repositorio implementa GitHub Actions con un workflow automático:
+Ejecuta los tests y mide cobertura en cada commit/push a main.
+Genera reportes en formato Markdown y XML.
+Controla la calidad del código mediante Pylint y cobertura mínima del 90%.
+
+Archivo de configuración:
+.github/workflows/ci_with_coverage.yml
+
+
+Justificación y documentación
+El proyecto incluye los siguientes documentos complementarios:
+justificacion.md → Explica decisiones de diseño, estructura, excepciones, testing y principios SOLID.
+changelog.md → Registra la evolución del proyecto por sprint.
+prompts/ → Archivos de prompts IA usados en desarrollo, testing y documentación.
+
+
+Cobertura y calidad
+Cobertura total: 97%
+Cobertura de lógica central (backgammon.py): 91%
+Calificación CodeClimate esperada: A
+
+
+Referencias
+Wikipedia_Backgammon
+Pygame Documentation
+Python unittest
+Keep a Changelog
+Real Python_Documenting Code
+
+
