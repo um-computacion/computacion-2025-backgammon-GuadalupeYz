@@ -1,0 +1,23 @@
+
+# Modelo utilizado
+ChatGPT (GPT-4, versión Octubre 2025)
+
+Prompt 1: redacción del README
+Mensaje:
+Necesito que me ayudes a redactar el README de mi proyecto Backgammon.  
+Tiene que explicar como se juega, cómo ejecutar el programa desde consola,  
+cómo correr los tests, y la estructura de carpetas del repositorio, etc, te paso el que hice yo 
+para que lo mejores.
+
+Respuesta:
+Texto del archivo README
+
+
+Prompt 2: resumen para JUSTIFICACION.md
+Mensaje:
+Ayudame a escribir una justificación del diseño de las clases del Backgammon,  
+explicando por qué se separó la lógica en módulos (`jugadores`, `dados`, `fichas`, `tablero`, `excepciones`, `backgammon`),  
+y cómo se aplican los principios SOLID, mira te paso lo que dice el documento.
+
+Respuesta:
+Texto del archivo justificacion.md
