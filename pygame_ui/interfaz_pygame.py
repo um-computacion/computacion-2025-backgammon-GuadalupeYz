@@ -81,6 +81,19 @@ class InterfazPygame:
             pygame.draw.circle(self.pantalla, color, (x, y), 18)
             pygame.draw.circle(self.pantalla, (40, 40, 40), (x, y), 18, 2)
 
+
+    # --- Zonas de salida (Bear-off) ---
+    #  Zona izquierda inferior: fichas blancas retiradas
+            pygame.draw.rect(self.pantalla, (230, 230, 230), (10, 400, 35, 140))  # recuadro blanco
+            texto_out_blanco = fuente.render("OUT", True, (50, 50, 50))
+            self.pantalla.blit(texto_out_blanco, (12, 380))
+
+    #  Zona derecha superior: fichas negras retiradas
+            pygame.draw.rect(self.pantalla, (50, 50, 50), (860, 60, 35, 140))  # recuadro negro
+            texto_out_negro = fuente.render("OUT", True, (255, 255, 255))
+            self.pantalla.blit(texto_out_negro, (862, 40))
+
+
     # --- Fichas ---
      self.dibujar_fichas()
 
@@ -102,9 +115,10 @@ class InterfazPygame:
 
 
     def dibujar_fichas(self):
-     """Dibuja las fichas en el tablero con posicionamiento correcto."""
-     puntos = self.juego.get_tablero().get_points()  #  SIN doble guion bajo
+     """Dibuja las fichas en el tablero y las retiradas (bear-off)."""
+     puntos = self.juego.get_tablero().get_points()
 
+    # --- Fichas en el tablero ---
      for punto_idx, pila in enumerate(puntos):
         if not pila:
             continue
@@ -112,17 +126,35 @@ class InterfazPygame:
         for j, ficha in enumerate(pila):
             color = COLOR_BLANCO if ficha.get_color() == "blanco" else COLOR_NEGRO
 
-            #  CORRECCIÓN: Usar 65 píxeles (igual que triángulos)
-            if punto_idx <= 11:  # Puntos 0-11 (arriba)
-                x = 60 + punto_idx * 65 + 32  # +32 para centrar
+            # Coordenadas según el punto (arriba o abajo)
+            if punto_idx <= 11:  # Puntos 0–11 (arriba)
+                x = 60 + punto_idx * 65 + 32
                 y = 80 + j * 22
-            else:  # Puntos 12-23 (abajo)
+            else:  # Puntos 12–23 (abajo)
                 col = 23 - punto_idx
                 x = 60 + col * 65 + 32
                 y = 520 - j * 22
 
             pygame.draw.circle(self.pantalla, color, (x, y), 18)
             pygame.draw.circle(self.pantalla, (50, 50, 50), (x, y), 18, 2)
+
+    # --- Fichas fuera del tablero (bear-off) ---
+     fuera_blancas = self.juego.get_fichas_fuera("blanco")
+     fuera_negras = self.juego.get_fichas_fuera("negro")
+
+    # Blancas → arriba a la derecha
+     for i, ficha in enumerate(fuera_blancas):
+        x = 880
+        y = 70 + i * 20
+        pygame.draw.circle(self.pantalla, COLOR_BLANCO, (x, y), 10)
+        pygame.draw.circle(self.pantalla, (50, 50, 50), (x, y), 10, 2)
+
+    # Negras → abajo a la derecha
+     for i, ficha in enumerate(fuera_negras):
+        x = 880
+        y = 530 - i * 20
+        pygame.draw.circle(self.pantalla, COLOR_NEGRO, (x, y), 10)
+        pygame.draw.circle(self.pantalla, (255, 255, 255), (x, y), 10, 2)
 
 
     def resaltar_punto(self, punto: int):
@@ -190,30 +222,27 @@ class InterfazPygame:
         pygame.draw.rect(self.pantalla, (0, 0, 0), rect_texto.inflate(40, 20))
         self.pantalla.blit(texto_victoria, rect_texto)
 
-    def calcular_destinos_validos(self, punto_origen: int) -> list[int]:
-     """Devuelve los puntos destino válidos desde punto_origen según color/dados."""
+    def calcular_destinos_validos(self, punto_origen):
+     destinos = []
      dados = self.juego.get_dados_disponibles() or []
      if not dados:
-        return []
+        return destinos
 
      jugador = self.juego.get_turno()
      color = (jugador.get_color() or "").strip().lower()
      puntos = self.juego.get_tablero().get_points()
-     destinos: list[int] = []
 
-    # Sentido correcto:
-    # - blancas avanzan hacia la IZQUIERDA (índice menor) => destino = origen - d
-    # - negras  avanzan hacia la DERECHA (índice mayor)   => destino = origen + d
      for d in dados:
+        # Blancas van hacia índices MENORES (→ 0..5)
+        # Negras  van hacia índices MAYORES (→ 18..23)
         destino = punto_origen - d if color == "blanco" else punto_origen + d
+
         if 0 <= destino < 24:
-            pila = puntos[destino]
-            # no permitir puntos bloqueados (2+ del rival)
-            if pila and pila[-1].get_color() != color and len(pila) > 1:
+            pila_destino = puntos[destino]
+            if pila_destino and pila_destino[-1].get_color() != color and len(pila_destino) > 1:
                 continue
             destinos.append(destino)
 
-    # eliminar duplicados (por dobles) y ordenar para pintar prolijo
      return sorted(set(destinos))
 
     def manejar_click(self, posicion: tuple[int, int]):
@@ -223,6 +252,8 @@ class InterfazPygame:
      jugador = self.juego.get_turno()
      color = jugador.get_color()
      dados = self.juego.get_dados_disponibles() or []
+     print("DEBUG puede_sacar_fichas:", self.juego.puede_sacar_fichas(jugador))
+
 
     # --- Click en botón "Tirar dados" ---
      if self.boton_dados.collidepoint(posicion):
@@ -292,10 +323,81 @@ class InterfazPygame:
                     return
 
                 except (MovimientoInvalidoException, FichaInvalidaException) as e:
-                    self.mensaje = str(e)
-                    return
+                # Si no puede sacar ficha, simplemente muestra el mensaje y deja intentar mover
+                  self.mensaje = str(e)
+                # No bloquea el juego: no borres los dados ni cambies turno
+                  return
+
 
         return  # Salir si el jugador tenía fichas en el BAR
+            # --- Verificar si el jugador tiene movimientos posibles ---
+     puntos = self.juego.get_tablero().get_points()
+     color = jugador.get_color()
+     dados = self.juego.get_dados_disponibles() or []
+
+     movimientos_posibles = False
+     for i, pila in enumerate(puntos):
+        if pila and pila[-1].get_color() == color:
+            destinos = self.calcular_destinos_validos(i)
+            if destinos:
+                movimientos_posibles = True
+                break
+
+    # Si no hay movimientos posibles, pasar turno automáticamente
+     if not movimientos_posibles and self.dados_tirados:
+        self.mensaje = "No hay movimientos posibles, se pasa el turno."
+        self.juego.cambiar_turno()
+        self.dados_tirados = False
+        self.dados = (0, 0)
+        turno = self.juego.get_turno()
+        self.mensaje = f"Turno de {turno.get_nombre()} ({turno.get_color()})."
+        pygame.display.flip()
+        return
+    
+        # --- Intentar sacar ficha (fase Bear-Off) ---
+     if self.juego.puede_sacar_fichas(jugador):
+      puntos = self.juego.get_tablero().get_points()
+     for punto, area in self.hitmap.items():
+        if area.collidepoint(posicion):
+            # Solo puede sacar si hay una ficha propia en ese punto
+            if not puntos[punto] or puntos[punto][-1].get_color() != color:
+                continue
+
+            try:
+                # Intenta sacar la ficha del tablero
+                self.juego.sacar_ficha(jugador, punto)
+                self.mensaje = f"Sacaste una ficha desde el punto {punto}."
+
+                # Chequear si la jugada terminó en victoria
+                ganador = self.juego.finalizar_jugada()
+                if ganador:
+                    self.juego_terminado = True
+                    self.mensaje = f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉"
+
+                    # Mostrar el cartel de victoria en grande
+                    self.pantalla.fill((0, 0, 0))
+                    texto = fuente_victoria.render(self.mensaje, True, (255, 255, 255))
+                    rect_texto = texto.get_rect(center=(ANCHO_VENTANA // 2, ALTO_VENTANA // 2))
+                    self.pantalla.blit(texto, rect_texto)
+                    pygame.display.flip()
+
+                    # Esperar unos segundos antes de cerrar la partida
+                    pygame.time.wait(4000)
+                    return
+
+                # Si no ganó todavía, sigue el turno normal
+                if not self.juego.get_dados_disponibles():
+                    self.dados_tirados = False
+                    self.dados = (0, 0)
+                    turno = self.juego.get_turno()
+                    self.mensaje = f"Turno de {turno.get_nombre()} ({turno.get_color()})."
+
+                return
+
+            except (MovimientoInvalidoException, FichaInvalidaException) as e:
+                self.mensaje = str(e)
+                return
+
 
      # --- Movimiento normal sobre el tablero ---
      for punto, area in self.hitmap.items():
@@ -378,7 +480,6 @@ class InterfazPygame:
         # for i, ficha in enumerate(self.juego.get_fichas_sacadas("blanco")):
         #     y = 500 - i * 25
         #     pygame.draw.circle(self.pantalla, COLOR_BLANCO, (890, y), 12)
-
 
 # --- PRUEBA DIRECTA ---
 # --- PRUEBA DIRECTA ---

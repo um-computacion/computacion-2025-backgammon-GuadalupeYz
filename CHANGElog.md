@@ -149,8 +149,14 @@ cambios sprint 5
 
 #commit 7: Manejo de eventos del botón “Tirar dados”. Se muestran los valores de los dados en pantalla tras cada tirada. Mejoras visuales en la actualización del tablero y textos.
 
-#commit 8: Mejoras visuales y funcionales en interfaz Pygame. Se agrego visualizacion del BAR central con fichas capturadas. Centrado y apilado de las fichas en el tablero. Ajuste el boton 'Tirar dados' y los mensajes informativos. Seleccion de fichas (resaltado celeste y destinos verdes). Logica de reingreso de fichas desde el BAR. 
+#commit 8
+28/10: Mejoras visuales y funcionales en interfaz Pygame. Se agrego visualizacion del BAR central con fichas capturadas. Centrado y apilado de las fichas en el tablero. Ajuste el boton 'Tirar dados' y los mensajes informativos. Seleccion de fichas (resaltado celeste y destinos verdes). Logica de reingreso de fichas desde el BAR. 
 
-#commit 9: Metodo sacar_ficha() y un bloque de prueba (if __name__ == "__main__") para verificar que las fichas puedan retirarse cuando todas están en la casa.
+#commit 9
+28/10: Metodo sacar_ficha() y un bloque de prueba (if __name__ == "__main__") para verificar que las fichas puedan retirarse cuando todas están en la casa.
 
-#commit 10:Preparar interfaz para mostrar fichas retiradas (inicio fase bear-off)
+#commit 10
+28/10:Preparar interfaz para mostrar fichas retiradas (inicio fase bear-off)
+
+cambios sprint 6
+30/10: Interfaz pygame y CLI listas, con los respectivos tests. Agrego CI con coverage y pylint automáticos
