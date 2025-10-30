@@ -133,14 +133,30 @@ cambios sprint 4
 #commit 11
 14/10: Actualizacion de codigo en Pygame. Agrege self.hitmap para ver las coordenadas del tablero. Metodo manejar_click usa collidepoint para detectar donde se hizo clic. Se actualizó resaltar_punto
 
+cambios sprint 5
 
+#commit 1: Mejora en la interfaz para mostrar dados y turno en pantalla. Se agregan tests que verifican que dibujar_tablero se ejecute sin errores y la seleccion de puntos funcione correctamente
 
+#commit 2: Nuevo botón interactivo “Tirar dados”. Se muestran en pantalla los valores de los dados. Se agrego sistema de mensajes (exito o error) visibles en la interfaz y mejoras visuales
 
+#commit 3: Agrego mostrar mensaje de victoria y bloquear interaccion al finalizar partida. Nuevo metodo mostrar_victoria y sus tests correspondientes para probar los cambios
 
+#commit 4: Conexión de victoria con CLI e Interfaz. Se añadio el método finalizar_jugada() en BackgammonGame y ahora en Interfaz Pygame manejar_click() puede llamar a finalizar_jugada() para sincronizar ambos modos texto y grafico
 
+#commit 5: Soporte para finalizar partida tras detectar un ganador. Metodo finalizar_jugada() en la interfaz que consulta al backend y muestra el mensaje de victoria. Bloqueo de interacción
 
+#commit 6: Agrego nueva opcion '4. Abandonar partida' al menu principal en CLI, y mejoras en la validación de entradas vacias o no numericas. Tambien agregue tests para probar la logica
 
+#commit 7: Manejo de eventos del botón “Tirar dados”. Se muestran los valores de los dados en pantalla tras cada tirada. Mejoras visuales en la actualización del tablero y textos.
 
+#commit 8
+28/10: Mejoras visuales y funcionales en interfaz Pygame. Se agrego visualizacion del BAR central con fichas capturadas. Centrado y apilado de las fichas en el tablero. Ajuste el boton 'Tirar dados' y los mensajes informativos. Seleccion de fichas (resaltado celeste y destinos verdes). Logica de reingreso de fichas desde el BAR. 
 
+#commit 9
+28/10: Metodo sacar_ficha() y un bloque de prueba (if __name__ == "__main__") para verificar que las fichas puedan retirarse cuando todas están en la casa.
 
+#commit 10
+28/10:Preparar interfaz para mostrar fichas retiradas (inicio fase bear-off)
 
+cambios sprint 6
+30/10: Interfaz pygame y CLI listas, con los respectivos tests. Agrego CI con coverage y pylint automáticos

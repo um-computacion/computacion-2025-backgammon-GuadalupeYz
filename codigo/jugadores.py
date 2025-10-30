@@ -35,10 +35,21 @@ class Jugador:  # representa a un jugador de Backgammon
         self.__fichas.append(ficha)
 
     def eliminar_ficha(self, ficha: Ficha) -> None:
-        if ficha in self.__fichas:
-            self.__fichas.remove(ficha)
+     """
+     Elimina la ficha indicada si existe en la lista.
+     Si no la encuentra por identidad, elimina una del mismo color.
+     """
+     try:
+        self.__fichas.remove(ficha)
+     except ValueError:
+        # Buscar una ficha del mismo color y eliminarla
+        for f in list(self.__fichas):
+            if f.get_color() == ficha.get_color():
+                self.__fichas.remove(f)
+                break
         else:
             raise ValueError("La ficha no pertenece a este jugador")
+
 
     def cantidad_fichas(self) -> int:
         return len(self.__fichas)
