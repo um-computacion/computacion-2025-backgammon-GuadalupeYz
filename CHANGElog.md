@@ -158,5 +158,10 @@ cambios sprint 5
 #commit 10
 28/10:Preparar interfaz para mostrar fichas retiradas (inicio fase bear-off)
 
-cambios sprint 6
+cambios sprint 6 
+
+#commit 1
 30/10: Interfaz pygame y CLI listas, con los respectivos tests. Agrego CI con coverage y pylint automáticos
+
+#commit 2
+30/10: Cambiando documento requirements.txt para integracion continua
