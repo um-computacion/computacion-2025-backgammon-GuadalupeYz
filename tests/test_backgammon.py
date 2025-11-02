@@ -154,7 +154,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         juego.agregar_jugador(j2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         # j2 intenta mover en turno de j1
         with self.assertRaises(MovimientoInvalidoException):
@@ -190,7 +190,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         juego.get_bar()["blanco"].append(ficha)
 
         # Limpiar dados disponibles (sin dados no puede reingresar)
-        juego._BackgammonGame__dados_disponibles____ = []
+        juego._BackgammonGame__dados_disponibles = []
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.reingresar_ficha(j1, 20)
@@ -204,7 +204,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         juego.agregar_jugador(j2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [2]
+        juego._BackgammonGame__dados_disponibles = [2]
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.sacar_ficha(j1, 5)
@@ -223,12 +223,12 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         for i in range(24):
             puntos[i].clear()
 
-        j1._Jugador__fichas____.clear()
+        j1._Jugador__fichas.clear()
         ficha = Ficha("blanco")
         j1.agregar_ficha(ficha)
         puntos[2].append(ficha)
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.sacar_ficha(j1, 5)  # Punto 5 está vacío
@@ -247,12 +247,12 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         for i in range(24):
             puntos[i].clear()
 
-        j1._Jugador__fichas____.clear()
+        j1._Jugador__fichas.clear()
         # Poner ficha negra en casa de blancas
         ficha_negra = Ficha("negro")
         puntos[2].append(ficha_negra)
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         with self.assertRaises(FichaInvalidaException):
             juego.sacar_ficha(j1, 2)
@@ -278,7 +278,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         juego.agregar_jugador(j2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         # Colocar ficha negra sola
         ficha_negra = Ficha("negro")
@@ -306,7 +306,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         ficha_negra = Ficha("negro")
         juego.get_tablero().get_points()[20] = [ficha_negra]
 
-        juego._BackgammonGame__dados_disponibles____ = [4]  # reingreso en 20
+        juego._BackgammonGame__dados_disponibles = [4]  # reingreso en 20
 
         juego.reingresar_ficha(j1, 20)
 
@@ -323,7 +323,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         juego.agregar_jugador(j2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [2, 5]
+        juego._BackgammonGame__dados_disponibles = [2, 5]
 
         juego.mover_ficha(j1, 23, 21)  # Mover 2
 
@@ -343,7 +343,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         ficha = juego.get_tablero().get_points()[23].pop()
         juego.get_bar()["blanco"].append(ficha)
 
-        juego._BackgammonGame__dados_disponibles____ = [3, 4]
+        juego._BackgammonGame__dados_disponibles = [3, 4]
 
         juego.reingresar_ficha(j1, 20)  # necesita dado 4
 
@@ -364,12 +364,12 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         for i in range(24):
             puntos[i].clear()
 
-        j1._Jugador__fichas____.clear()
+        j1._Jugador__fichas.clear()
         ficha = Ficha("blanco")
         j1.agregar_ficha(ficha)
         puntos[2].append(ficha)
 
-        juego._BackgammonGame__dados_disponibles____ = [3, 5]
+        juego._BackgammonGame__dados_disponibles = [3, 5]
 
         juego.sacar_ficha(j1, 2)  # necesita dado 3
 
@@ -384,7 +384,7 @@ class TestBackgammonEdgeCases(unittest.TestCase):
         juego.agregar_jugador(j1)
         juego.agregar_jugador(j2)
 
-        juego._BackgammonGame__dados_disponibles____ = [3, 5]
+        juego._BackgammonGame__dados_disponibles = [3, 5]
 
         dados = juego.get_dados_disponibles()
         dados.append(6)  # Modificar copia
@@ -411,7 +411,7 @@ class TestBackgammonIntegracion(unittest.TestCase):
         self.assertGreater(len(juego.get_dados_disponibles()), 0)
 
         # Simular movimiento válido
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
         juego.mover_ficha(j1, 23, 20)
 
         # Turno cambió automáticamente
@@ -427,7 +427,7 @@ class TestBackgammonIntegracion(unittest.TestCase):
         juego.setup_inicial()
 
         # Capturar ficha
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
         ficha_negra = Ficha("negro")
         juego.get_tablero().get_points()[20] = [ficha_negra]
 
@@ -438,7 +438,7 @@ class TestBackgammonIntegracion(unittest.TestCase):
 
         # Cambiar a Bob y reingresar
         juego.cambiar_turno()
-        juego._BackgammonGame__dados_disponibles____ = [5]
+        juego._BackgammonGame__dados_disponibles = [5]
 
         juego.reingresar_ficha(j2, 4)  # negro reingresa en 4 (distancia 5)
 
@@ -456,7 +456,7 @@ class TestBackgammonIntegracion(unittest.TestCase):
         # Modificar estado
         juego.get_historial().append("test")
         juego.get_bar()["blanco"].append(Ficha("blanco"))
-        juego._BackgammonGame__dados_disponibles____ = [3, 5]
+        juego._BackgammonGame__dados_disponibles = [3, 5]
 
         # Hacer setup de nuevo
         juego.setup_inicial()
@@ -568,8 +568,8 @@ class TestBackgammonMovimientos(unittest.TestCase):
         juego.setup_inicial()
 
         # Forzar dados disponibles
-        juego._BackgammonGame__dados_disponibles____ = [3, 5]
-        juego._BackgammonGame__ultima_tirada____ = (3, 5)
+        juego._BackgammonGame__dados_disponibles = [3, 5]
+        juego._BackgammonGame__ultima_tirada = (3, 5)
 
         tablero = juego.get_tablero().get_points()
         fichas_antes = len(tablero[23])
@@ -588,7 +588,7 @@ class TestBackgammonMovimientos(unittest.TestCase):
         juego.agregar_jugador(jugador2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [5]
+        juego._BackgammonGame__dados_disponibles = [5]
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.mover_ficha(jugador1, 10, 5)  # punto 10 está vacío
@@ -602,7 +602,7 @@ class TestBackgammonMovimientos(unittest.TestCase):
         juego.agregar_jugador(jugador2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         # Intentar mover fichas negras (punto 0) siendo jugador blanco
         with self.assertRaises(FichaInvalidaException):
@@ -617,7 +617,7 @@ class TestBackgammonMovimientos(unittest.TestCase):
         juego.agregar_jugador(jugador2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [1]
+        juego._BackgammonGame__dados_disponibles = [1]
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.mover_ficha(jugador1, 0, -1)
@@ -635,8 +635,8 @@ class TestBackgammonMovimientos(unittest.TestCase):
         juego.setup_inicial()
 
         # Dados disponibles: 2 y 4
-        juego._BackgammonGame__dados_disponibles____ = [2, 4]
-        juego._BackgammonGame__ultima_tirada____ = (2, 4)
+        juego._BackgammonGame__dados_disponibles = [2, 4]
+        juego._BackgammonGame__ultima_tirada = (2, 4)
 
         # Intentar mover 5 espacios (no hay dado de 5)
         with self.assertRaises(MovimientoInvalidoException):
@@ -651,7 +651,7 @@ class TestBackgammonMovimientos(unittest.TestCase):
         juego.agregar_jugador(j2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         # Blancas no pueden moverse hacia índices mayores
         with self.assertRaises(MovimientoInvalidoException):
@@ -667,7 +667,7 @@ class TestBackgammonMovimientos(unittest.TestCase):
         juego.setup_inicial()
 
         juego.cambiar_turno()  # Cambiar a negras
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         # Negras no pueden moverse hacia índices menores
         with self.assertRaises(MovimientoInvalidoException):
@@ -686,7 +686,7 @@ class TestBackgammonCaptura(unittest.TestCase):
         juego.agregar_jugador(jugador2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         # Colocar una ficha negra sola en punto 20
         ficha_negra = Ficha("negro")
@@ -708,7 +708,7 @@ class TestBackgammonCaptura(unittest.TestCase):
         juego.agregar_jugador(jugador2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         # Colocar dos fichas negras en punto 20
         ficha_negra1 = Ficha("negro")
@@ -737,7 +737,7 @@ class TestBackgammonReingreso(unittest.TestCase):
         juego.get_bar()["blanco"].append(ficha_blanca)
 
         # Setear dados: para blancas, reingreso en punto 20 necesita dado 4 (24-20=4)
-        juego._BackgammonGame__dados_disponibles____ = [4]
+        juego._BackgammonGame__dados_disponibles = [4]
 
         juego.reingresar_ficha(jugador1, 20)
 
@@ -753,7 +753,7 @@ class TestBackgammonReingreso(unittest.TestCase):
         juego.agregar_jugador(jugador2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.reingresar_ficha(jugador1, 20)
@@ -771,7 +771,7 @@ class TestBackgammonReingreso(unittest.TestCase):
         ficha = Ficha("blanco")
         juego.get_bar()["blanco"].append(ficha)
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.mover_ficha(jugador1, 23, 20)
@@ -792,7 +792,7 @@ class TestBackgammonReingreso(unittest.TestCase):
         # Bloquear punto 20 con dos fichas negras
         juego.get_tablero().get_points()[20] = [Ficha("negro"), Ficha("negro")]
 
-        juego._BackgammonGame__dados_disponibles____ = [4]  # reingreso en 20
+        juego._BackgammonGame__dados_disponibles = [4]  # reingreso en 20
 
         with self.assertRaises(MovimientoInvalidoException):
             juego.reingresar_ficha(jugador1, 20)
@@ -810,7 +810,7 @@ class TestBackgammonHistorial(unittest.TestCase):
         juego.agregar_jugador(jugador2)
         juego.setup_inicial()
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
         juego.mover_ficha(jugador1, 23, 20)
 
         historial = juego.get_historial()
@@ -847,7 +847,7 @@ class TestBackgammonVictoria(unittest.TestCase):
         puntos = juego.get_tablero().get_points()
         for punto in [23, 12, 7, 5]:
             puntos[punto].clear()
-        jugador1._Jugador__fichas____.clear()
+        jugador1._Jugador__fichas.clear()
 
         self.assertEqual(juego.chequear_victoria(), jugador1)
 
@@ -864,7 +864,7 @@ class TestBackgammonVictoria(unittest.TestCase):
         puntos = juego.get_tablero().get_points()
         for punto in [0, 11, 16, 18]:
             puntos[punto].clear()
-        jugador2._Jugador__fichas____.clear()
+        jugador2._Jugador__fichas.clear()
 
         self.assertEqual(juego.chequear_victoria(), jugador2)
 
@@ -892,7 +892,7 @@ class TestBackgammonVictoria(unittest.TestCase):
         puntos = juego.get_tablero().get_points()
         for punto in [23, 12, 7, 5]:
             puntos[punto].clear()
-        jugador1._Jugador__fichas____.clear()
+        jugador1._Jugador__fichas.clear()
 
         ganador = juego.finalizar_jugada()
         self.assertEqual(ganador, jugador1)
@@ -985,7 +985,7 @@ class TestBackgammonBearOff(unittest.TestCase):
         for i in range(24):
             puntos[i].clear()
 
-        jugador1._Jugador__fichas____.clear()
+        jugador1._Jugador__fichas.clear()
         for i in range(6):
             for _ in range(2):
                 ficha = Ficha("blanco")
@@ -1020,12 +1020,12 @@ class TestBackgammonBearOff(unittest.TestCase):
         for i in range(24):
             puntos[i].clear()
 
-        jugador1._Jugador__fichas____.clear()
+        jugador1._Jugador__fichas.clear()
         ficha = Ficha("blanco")
         jugador1.agregar_ficha(ficha)
         puntos[2].append(ficha)  # Punto 2, necesita dado 3 para sacar
 
-        juego._BackgammonGame__dados_disponibles____ = [3]
+        juego._BackgammonGame__dados_disponibles = [3]
 
         juego.sacar_ficha(jugador1, 2)
 

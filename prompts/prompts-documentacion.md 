@@ -22,3 +22,14 @@ y cómo se aplican los principios SOLID, mira te paso lo que dice el documento.
 Respuesta:
 Texto del archivo justificacion.md
 
+Prompt 3: Intento de automatización del refactor de atributos
+
+Durante el proceso de adaptación del código a la nueva convención solicitada por la cátedra (uso de doble subrayado como prefijo y sufijo en los atributos, por ejemplo __velocidad__), se intentó realizar un refactor automatizado mediante un script en Python.
+
+El objetivo del script era recorrer todas las carpetas (codigo/, cli/ y tests/) y renombrar de forma segura todos los atributos y referencias internas que no cumplieran con el formato __atributo__.
+El script realizaba backups automáticos y aplicaba expresiones regulares para reemplazar nombres como self.__atributo o _Clase__atributo.
+
+Sin embargo, tras las pruebas, el script no produjo los resultados esperados, y se decidió no utilizarlo finalmente, ya que algunos cambios automáticos afectaban la sincronización entre clases y tests.
+Por motivos de tiempo, se mantuvo el enfoque manual y se priorizó conservar la estabilidad del código y la ejecución correcta de los tests.
+
+(Comentario personal: intenté hacerlo con un script, pero no me resultó, así que lo dejé por la paz. Igual, valió el intento).

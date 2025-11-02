@@ -13,55 +13,55 @@ class BackgammonGame:
 
     def __init__(self) -> None:
         """Inicializa los componentes básicos del juego."""
-        self.__jugadores____: List[Jugador] = []
-        self.__tablero____: Tablero = Tablero()
-        self.__dados____: Dados = Dados()
-        self.__turno_actual____: int = 0
-        self.__historial____: List[str] = []
-        self.__dados_disponibles____: List[int] = []
-        self.__bar____: dict[str, List[Ficha]] = {"blanco": [], "negro": []}
-        self.__ultima_tirada____: Tuple[int, int] = (0, 0)
-        self.__fichas_fuera_blanco____: List[Ficha] = []
-        self.__fichas_fuera_negro____: List[Ficha] = []
+        self.__jugadores: List[Jugador] = []
+        self.__tablero: Tablero = Tablero()
+        self.__dados: Dados = Dados()
+        self.__turno_actual: int = 0
+        self.__historial: List[str] = []
+        self.__dados_disponibles: List[int] = []
+        self.__bar: dict[str, List[Ficha]] = {"blanco": [], "negro": []}
+        self.__ultima_tirada: Tuple[int, int] = (0, 0)
+        self.__fichas_fuera_blanco: List[Ficha] = []
+        self.__fichas_fuera_negro: List[Ficha] = []
 
     # -------- Getters --------
     def get_jugadores(self) -> List[Jugador]:
         """Devuelve la lista de jugadores."""
-        return self.__jugadores____
+        return self.__jugadores
 
     def get_tablero(self) -> Tablero:
         """Devuelve el tablero actual."""
-        return self.__tablero____
+        return self.__tablero
 
     def get_fichas_fuera(self, color: str) -> List[Ficha]:
         """Devuelve las fichas fuera del tablero según el color."""
-        return self.__fichas_fuera_blanco____ if color == "blanco" else self.__fichas_fuera_negro____
+        return self.__fichas_fuera_blanco if color == "blanco" else self.__fichas_fuera_negro
 
     def get_dados(self) -> Dados:
         """Devuelve el objeto dados."""
-        return self.__dados____
+        return self.__dados
 
     def get_historial(self) -> List[str]:
         """Devuelve el historial de movimientos."""
-        return self.__historial____
+        return self.__historial
 
     def get_bar(self) -> dict[str, List[Ficha]]:
         """Devuelve el diccionario con las fichas en la barra."""
-        return self.__bar____
+        return self.__bar
 
     def get_dados_disponibles(self) -> List[int]:
         """Devuelve los dados disponibles en el turno actual."""
-        return list(self.__dados_disponibles____)
+        return list(self.__dados_disponibles)
 
     def get_ultima_tirada(self) -> Tuple[int, int]:
         """Devuelve la última tirada realizada."""
-        return self.__ultima_tirada____
+        return self.__ultima_tirada
 
     def get_turno(self) -> Jugador:
         """Devuelve el jugador del turno actual."""
-        if not self.__jugadores____:
+        if not self.__jugadores:
             raise ValueError("No hay jugadores en la partida")
-        return self.__jugadores____[self.__turno_actual____]
+        return self.__jugadores[self.__turno_actual]
 
     def get_ganador(self) -> Optional[Jugador]:
         """Devuelve el jugador ganador si hay uno."""
@@ -70,37 +70,37 @@ class BackgammonGame:
     # -------- Setters --------
     def set_tablero(self, tablero: Tablero) -> None:
         """Permite establecer un tablero nuevo."""
-        self.__tablero____ = tablero
+        self.__tablero = tablero
 
     def set_dados(self, dados: Dados) -> None:
         """Permite establecer un nuevo conjunto de dados."""
-        self.__dados____ = dados
+        self.__dados = dados
 
     # -------- Jugadores --------
     def agregar_jugador(self, jugador: Jugador) -> None:
         """Agrega un jugador a la partida."""
-        if len(self.__jugadores____) < 2:
-            self.__jugadores____.append(jugador)
+        if len(self.__jugadores) < 2:
+            self.__jugadores.append(jugador)
         else:
             raise ValueError("Ya hay 2 jugadores en la partida")
 
     def iniciar_juego(self) -> None:
         """Inicia la partida si hay dos jugadores."""
-        if len(self.__jugadores____) != 2:
+        if len(self.__jugadores) != 2:
             raise ValueError("Se necesitan 2 jugadores para iniciar el juego")
         print("¡¡Comienza la partida de Backgammon!!")
 
     def setup_inicial(self) -> None:
         """Coloca las fichas en la posición inicial clásica del Backgammon real."""
-        if len(self.__jugadores____) != 2:
+        if len(self.__jugadores) != 2:
             raise ValueError("Se necesitan 2 jugadores para preparar el tablero inicial")
 
-        jugador_blanco, jugador_negro = self.__jugadores____
-        self.__tablero____ = Tablero()
+        jugador_blanco, jugador_negro = self.__jugadores
+        self.__tablero = Tablero()
 
         # Limpia las fichas previas
-        jugador_blanco._Jugador__fichas__.clear()
-        jugador_negro._Jugador__fichas__.clear()
+        jugador_blanco._Jugador__fichas.clear()
+        jugador_negro._Jugador__fichas.clear()
 
         # Posiciones iniciales
         posiciones_blancas = {23: 2, 12: 5, 7: 3, 5: 5}
@@ -111,41 +111,41 @@ class BackgammonGame:
             for _ in range(cantidad):
                 ficha = Ficha("blanco")
                 jugador_blanco.agregar_ficha(ficha)
-                self.__tablero____.colocar_ficha(punto, ficha)
+                self.__tablero.colocar_ficha(punto, ficha)
 
         # Colocar fichas negras
         for punto, cantidad in posiciones_negras.items():
             for _ in range(cantidad):
                 ficha = Ficha("negro")
                 jugador_negro.agregar_ficha(ficha)
-                self.__tablero____.colocar_ficha(punto, ficha)
+                self.__tablero.colocar_ficha(punto, ficha)
 
         # Reiniciar estado
-        self.__bar____ = {"blanco": [], "negro": []}
-        self.__historial____ = []
-        self.__dados_disponibles____ = []
-        self.__ultima_tirada____ = (0, 0)
+        self.__bar = {"blanco": [], "negro": []}
+        self.__historial = []
+        self.__dados_disponibles = []
+        self.__ultima_tirada = (0, 0)
 
     # -------- Dados y turnos --------
     def tirar_dados(self) -> Tuple[int, int]:
         """Lanza los dados y actualiza los disponibles."""
-        self.__ultima_tirada____ = self.__dados____.roll()
-        a, b = self.__ultima_tirada____
-        self.__dados_disponibles____ = [a, a, a, a] if a == b else [a, b]
-        return self.__ultima_tirada____
+        self.__ultima_tirada = self.__dados.roll()
+        a, b = self.__ultima_tirada
+        self.__dados_disponibles = [a, a, a, a] if a == b else [a, b]
+        return self.__ultima_tirada
 
     def finalizar_turno(self) -> None:
         """Finaliza el turno actual."""
-        self.__dados_disponibles____.clear()
+        self.__dados_disponibles.clear()
         self.cambiar_turno()
 
     def cambiar_turno(self) -> None:
         """Cambia al otro jugador."""
-        if len(self.__jugadores____) != 2:
+        if len(self.__jugadores) != 2:
             raise ValueError("Se necesitan 2 jugadores para cambiar turno")
-        self.__turno_actual____ = 1 - self.__turno_actual____
-        self.__dados_disponibles____ = []
-        self.__ultima_tirada____ = (0, 0)
+        self.__turno_actual = 1 - self.__turno_actual
+        self.__dados_disponibles = []
+        self.__ultima_tirada = (0, 0)
 
     # -------- Reglas --------
     @staticmethod
@@ -156,11 +156,11 @@ class BackgammonGame:
 
     def __hay_que_reingresar(self, color: str) -> bool:
         """Devuelve True si hay fichas en la barra de ese color."""
-        return len(self.__bar____[color]) > 0
+        return len(self.__bar[color]) > 0
 
     def __validar_movimiento_basico(self, jugador: Jugador, origen: int, destino: int) -> int:
         """Valida si un movimiento es legal según el dado."""
-        puntos = self.__tablero____.get_points()
+        puntos = self.__tablero.get_points()
 
         if not (0 <= origen < 24) or not (0 <= destino < 24):
             raise MovimientoInvalidoException("El punto debe estar entre 0 y 23")
@@ -172,7 +172,7 @@ class BackgammonGame:
         if ficha.get_color() != jugador.get_color():
             raise FichaInvalidaException("La ficha no pertenece al jugador")
 
-        dir_j = self.__direccion____(jugador.get_color())
+        dir_j = self.__direccion(jugador.get_color())
         delta = destino - origen
 
         if dir_j == -1 and delta >= 0:
@@ -181,7 +181,7 @@ class BackgammonGame:
             raise MovimientoInvalidoException("Solo se puede avanzar hacia la derecha (negras)")
 
         distancia = abs(delta)
-        if distancia not in self.__dados_disponibles____:
+        if distancia not in self.__dados_disponibles:
             raise MovimientoInvalidoException("El movimiento no coincide con los dados disponibles")
 
         return distancia
@@ -192,37 +192,37 @@ class BackgammonGame:
         if jugador != self.get_turno():
             raise MovimientoInvalidoException("No es el turno de este jugador")
 
-        if self.__hay_que_reingresar____(jugador.get_color()):
+        if self.__hay_que_reingresar(jugador.get_color()):
             raise MovimientoInvalidoException("Debes reingresar desde la barra antes de mover")
 
-        if not self.__dados_disponibles____:
+        if not self.__dados_disponibles:
             raise MovimientoInvalidoException("Aún no tiraste los dados")
 
-        puntos = self.__tablero____.get_points()
-        distancia = self.__validar_movimiento_basico____(jugador, origen, destino)
+        puntos = self.__tablero.get_points()
+        distancia = self.__validar_movimiento_basico(jugador, origen, destino)
 
         if puntos[destino] and puntos[destino][-1].get_color() != jugador.get_color() and len(puntos[destino]) > 1:
             raise MovimientoInvalidoException("Punto bloqueado por el rival")
 
         if puntos[destino] and puntos[destino][-1].get_color() != jugador.get_color() and len(puntos[destino]) == 1:
             ficha_capturada = puntos[destino].pop()
-            self.__bar____[ficha_capturada.get_color()].append(ficha_capturada)
-            self.__historial____.append(
+            self.__bar[ficha_capturada.get_color()].append(ficha_capturada)
+            self.__historial.append(
                 f"{jugador.get_nombre()} capturó una ficha de color {ficha_capturada.get_color()} en {destino}"
             )
 
         ficha = puntos[origen].pop()
-        self.__tablero____.colocar_ficha(destino, ficha)
-        self.__dados_disponibles____.remove(distancia)
-        self.__historial____.append(f"{jugador.get_nombre()} movió una ficha de {origen} a {destino}")
+        self.__tablero.colocar_ficha(destino, ficha)
+        self.__dados_disponibles.remove(distancia)
+        self.__historial.append(f"{jugador.get_nombre()} movió una ficha de {origen} a {destino}")
 
-        if not self.__dados_disponibles____:
+        if not self.__dados_disponibles:
             self.cambiar_turno()
 
     def puede_sacar_fichas(self, jugador: Jugador) -> bool:
         """Devuelve True si el jugador puede empezar a sacar fichas."""
         color = jugador.get_color()
-        puntos = self.__tablero____.get_points()
+        puntos = self.__tablero.get_points()
 
         if color == "blanco":
             casa = range(0, 6)
@@ -237,15 +237,15 @@ class BackgammonGame:
 
     def chequear_victoria(self) -> Optional[Jugador]:
         """Devuelve el jugador que ganó (si no le quedan fichas en ningún lado)."""
-        puntos = self.__tablero____.get_points()
+        puntos = self.__tablero.get_points()
 
-        for jugador in self.__jugadores____:
+        for jugador in self.__jugadores:
             color = jugador.get_color()
             en_tablero = any(
                 any(f.get_color() == color for f in pila)
                 for pila in puntos
             )
-            en_barra = len(self.__bar____[color]) > 0
+            en_barra = len(self.__bar[color]) > 0
             en_lista = len(jugador.get_fichas()) > 0
 
             if not (en_tablero or en_barra or en_lista):
@@ -254,26 +254,26 @@ class BackgammonGame:
 
     def mostrar_estado(self) -> str:
         """Devuelve una cadena con el estado actual de la partida."""
-        turno = self.get_turno().get_nombre() if self.__jugadores____ else "Ninguno"
+        turno = self.get_turno().get_nombre() if self.__jugadores else "Ninguno"
         estado = f"Turno actual: {turno}\n"
-        estado += f"Dados disponibles: {self.__dados_disponibles____}\n"
-        estado += f"Bar: {{blanco: {len(self.__bar____['blanco'])}, negro: {len(self.__bar____['negro'])}}}\n"
-        estado += f"Historial (últimos 5): {self.__historial____[-5:]}\n"
+        estado += f"Dados disponibles: {self.__dados_disponibles}\n"
+        estado += f"Bar: {{blanco: {len(self.__bar['blanco'])}, negro: {len(self.__bar['negro'])}}}\n"
+        estado += f"Historial (últimos 5): {self.__historial[-5:]}\n"
         return estado
 
     def reiniciar_partida(self) -> None:
         """Reinicia todo el estado del juego sin eliminar jugadores."""
-        self.__tablero____ = Tablero()
-        self.__dados____ = Dados()
-        self.__turno_actual____ = 0
-        self.__historial____ = []
-        self.__dados_disponibles____ = []
-        self.__bar____ = {"blanco": [], "negro": []}
+        self.__tablero = Tablero()
+        self.__dados = Dados()
+        self.__turno_actual = 0
+        self.__historial = []
+        self.__dados_disponibles = []
+        self.__bar = {"blanco": [], "negro": []}
 
     def sacar_ficha(self, jugador: Jugador, punto: int) -> None:
         """Permite sacar una ficha del tablero si las condiciones son válidas."""
         color = jugador.get_color()
-        puntos = self.__tablero____.get_points()
+        puntos = self.__tablero.get_points()
 
         if not self.puede_sacar_fichas(jugador):
             raise MovimientoInvalidoException("No podés sacar fichas hasta que todas estén en tu casa")
@@ -284,7 +284,7 @@ class BackgammonGame:
         if ficha.get_color() != color:
             raise FichaInvalidaException("La ficha no pertenece a este jugador")
 
-        if not self.__dados_disponibles____:
+        if not self.__dados_disponibles:
             raise MovimientoInvalidoException("Aún no tiraste los dados")
 
         # Distancia real de bear-off (regla estándar):
@@ -295,7 +295,7 @@ class BackgammonGame:
         else:
             distancia = 24 - punto
 
-        dados = self.__dados_disponibles____
+        dados = self.__dados_disponibles
         dado_a_usar = None
 
         if distancia in dados:
@@ -333,29 +333,29 @@ class BackgammonGame:
             jugador.eliminar_ficha(ficha)
 
         if color == "blanco":
-            self.__fichas_fuera_blanco____.append(ficha)
+            self.__fichas_fuera_blanco.append(ficha)
         else:
-            self.__fichas_fuera_negro____.append(ficha)
+            self.__fichas_fuera_negro.append(ficha)
 
-        self.__dados_disponibles____.remove(dado_a_usar)
-        self.__historial____.append(
+        self.__dados_disponibles.remove(dado_a_usar)
+        self.__historial.append(
             f"{jugador.get_nombre()} sacó una ficha del punto {punto} con dado {dado_a_usar}"
         )
 
-        if not self.__dados_disponibles____:
+        if not self.__dados_disponibles:
             self.cambiar_turno()
 
     def reingresar_ficha(self, jugador: Jugador, punto: int) -> None:
         """Permite reingresar una ficha desde la barra si es posible."""
         color = jugador.get_color()
-        if not self.__bar____[color]:
+        if not self.__bar[color]:
             raise MovimientoInvalidoException("El jugador no tiene fichas en el BAR")
         if not (0 <= punto < 24):
             raise MovimientoInvalidoException("El punto de reingreso debe estar entre 0 y 23")
-        if not self.__dados_disponibles____:
+        if not self.__dados_disponibles:
             raise MovimientoInvalidoException("Aún no tiraste los dados")
 
-        puntos = self.__tablero____.get_points()
+        puntos = self.__tablero.get_points()
         destino_fichas = puntos[punto]
 
         if destino_fichas and destino_fichas[-1].get_color() != color and len(destino_fichas) > 1:
@@ -363,8 +363,8 @@ class BackgammonGame:
 
         if destino_fichas and destino_fichas[-1].get_color() != color and len(destino_fichas) == 1:
             ficha_capturada = destino_fichas.pop()
-            self.__bar____[ficha_capturada.get_color()].append(ficha_capturada)
-            self.__historial____.append(
+            self.__bar[ficha_capturada.get_color()].append(ficha_capturada)
+            self.__historial.append(
                 f"{jugador.get_nombre()} capturó una ficha de color {ficha_capturada.get_color()} al reingresar en {punto}"
             )
 
@@ -373,19 +373,19 @@ class BackgammonGame:
         else:
             distancia = punto + 1
 
-        if distancia not in self.__dados_disponibles____:
+        if distancia not in self.__dados_disponibles:
             raise MovimientoInvalidoException("El reingreso no coincide con los dados disponibles")
 
-        ficha = self.__bar____[color].pop()
-        self.__tablero____.colocar_ficha(punto, ficha)
-        self.__historial____.append(f"{jugador.get_nombre()} reingresó una ficha en el punto {punto}")
+        ficha = self.__bar[color].pop()
+        self.__tablero.colocar_ficha(punto, ficha)
+        self.__historial.append(f"{jugador.get_nombre()} reingresó una ficha en el punto {punto}")
 
-        if distancia in self.__dados_disponibles____:
-            self.__dados_disponibles____.remove(distancia)
+        if distancia in self.__dados_disponibles:
+            self.__dados_disponibles.remove(distancia)
 
-        if self.__bar____[color] and self.__dados_disponibles____:
+        if self.__bar[color] and self.__dados_disponibles:
             return
-        if not self.__dados_disponibles____:
+        if not self.__dados_disponibles:
             self.cambiar_turno()
 
     def finalizar_jugada(self) -> Optional[Jugador]:

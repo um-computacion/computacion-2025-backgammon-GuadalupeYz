@@ -4,8 +4,8 @@ from codigo.excepciones import MovimientoInvalidoException, FichaInvalidaExcepti
 
 class CLI:
     def __init__(self) -> None:
-        self.__juego____: BackgammonGame | None = None
-        self.__partida_activa____: bool = False
+        self.__juego: BackgammonGame | None = None
+        self.__partida_activa: bool = False
 
     # ---------------- MENÚ PRINCIPAL ----------------
     def start(self) -> None:
@@ -31,8 +31,8 @@ class CLI:
 
     # ---------------- CONFIGURACIÓN DE PARTIDA ----------------
     def iniciar_partida(self) -> None:
-        self.__juego____ = BackgammonGame()
-        self.__partida_activa____ = True
+        self.__juego = BackgammonGame()
+        self.__partida_activa = True
 
         print("\nCargando jugadores...")
         nombre1 = input("Nombre del jugador 1 (blanco): ")
@@ -41,10 +41,10 @@ class CLI:
         jugador1 = Jugador(nombre1, "blanco")
         jugador2 = Jugador(nombre2, "negro")
 
-        self.__juego____.agregar_jugador(jugador1)
-        self.__juego____.agregar_jugador(jugador2)
-        self.__juego____.iniciar_juego()
-        self.__juego____.setup_inicial()
+        self.__juego.agregar_jugador(jugador1)
+        self.__juego.agregar_jugador(jugador2)
+        self.__juego.iniciar_juego()
+        self.__juego.setup_inicial()
 
         print(f"\nPartida iniciada entre {nombre1} y {nombre2}. ¡A jugar!\n")
 
@@ -52,8 +52,8 @@ class CLI:
 
     def loop_partida(self) -> None:
         """Bucle principal con menú por turno: tirar dados, mover y pasar."""
-        while self.__partida_activa____:
-            juego = self.__juego____
+        while self.__partida_activa:
+            juego = self.__juego
             jugador = juego.get_turno()
             color = jugador.get_color()
 
@@ -81,7 +81,7 @@ class CLI:
             # --- Opción 4: Abandonar ---
             if opcion == "4":
                 self.abandonar_partida()
-                if not self.__partida_activa____:
+                if not self.__partida_activa:
                     break
                 continue
 
@@ -132,7 +132,7 @@ class CLI:
                         ganador = juego.finalizar_jugada()
                         if ganador:
                             print(f" ¡{ganador.get_nombre()} ganó la partida! ")
-                            self.__partida_activa____ = False
+                            self.__partida_activa = False
                             return
                         juego.cambiar_turno()
                     continue
@@ -149,7 +149,7 @@ class CLI:
                             ganador = juego.finalizar_jugada()
                             if ganador:
                                 print(f" ¡{ganador.get_nombre()} ganó la partida! ")
-                                self.__partida_activa____ = False
+                                self.__partida_activa = False
                                 return
                         except Exception as e:
                             print(f" Error: {e}")
@@ -202,7 +202,7 @@ class CLI:
                 ganador = juego.finalizar_jugada()
                 if ganador:
                     print(f" ¡{ganador.get_nombre()} ganó la partida! ")
-                    self.__partida_activa____ = False
+                    self.__partida_activa = False
                     break
 
     def leer_entero(self, mensaje: str) -> int:
@@ -229,7 +229,7 @@ class CLI:
 
     # ---------------- MOSTRAR TABLERO ----------------
     def mostrar_tablero(self) -> None:
-        puntos = self.__juego____.get_tablero().get_points()
+        puntos = self.__juego.get_tablero().get_points()
 
         print("\n" + "=" * 70)
         print(" " * 25 + "TABLERO DE BACKGAMMON")
@@ -260,7 +260,7 @@ class CLI:
 
     # ---------------- HISTORIAL ----------------
     def mostrar_historial_turno(self) -> None:
-        historial = self.__juego____.get_historial()
+        historial = self.__juego.get_historial()
         if historial:
             print("\nÚltimos movimientos:")
             for linea in historial[-3:]:
@@ -268,10 +268,10 @@ class CLI:
         print("-------------------------------------------------------")
 
     def mostrar_historial(self) -> None:
-        if not self.__juego____:
+        if not self.__juego:
             print("Todavía no hay partida iniciada.")
             return
-        historial = self.__juego____.get_historial()
+        historial = self.__juego.get_historial()
         if not historial:
             print("No hay movimientos registrados.")
         else:
@@ -282,14 +282,14 @@ class CLI:
 
     # ---------------- ABANDONAR ----------------
     def abandonar_partida(self) -> None:
-        if not self.__partida_activa____:
+        if not self.__partida_activa:
             print("No hay partida en curso.")
             return
         confirm = input("¿Seguro que querés abandonar la partida? (s/n): ").strip().lower()
         if confirm == "s":
             print("Partida abandonada. Volviendo al menú principal.")
-            self.__partida_activa____ = False
-            self.__juego____ = None
+            self.__partida_activa = False
+            self.__juego = None
 
 # ---------------- MAIN ----------------
 if __name__ == "__main__":
