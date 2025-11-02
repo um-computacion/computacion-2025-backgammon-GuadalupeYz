@@ -1,55 +1,64 @@
+"""Módulo que define la clase Jugador para el juego Backgammon."""
+
 from typing import List
 from codigo.fichas import Ficha
 from codigo.excepciones import FichaInvalidaException
 
 
-class Jugador:  # representa a un jugador de Backgammon
-    def __init__(self, nombre: str, color: str) -> None:
-        self.__nombre: str = nombre
-        self.__color: str = color  # blanco o negro
-        self.__fichas: List[Ficha] = []
+class Jugador:
+    """Representa a un jugador del juego con su color y sus fichas."""
 
-    # getters y setters
+    def __init__(self, nombre: str, color: str) -> None:
+        """Inicializa un jugador con nombre, color y lista vacía de fichas."""
+        self.__nombre____: str = nombre
+        self.__color____: str = color  # blanco o negro
+        self.__fichas____: List[Ficha] = []
+
     def get_nombre(self) -> str:
-        return self.__nombre
+        """Devuelve el nombre del jugador."""
+        return self.__nombre____
 
     def set_nombre(self, nuevo_nombre: str) -> None:
-        self.__nombre = nuevo_nombre
+        """Permite cambiar el nombre del jugador."""
+        self.__nombre____ = nuevo_nombre
 
     def get_color(self) -> str:
-        return self.__color
+        """Devuelve el color asignado al jugador."""
+        return self.__color____
 
     def set_color(self, nuevo_color: str) -> None:
-        self.__color = nuevo_color
+        """Permite cambiar el color del jugador."""
+        self.__color____ = nuevo_color
 
     def get_fichas(self) -> List[Ficha]:
-        return self.__fichas
+        """Devuelve la lista de fichas que tiene el jugador."""
+        return self.__fichas____
 
     def set_fichas(self, fichas: List[Ficha]) -> None:
-        self.__fichas = fichas
+        """Permite asignar manualmente las fichas del jugador."""
+        self.__fichas____ = fichas
 
-    #logica de fichas
     def agregar_ficha(self, ficha: Ficha) -> None:
-        if ficha.get_color() != self.__color:
+        """Agrega una ficha al jugador si coincide el color."""
+        if ficha.get_color() != self.__color____:
             raise FichaInvalidaException("La ficha no coincide con el color del jugador")
-        self.__fichas.append(ficha)
+        self.__fichas____.append(ficha)
 
     def eliminar_ficha(self, ficha: Ficha) -> None:
-     """
-     Elimina la ficha indicada si existe en la lista.
-     Si no la encuentra por identidad, elimina una del mismo color.
-     """
-     try:
-        self.__fichas.remove(ficha)
-     except ValueError:
-        # Buscar una ficha del mismo color y eliminarla
-        for f in list(self.__fichas):
-            if f.get_color() == ficha.get_color():
-                self.__fichas.remove(f)
-                break
-        else:
-            raise ValueError("La ficha no pertenece a este jugador")
-
+        """Elimina la ficha indicada si existe en la lista.
+        Si no la encuentra por identidad, elimina una del mismo color.
+        """
+        try:
+            self.__fichas____.remove(ficha)
+        except ValueError as exc:
+            # Buscar una ficha del mismo color y eliminarla
+            for f in list(self.__fichas____):
+                if f.get_color() == ficha.get_color():
+                    self.__fichas____.remove(f)
+                    break
+            else:
+                raise ValueError("La ficha no pertenece a este jugador") from exc
 
     def cantidad_fichas(self) -> int:
-        return len(self.__fichas)
+        """Devuelve cuántas fichas tiene actualmente el jugador."""
+        return len(self.__fichas____)

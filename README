@@ -67,7 +67,7 @@ Clic en los triángulos del tablero para seleccionar fichas y moverlas según lo
 Las fichas capturadas van a la barra y deben reingresarse.
 Cuando todas las fichas de un jugador están en su casa, puede comenzar a sacarlas del tablero (Bear-Off).
 Cuando un jugador retira sus 15 fichas, aparece el mensaje:
-🎉 ¡[nombre] ganó la partida! 🎉
+¡[nombre] ganó la partida!
 
 
 Pruebas unitarias
@@ -104,10 +104,22 @@ prompts/ → Archivos de prompts IA usados en desarrollo, testing y documentaci�
 
 
 Cobertura y calidad
-Cobertura total: 97%
-Cobertura de lógica central (backgammon.py): 91%
-Calificación CodeClimate esperada: A
+Cobertura total: 94%
+Cobertura de lógica central (backgammon.py): 96%
+Calidad de código (Pylint): promedio entre 8,50 y 10 puntos
 
+La calidad del código se evalúa con Pylint en el pipeline de Integración Continua (GitHub Actions).  
+El análisis incluye los módulos de lógica (`codigo/`), la interfaz de consola (`cli/`) y la interfaz gráfica (`pygame_ui/`).
+
+Sirve para controlar:
+- Complejidad máxima de funciones (máx. 12 ramas y 50 líneas por función)
+- Límite de métodos públicos por clase
+- Cantidad de atributos por clase
+- Uso obligatorio de docstrings en módulos y clases
+
+Los resultados de Pylint y Coverage se generan automáticamente en el archivo `REPORTS.md`  
+cada vez que se hace un push o un merge a la rama `main`.  
+Esto permite mantener la calidad del proyecto en nivel **A**, con 0 issues abiertos al momento de la entrega.
 
 Referencias
 Wikipedia_Backgammon
