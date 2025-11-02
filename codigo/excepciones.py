@@ -1,14 +1,16 @@
+"""Módulo con las excepciones personalizadas del juego Backgammon."""
+
 
 class BackgammonException(Exception):
-    #excepcion base para el juego
-    pass
+    """Excepción base para el juego."""
+    # excepción base para el juego
 
 
-class MovimientoInvalidoException(BackgammonException):      
-    #se lanza cuando un movimiento que no es valido en el tablero
-    pass
+class MovimientoInvalidoException(BackgammonException):
+    """Se lanza cuando se intenta hacer un movimiento no válido."""
+    # se lanza cuando un movimiento no es válido en el tablero
 
 
 class FichaInvalidaException(BackgammonException):
-    #se lanza cuando se intenta usar una ficha que no corresponde al jugador
-    pass
+    """Se lanza cuando se intenta usar una ficha que no pertenece al jugador."""
+    # se lanza cuando se intenta usar una ficha que no corresponde al jugador

@@ -167,4 +167,10 @@ cambios sprint 6
 30/10: Cambiando documento requirements.txt para integracion continua
 
 #commit 3
-30/10: Agrego pylint con su acrpeta y codigo para testear la calidad , y tambien completo documentacion del proyecto para su desarrollo.
+30/10: Agrego pylint con su carpeta y codigo para testear la calidad , y tambien completo documentacion del proyecto para su desarrollo.
+
+#commit 4
+31/10: Cambios en los codidgos arreglado espacios entre lineas y agregando docstrings para subir la nota de pylint. Tambien sigo completando la documentacion.
+
+#commit 5
+01/11: 

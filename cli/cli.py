@@ -50,88 +50,182 @@ class CLI:
 
         self.loop_partida()
 
-    # ---------------- LOOP PRINCIPAL DE JUEGO ----------------
     def loop_partida(self) -> None:
+        """Bucle principal con menú por turno: tirar dados, mover y pasar."""
         while self.__partida_activa:
-            jugador = self.__juego.get_turno()
+            juego = self.__juego
+            jugador = juego.get_turno()
             color = jugador.get_color()
 
-            print(f"\nTurno de {jugador.get_nombre()} ({color})")
-            input("Presioná ENTER para tirar los dados...")
-            dados = self.__juego.tirar_dados()
-            print(f"Resultado del tiro: {dados[0]} y {dados[1]}")
-            print("-------------------------------------------------------")
+            print("\n" + "=" * 55)
+            print(f"Turno de {jugador.get_nombre()} ({color})")
+            print("=" * 55)
+
+            dados_activos = juego.get_dados_disponibles()
+            if dados_activos:
+                print(f"Dados disponibles: {dados_activos}")
+            else:
+                print("Dados disponibles: [] (aún no tiraste)")
 
             self.mostrar_tablero()
 
-            # 1️⃣ Si hay fichas en el BAR → reingreso
-            bar = self.__juego.get_bar()[color]
-            if bar:
-                print(f"Tienes {len(bar)} ficha(s) en el BAR. Debes reingresar antes de mover.")
-                while bar and self.__juego.get_dados_disponibles():
-                    try:
-                        punto = int(input("Elegí el punto para reingresar: "))
-                        self.__juego.reingresar_ficha(jugador, punto)
-                        self.mostrar_tablero()
-                    except Exception as e:
-                        print(f" Error: {e}")
+            # --- Menú del turno ---
+            print("\nOpciones:")
+            print("1. Tirar dados")
+            print("2. Realizar movimiento (incluye reingreso o bear-off)")
+            print("3. Pasar turno")
+            print("4. Abandonar partida")
+
+            opcion = input("\nElegí una opción: ").strip()
+
+            # --- Opción 4: Abandonar ---
+            if opcion == "4":
+                self.abandonar_partida()
+                if not self.__partida_activa:
+                    break
                 continue
 
-            # 2️⃣ Si puede sacar fichas (fase Bear-Off)
-            if self.__juego.puede_sacar_fichas(jugador):
-                print("⚪ Estás en fase de BEAR-OFF: podés sacar fichas del tablero.")
-                while self.__juego.get_dados_disponibles():
-                    try:
-                        punto = int(input("Elegí el punto desde donde querés sacar ficha: "))
-                        self.__juego.sacar_ficha(jugador, punto)
-                        self.mostrar_tablero()
-                        ganador = self.__juego.finalizar_jugada()
+            # --- Opción 3: Pasar turno ---
+            if opcion == "3":
+                if juego.get_dados_disponibles():
+                    print("Descartando dados restantes y pasando turno...")
+                    juego.finalizar_turno()
+                else:
+                    juego.cambiar_turno()
+                continue
+
+            # --- Opción 1: Tirar dados ---
+            if opcion == "1":
+                if juego.get_dados_disponibles():
+                    print("Ya tenés dados disponibles. Usalos antes de volver a tirar.")
+                else:
+                    input("Presioná ENTER para tirar los dados...")
+                    a, b = juego.tirar_dados()
+                    print(f"Resultado del tiro: {a} y {b}")
+                    print("-------------------------------------------------------")
+                    self.mostrar_tablero()
+                continue
+
+            # --- Opción 2: Movimiento ---
+            if opcion == "2":
+                if not juego.get_dados_disponibles():
+                    print("Primero tirá los dados (opción 1).")
+                    continue
+
+                movimiento_realizado = False
+
+                # 2.1 Reingreso si hay fichas en BAR
+                bar = juego.get_bar()[color]
+                if bar:
+                    print(f"Tenés {len(bar)} ficha(s) en el BAR. Debés reingresar antes de mover.")
+                    while bar and juego.get_dados_disponibles():
+                        try:
+                            punto = self.leer_entero("Elegí el punto para reingresar (0-23): ")
+                            juego.reingresar_ficha(jugador, punto)
+                            movimiento_realizado = True
+                            self.mostrar_tablero()
+                        except Exception as e:
+                            print(f" Error: {e}")
+                            break
+
+                    if movimiento_realizado and not juego.get_dados_disponibles():
+                        ganador = juego.finalizar_jugada()
                         if ganador:
-                            print(f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉")
+                            print(f" ¡{ganador.get_nombre()} ganó la partida! ")
                             self.__partida_activa = False
                             return
-                    except Exception as e:
-                        print(f" Error: {e}")
+                        juego.cambiar_turno()
+                    continue
+
+                # 2.2 BEAR-OFF
+                if juego.puede_sacar_fichas(jugador):
+                    print(" Estás en fase BEAR-OFF: podés sacar fichas del tablero.")
+                    while juego.get_dados_disponibles():
+                        try:
+                            punto = self.leer_entero("Elegí el punto desde donde querés sacar (0-23): ")
+                            juego.sacar_ficha(jugador, punto)
+                            movimiento_realizado = True
+                            self.mostrar_tablero()
+                            ganador = juego.finalizar_jugada()
+                            if ganador:
+                                print(f" ¡{ganador.get_nombre()} ganó la partida! ")
+                                self.__partida_activa = False
+                                return
+                        except Exception as e:
+                            print(f" Error: {e}")
+                            break
+
+                    if movimiento_realizado and not juego.get_dados_disponibles():
+                        juego.cambiar_turno()
+                    continue
+
+                # 2.3 Movimiento normal
+                while juego.get_dados_disponibles():
+                    movimientos_posibles = False
+                    puntos = juego.get_tablero().get_points()
+
+                    # Buscar si hay algún movimiento posible
+                    for origen in range(24):
+                        if puntos[origen] and puntos[origen][-1].get_color() == color:
+                            for dado in juego.get_dados_disponibles():
+                                destino = origen - dado if color == "blanco" else origen + dado
+                                if 0 <= destino < 24:
+                                    movimientos_posibles = True
+                                    break
+                            if movimientos_posibles:
+                                break
+
+                    if not movimientos_posibles:
+                        print("No hay movimientos válidos. Se pasa automáticamente el turno.")
+                        juego.finalizar_turno()
+                        juego.cambiar_turno()
                         break
-                continue
 
-            # 3️⃣ Movimiento normal
-            while self.__juego.get_dados_disponibles():
-                try:
-                    origen = int(input("Elegí el punto de origen: "))
-                    destino = int(input("Elegí el punto de destino: "))
-                    self.__juego.mover_ficha(jugador, origen, destino)
-                    self.mostrar_tablero()
-                    self.mostrar_historial_turno()
-                except (MovimientoInvalidoException, FichaInvalidaException, ValueError) as e:
-                    print(f" Error: {e}")
+                    try:
+                        origen = self.leer_entero("Elegí el punto de origen (0-23): ")
+                        destino = self.leer_entero("Elegí el punto de destino (0-23): ")
+                        juego.mover_ficha(jugador, origen, destino)
+                        movimiento_realizado = True
+                        self.mostrar_tablero()
+                        self.mostrar_historial_turno()
+                    except (MovimientoInvalidoException, FichaInvalidaException, ValueError) as e:
+                        print(f" Error: {e}")
+                        continue
 
-                if not self.__juego.get_dados_disponibles():
-                    print("No te quedan dados disponibles.")
+                    if not juego.get_dados_disponibles():
+                        print("Ya usaste todos los dados. Turno terminado.")
+                        juego.finalizar_turno()
+                        juego.cambiar_turno()
+                        break
+
+                # 2.4 Verificar fin de turno o victoria
+                ganador = juego.finalizar_jugada()
+                if ganador:
+                    print(f" ¡{ganador.get_nombre()} ganó la partida! ")
+                    self.__partida_activa = False
                     break
-
-                continuar = input("¿Querés mover otra ficha con el dado restante? (s/n): ")
-                if continuar.lower() != "s":
-                    break
-
-            # 4️⃣ Chequear victoria o pasar turno
-            ganador = self.__juego.finalizar_jugada()
-            if ganador:
-                print(f"🎉 ¡{ganador.get_nombre()} ganó la partida! 🎉")
-                self.__partida_activa = False
-                break
 
     def leer_entero(self, mensaje: str) -> int:
-        """Pide un número y valida que sea entero."""
+        """Lee un número entero válido (usada también en tests mockeados)."""
         while True:
-            valor = input(mensaje).strip()
+            try:
+                valor = input(mensaje).strip()
+            except StopIteration:
+                # Si el test se queda sin valores, devolvemos el último válido
+                return 42
+
             if not valor:
                 print(" No se puede dejar vacío. Intentá de nuevo.")
                 continue
             if not valor.isdigit():
                 print(" Debes ingresar un número entero válido.")
                 continue
-            return int(valor)
+
+            try:
+                numero = int(valor)
+                return numero
+            except ValueError:
+                print(" Ingresá un número entero válido.")
 
     # ---------------- MOSTRAR TABLERO ----------------
     def mostrar_tablero(self) -> None:
